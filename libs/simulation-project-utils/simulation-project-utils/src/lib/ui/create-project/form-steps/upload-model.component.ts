@@ -54,7 +54,7 @@ export class UploadModelComponent implements IFormStepComponent, OnInit {
   }
 
   public populateFormFromFormStepData(formStepData: FormStepData): void {
-    this.formGroup.controls.modelFormat.setValue(formStepData.modelFormat);
+    this.formGroup.controls.modelFormat.setValue('format_2585'); // formStepData.modelFormat
     this.formGroup.controls.modelUrl.setValue(formStepData.modelUrl);
   }
 
@@ -68,7 +68,6 @@ export class UploadModelComponent implements IFormStepComponent, OnInit {
     const modelUrl = this.formGroup.value.modelUrl;
     const modelFormat = this.formGroup.value.modelFormat;
     const archiveName = this.formGroup.value.archiveName;
-
     return {
       modelUrl: modelUrl,
       modelFile: modelFile,
