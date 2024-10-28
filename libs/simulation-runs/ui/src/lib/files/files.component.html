@@ -49,7 +49,7 @@
         <a
           class="biosimulations-button"
           *ngIf="path.url"
-          [download]="path.basename"
+          [attr.download]="path.basename ? path.basename : true"
           [href]="path.url"
           rel="noopener"
           mat-flat-button>
