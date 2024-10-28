@@ -27,12 +27,12 @@ export class SimulatorTypeComponent implements IFormStepComponent {
 
   public constructor(private formBuilder: UntypedFormBuilder) {
     this.formGroup = this.formBuilder.group({
-      framework: [null, Validators.required],
-      simulationType: [null, Validators.required],
-      algorithm: [null, Validators.required],
+      framework: ['SBO_0000293', Validators.required], //
+      simulationType: [SimulationType.SedUniformTimeCourseSimulation, Validators.required], //
+      algorithm: ['KISAO_0000019', Validators.required], //
     });
-    this.formGroup.controls.simulationType?.disable();
-    this.formGroup.controls.algorithm?.disable();
+    // this.formGroup.controls.simulationType?.disable();
+    // this.formGroup.controls.algorithm?.disable();
   }
 
   public getSimulationTypeName(simulationType: SimulationType): SimulationTypeBriefName {
@@ -55,13 +55,13 @@ export class SimulatorTypeComponent implements IFormStepComponent {
     this.updateCompatibleFrameworks(simulatorsData);
     if (this.compatibleFrameworks?.length === 1) {
       this.formGroup.controls.framework.setValue(this.compatibleFrameworks[0].id);
-      this.updateDropdowns();
+      // this.updateDropdowns();
     }
+    this.updateDropdowns();
   }
 
   public populateFormFromFormStepData(formStepData: FormStepData): void {
     const frameworkId = formStepData.framework as string;
-    console.log(`name of framework: ${frameworkId}`);
     const simulationType = formStepData.simulationType as SimulationType;
     const algorithmId = formStepData.algorithm as string;
     if (!this.isFrameworkCompatible(frameworkId)) {
@@ -75,6 +75,7 @@ export class SimulatorTypeComponent implements IFormStepComponent {
     this.formGroup.controls.simulationType.setValue(simulationType);
     this.formGroup.controls.simulationType.enable();
     this.updateCompatibleAlgorithms(frameworkId, simulationType);
+    console.log(`Simulation Type: ${JSON.stringify(simulationType)}, Alg ID: ${algorithmId}`);
     if (!this.isAlgorithmCompatible(algorithmId)) {
       return;
     }
@@ -91,7 +92,7 @@ export class SimulatorTypeComponent implements IFormStepComponent {
     const frameworkId = this.formGroup.value.framework;
     const simulationType = this.formGroup.value.simulationType as SimulationType;
     const algorithmId = this.formGroup.value.algorithm;
-    console.log(`${frameworkId}, ${simulationType}, ${algorithmId}`);
+    console.log(`Framework ID: ${frameworkId}, Simulation Type: ${simulationType}, AlgID: ${algorithmId}`);
     return {
       framework: frameworkId,
       simulationType: simulationType,

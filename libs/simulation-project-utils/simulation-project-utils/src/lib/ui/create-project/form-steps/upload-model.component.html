@@ -10,18 +10,7 @@
 
   <div class="input-group">
     <mat-form-field class="card-form-field" appearance="fill">
-      <mat-label>Select the format of the model</mat-label>
-      <mat-select formControlName="modelFormat">
-        <mat-option *ngFor="let format of modelFormats" [value]="format.id" style="background-color: white">
-          {{ format.name }}
-        </mat-option>
-      </mat-select>
-    </mat-form-field>
-  </div>
-
-  <div class="input-group">
-    <mat-form-field class="card-form-field" appearance="fill">
-      <mat-label>Choose model file or OMEX/COMBINE Archive</mat-label>
+      <mat-label>Choose model file</mat-label>
       <biosimulations-ngx-mat-file-input
         formControlName="modelFile"
         [accept]="supportedFileTypes()"
@@ -70,4 +59,14 @@
   <mat-error *ngIf="formGroup.hasError('maxSize', 'modelLocationDetails')">
     Currently, model file uploads are limited to 256 MB. Larger models must be submitted through URLs.
   </mat-error>
+  <div class="input-group">
+    <mat-form-field class="card-form-field" appearance="fill">
+      <mat-label>Select the format of the model</mat-label>
+      <mat-select formControlName="modelFormat">
+        <mat-option *ngFor="let format of modelFormats" [value]="format.id" style="background-color: white">
+          {{ format.name }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+  </div>
 </form>

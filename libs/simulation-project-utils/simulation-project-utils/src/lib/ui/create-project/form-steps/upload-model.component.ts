@@ -34,7 +34,7 @@ export class UploadModelComponent implements IFormStepComponent, OnInit {
         modelFile: [null, [CreateMaxFileSizeValidator(this.config)]],
         modelUrl: [null, [URL_VALIDATOR]],
         modelFormat: [null, [Validators.required]],
-        archiveName: ['my-custom-archive', Validators.required],
+        archiveName: ['simulation-project', Validators.required],
       },
       {
         validators: this.formValidator.bind(this),
