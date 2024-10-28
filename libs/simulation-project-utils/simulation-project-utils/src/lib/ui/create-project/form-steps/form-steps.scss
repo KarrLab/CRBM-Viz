@@ -115,6 +115,16 @@ mat-option:hover {
 
 .input-group {
   padding-top: 2rem;
+  padding-right: 1rem;
+  padding-left: 1rem;
+  // width: fit-content;
+  // display: flex;
+  // margin-right: auto;
+  // margin-left: auto;
+
+  // &.model-format {
+  //   width: fit-content;
+  // }
 }
 
 .card-form-title {
@@ -125,4 +135,64 @@ mat-option:hover {
   width: 100%;
   padding: 0.5rem;
   font-weight: 700;
+}
+
+.info-icon-container {
+  position: relative;
+  display: inline-block;
+}
+
+.info-icon {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background-color: #007bff;
+  color: white;
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 14px;
+  font-weight: bold;
+  text-align: center;
+  cursor: pointer;
+}
+
+/* Hide the overlay initially */
+.info-overlay {
+  visibility: hidden;
+  width: 200px;
+  background-color: white;
+  color: #000;
+  text-align: center;
+  padding: 10px;
+  border-radius: 4px;
+  border: 1px solid #ccc;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+  position: absolute;
+  // bottom: 120%; /* Position above the icon */
+  // left: 50%;
+  top: 50%;
+  left: 120%;
+  transform: translateY(-50%); // translateX(-50%);
+  z-index: 1;
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+
+.info-overlay::after {
+  content: '';
+  position: absolute;
+  height: fit-content;
+  top: 100%; // 100%; /* Arrow will be at the bottom of the overlay */
+  left: -6px; // 50%;
+  transform: translateY(-50%);
+  border-width: 6px;
+  border-style: solid;
+  border-color: white transparent transparent transparent;
+}
+
+/* Show the overlay on hover */
+.info-icon-container:hover .info-overlay {
+  visibility: visible;
+  opacity: 1;
 }
