@@ -238,6 +238,7 @@ export class ViewComponent implements OnInit {
     this.files$.pipe(takeUntil(this.destroyed$)).subscribe((files: Path[] | null | undefined | false) => {
       if (files) {
         files.forEach((file: Path) => {
+          console.log(`File in project url: ${file.location}`);
           if (file.location.includes('jpg')) {
             switch (file) {
               case file as File:
