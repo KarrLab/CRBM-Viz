@@ -112,7 +112,7 @@ export class DesignLine2DVisualizationComponent implements OnInit {
       curvesFormArray.removeAt(curvesFormArray.length - 1);
     }
 
-    const allDataSets = Object.keys(this.uriSedDataSetMap);
+    const allDataSets = this.uriSedDataSetMap ? Object.keys(this.uriSedDataSetMap) : [];
 
     // parse datasets to find 'Time' for x-axis
     const timeOption = allDataSets.find((key) => {
