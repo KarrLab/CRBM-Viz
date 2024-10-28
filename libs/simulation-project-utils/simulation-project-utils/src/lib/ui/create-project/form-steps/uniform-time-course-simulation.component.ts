@@ -18,16 +18,17 @@ export class UniformTimeCourseSimulationComponent implements IFormStepComponent,
   public constructor(private formBuilder: UntypedFormBuilder) {
     this.formGroup = this.formBuilder.group(
       {
-        initialTime: [null, [Validators.required, NON_NEGATIVE_FLOAT_VALIDATOR]],
-        outputStartTime: [null, [Validators.required, NON_NEGATIVE_FLOAT_VALIDATOR]],
-        outputEndTime: [null, [Validators.required, NON_NEGATIVE_FLOAT_VALIDATOR]],
-        numberOfSteps: [null, [Validators.required, NON_NEGATIVE_FLOAT_VALIDATOR]],
+        initialTime: [0, [Validators.required, NON_NEGATIVE_FLOAT_VALIDATOR]],
+        outputStartTime: [0, [Validators.required, NON_NEGATIVE_FLOAT_VALIDATOR]],
+        outputEndTime: [10, [Validators.required, NON_NEGATIVE_FLOAT_VALIDATOR]],
+        numberOfSteps: [100, [Validators.required, NON_NEGATIVE_FLOAT_VALIDATOR]],
         step: [null],
       },
       {
         validators: UNIFORM_TIME_SPAN_VALIDATOR,
       },
     );
+    this.changeUniformTimeCourseSimulationStep();
   }
 
   public ngOnInit() {
@@ -44,10 +45,11 @@ export class UniformTimeCourseSimulationComponent implements IFormStepComponent,
   }
 
   public populateFormFromFormStepData(formStepData: FormStepData): void {
-    this.formGroup.controls.initialTime.setValue(formStepData.initialTime);
-    this.formGroup.controls.outputStartTime.setValue(formStepData.outputStartTime);
-    this.formGroup.controls.outputEndTime.setValue(formStepData.outputEndTime);
-    this.formGroup.controls.numberOfSteps.setValue(formStepData.numberOfSteps);
+    // This method is called onInit and thus should set the default vals
+    this.formGroup.controls.initialTime.setValue(0); // formStepData.initialTime
+    this.formGroup.controls.outputStartTime.setValue(0); // formStepData.outputStartTime
+    this.formGroup.controls.outputEndTime.setValue(10); // formStepData.outputEndTime
+    this.formGroup.controls.numberOfSteps.setValue(100); // formStepData.numberOfSteps
   }
 
   public getFormStepData(): FormStepData | null {
@@ -67,8 +69,9 @@ export class UniformTimeCourseSimulationComponent implements IFormStepComponent,
     const endTimeValue = this.formGroup.controls.outputEndTime.value;
     const startTimeValue = this.formGroup.controls.outputStartTime.value;
     const numStepsValue = this.formGroup.controls.numberOfSteps.value;
-    if (endTimeValue != null && startTimeValue != null && numStepsValue != null) {
+    if (endTimeValue != null && startTimeValue != null && numStepsValue != null && numStepsValue > 0) {
       this.stepSize = (endTimeValue - startTimeValue) / numStepsValue;
+      this.formGroup.controls.step.setValue(this.stepSize);
     }
   }
 
