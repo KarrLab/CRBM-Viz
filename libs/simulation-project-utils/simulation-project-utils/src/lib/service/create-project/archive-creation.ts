@@ -21,6 +21,7 @@ import {
   SedModelAttributeChangeTypeEnum,
   SedModelChange,
   SedModelTypeEnum,
+  // SedPlot2DTypeEnum,  TODO: uncomment this for sed plots
   SedReportTypeEnum,
   SedSimulation,
   SedSteadyStateSimulationTypeEnum,
@@ -322,6 +323,11 @@ function CreateSedDocument(
         id: 'report',
         dataSets: dataSets,
       },
+      // {
+      //   _type: SedPlot2DTypeEnum.SedPlot2D,
+      //   id: 'Figure',
+      //   curves: dataSets
+      // }
     ],
   };
 }
