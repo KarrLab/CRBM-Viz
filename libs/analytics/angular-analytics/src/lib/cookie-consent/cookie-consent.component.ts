@@ -8,8 +8,8 @@ import {
   CookieType,
   FunctionalCookie,
   PerformanceCookie,
-  // RequiredCookie,
-  // TrackingCookie,
+  RequiredCookie,
+  TrackingCookie,
 } from '../datamodel';
 
 @Component({
@@ -20,8 +20,8 @@ import {
 })
 export class CookieConsentComponent {
   public cookies: Cookie[] = [
-    // new RequiredCookie(),
-    // new TrackingCookie(),
+    new RequiredCookie(),
+    new TrackingCookie(),
     new PerformanceCookie(),
     new FunctionalCookie(),
   ];
