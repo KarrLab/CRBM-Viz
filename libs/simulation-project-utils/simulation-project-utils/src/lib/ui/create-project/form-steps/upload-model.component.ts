@@ -53,10 +53,20 @@ export class UploadModelComponent implements IFormStepComponent, OnInit {
     }
   }
 
-  public populateFormFromFormStepData(formStepData: FormStepData): void {
+  public _populateFormFromFormStepData(formStepData: FormStepData): void {
     const selectedFormat = this.modelFormats?.find((format) => format.id === formStepData.modelFormat);
     if (selectedFormat) {
       this.formGroup.controls.modelFormat.setValue(selectedFormat.id); // Set based on the matching ID
+    } else {
+      this.formGroup.controls.modelFormat.setValue('format_2585');
+    }
+    this.formGroup.controls.modelUrl.setValue(formStepData.modelUrl);
+  }
+
+  public populateFormFromFormStepData(formStepData: FormStepData): void {
+    const selectedFormat = this.modelFormats?.find((format) => format.id === formStepData.modelFormat);
+    if (selectedFormat) {
+      this.formGroup.controls.modelFormat.setValue(selectedFormat.id);
     } else {
       this.formGroup.controls.modelFormat.setValue('format_2585');
     }

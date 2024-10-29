@@ -45,7 +45,7 @@ describe('UploadModelComponent', () => {
     fixture.detectChanges();
 
     testFormats = [
-      createTestOntologyTerm('test format_2585'),
+      createTestOntologyTerm('test format 1'),
       createTestOntologyTerm('test format 2'),
       createTestOntologyTerm('test format 3'),
     ];
@@ -70,7 +70,7 @@ describe('UploadModelComponent', () => {
 
   it('should prepopulate when provided formdata', async () => {
     const formStepData = {
-      modelFormat: 'name: test format_2585', // 'id: test format 1',
+      modelFormat: 'id: test format 1',
       modelUrl: 'Fake test url',
     };
 
