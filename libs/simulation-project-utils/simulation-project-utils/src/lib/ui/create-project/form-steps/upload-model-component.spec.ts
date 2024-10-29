@@ -70,7 +70,7 @@ describe('UploadModelComponent', () => {
 
   it('should prepopulate when provided formdata', async () => {
     const formStepData = {
-      modelFormat: 'id: test format 1',
+      modelFormat: 'test format_2585', // 'id: test format 1',
       modelUrl: 'Fake test url',
     };
 
