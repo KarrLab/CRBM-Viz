@@ -21,6 +21,8 @@ import {
   SedModelAttributeChangeTypeEnum,
   SedModelChange,
   SedModelTypeEnum,
+  // SedAxisScale,
+  // SedCurveTypeEnum,
   // SedPlot2DTypeEnum,  TODO: uncomment this for sed plots
   SedReportTypeEnum,
   SedSimulation,
@@ -308,6 +310,13 @@ function CreateSedDocument(
   dataGenerators: SedDataGenerator[],
   dataSets: SedDataSet[],
 ): SedDocument {
+  // const curve = {
+  //   _type: SedCurveTypeEnum.SedCurve,
+  //   id: 'curve_time',
+  //   xDataGenerator: 'Time',
+  //   yDataGenerator: dataGenerators[0].id,
+  // }
+
   return {
     _type: SedDocumentTypeEnum.SedDocument,
     level: 1,
@@ -325,8 +334,10 @@ function CreateSedDocument(
       },
       // {
       //   _type: SedPlot2DTypeEnum.SedPlot2D,
-      //   id: 'Figure',
-      //   curves: dataSets
+      //   id: 'Figure1',
+      //   curves: [curve],
+      //   xScale: SedAxisScale.linear,
+      //   yScale: SedAxisScale.linear,
       // }
     ],
   };

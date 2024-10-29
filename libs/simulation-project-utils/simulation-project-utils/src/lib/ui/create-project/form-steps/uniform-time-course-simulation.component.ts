@@ -20,8 +20,8 @@ export class UniformTimeCourseSimulationComponent implements IFormStepComponent,
       {
         initialTime: [0, [Validators.required, NON_NEGATIVE_FLOAT_VALIDATOR]],
         outputStartTime: [0, [Validators.required, NON_NEGATIVE_FLOAT_VALIDATOR]],
-        outputEndTime: [10, [Validators.required, NON_NEGATIVE_FLOAT_VALIDATOR]],
-        numberOfSteps: [100, [Validators.required, NON_NEGATIVE_FLOAT_VALIDATOR]],
+        outputEndTime: [100, [Validators.required, NON_NEGATIVE_FLOAT_VALIDATOR]],
+        numberOfSteps: [1000, [Validators.required, NON_NEGATIVE_FLOAT_VALIDATOR]],
         step: [null],
       },
       {
@@ -48,8 +48,8 @@ export class UniformTimeCourseSimulationComponent implements IFormStepComponent,
     // This method is called onInit and thus should set the default vals
     this.formGroup.controls.initialTime.setValue(0); // formStepData.initialTime
     this.formGroup.controls.outputStartTime.setValue(0); // formStepData.outputStartTime
-    this.formGroup.controls.outputEndTime.setValue(10); // formStepData.outputEndTime
-    this.formGroup.controls.numberOfSteps.setValue(100); // formStepData.numberOfSteps
+    this.formGroup.controls.outputEndTime.setValue(100); // formStepData.outputEndTime
+    this.formGroup.controls.numberOfSteps.setValue(1000); // formStepData.numberOfSteps
   }
 
   public getFormStepData(): FormStepData | null {
