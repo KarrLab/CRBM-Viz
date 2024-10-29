@@ -79,7 +79,7 @@ describe('UploadModelComponent', () => {
     const selectHarness = await loader.getHarness(MatSelectHarness);
     const prepopulatedValue = await selectHarness.getValueText();
 
-    expect(prepopulatedValue).toBe('name: test 1');
+    expect(prepopulatedValue).toBe('name: test format 1');
 
     const formFieldHarness = await loader.getHarness(
       MatFormFieldHarness.with({ floatingLabelText: 'Enter URL for model file' }),
