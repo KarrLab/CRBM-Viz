@@ -70,7 +70,7 @@ describe('UploadModelComponent', () => {
 
   it('should prepopulate when provided formdata', async () => {
     const formStepData = {
-      modelFormat: 'test format_2585', // 'id: test format 1',
+      modelFormat: 'name: test format_2585', // 'id: test format 1',
       modelUrl: 'Fake test url',
     };
 
@@ -79,7 +79,7 @@ describe('UploadModelComponent', () => {
     const selectHarness = await loader.getHarness(MatSelectHarness);
     const prepopulatedValue = await selectHarness.getValueText();
 
-    expect(prepopulatedValue).toBe('name: test format 1');
+    expect(prepopulatedValue).toBe('name: test format_2585');
 
     const formFieldHarness = await loader.getHarness(
       MatFormFieldHarness.with({ floatingLabelText: 'Enter URL for model file' }),
