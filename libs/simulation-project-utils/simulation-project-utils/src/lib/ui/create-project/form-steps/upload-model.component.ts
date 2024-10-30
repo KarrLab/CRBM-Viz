@@ -34,7 +34,7 @@ export class UploadModelComponent implements IFormStepComponent, OnInit {
         modelFile: [null, [CreateMaxFileSizeValidator(this.config)]],
         modelUrl: [null, [URL_VALIDATOR]],
         modelFormat: [null, [Validators.required]],
-        archiveName: ['my-custom-archive', Validators.required],
+        archiveName: ['simulation-project', Validators.required],
       },
       {
         validators: this.formValidator.bind(this),
@@ -53,8 +53,23 @@ export class UploadModelComponent implements IFormStepComponent, OnInit {
     }
   }
 
+  public _populateFormFromFormStepData(formStepData: FormStepData): void {
+    const selectedFormat = this.modelFormats?.find((format) => format.id === formStepData.modelFormat);
+    if (selectedFormat) {
+      this.formGroup.controls.modelFormat.setValue(selectedFormat.id); // Set based on the matching ID
+    } else {
+      this.formGroup.controls.modelFormat.setValue('format_2585');
+    }
+    this.formGroup.controls.modelUrl.setValue(formStepData.modelUrl);
+  }
+
   public populateFormFromFormStepData(formStepData: FormStepData): void {
-    this.formGroup.controls.modelFormat.setValue(formStepData.modelFormat);
+    const selectedFormat = this.modelFormats?.find((format) => format.id === formStepData.modelFormat);
+    if (selectedFormat) {
+      this.formGroup.controls.modelFormat.setValue(selectedFormat.id);
+    } else {
+      this.formGroup.controls.modelFormat.setValue('format_2585');
+    }
     this.formGroup.controls.modelUrl.setValue(formStepData.modelUrl);
   }
 
@@ -68,7 +83,6 @@ export class UploadModelComponent implements IFormStepComponent, OnInit {
     const modelUrl = this.formGroup.value.modelUrl;
     const modelFormat = this.formGroup.value.modelFormat;
     const archiveName = this.formGroup.value.archiveName;
-
     return {
       modelUrl: modelUrl,
       modelFile: modelFile,

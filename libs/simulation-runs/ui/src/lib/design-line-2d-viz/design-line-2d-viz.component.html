@@ -9,7 +9,8 @@
     </div>
   </div>
   <div class="form-section-body">
-    <div class="form-field-group">
+    <!-- TODO: Eventually remove this. Keep for now (10/2024) in case this will be used. Okay to merge into dev. -->
+    <!--<div class="form-field-group">
       <mat-form-field appearance="fill">
         <mat-label>Select the number of curves to display</mat-label>
         <input
@@ -22,21 +23,22 @@
           (ngModelChange)="setNumCurves()" />
         <biosimulations-icon icon="report" matPrefix></biosimulations-icon>
       </mat-form-field>
-      <mat-hint
-        >BioSimulations can display one or more curves per subplots. Select the number of curves that you would like to
-        display.</mat-hint
-      >
-    </div>
+      <mat-hint>
+        Select the SED-ML data sets for the X and Y data of each curve.
+        <biosimulations-icon
+          icon="info"
+          matTooltip="BioSimulations can display one or more curves per subplots. Select the number of curves that you would like to display.">
+        </biosimulations-icon>
+      </mat-hint>
+    </div>-->
 
     <div class="form-field-group user-line-2d-curves" formArrayName="curves">
       <div class="icon-label-input">
         <biosimulations-icon icon="report" matPrefix></biosimulations-icon>
         <div class="label-input">
-          <mat-label>Select the data for each curve *</mat-label>
+          <mat-label>Select the x-axis datasets *</mat-label>
           <div class="input">
-            <div class="input-heading">X data set *</div>
-            <div class="input-heading">Y data set *</div>
-            <div class="input-heading">Name</div>
+            <!--<div class="input-heading">X data set *</div>-->
             <ng-container *ngFor="let curve of curvesFormGroups; index as iCurve" [formGroupName]="iCurve">
               <div class="input-row">
                 <mat-select formControlName="xData" required disableOptionCentering multiple>
@@ -52,6 +54,20 @@
                 </mat-select>
                 <button type="button" mat-flat-button (click)="clearSelectionData('xData')">clear</button>
               </div>
+            </ng-container>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="form-field-group user-line-2d-curves" formArrayName="curves">
+      <div class="icon-label-input">
+        <biosimulations-icon icon="report" matPrefix></biosimulations-icon>
+        <div class="label-input">
+          <mat-label>Select the y-axis datasets *</mat-label>
+          <div class="input">
+            <!--<div class="input-heading">Y data set *</div>-->
+            <ng-container *ngFor="let curve of curvesFormGroups; index as iCurve" [formGroupName]="iCurve">
               <div class="input-row">
                 <mat-select formControlName="yData" required disableOptionCentering multiple>
                   <mat-optgroup *ngFor="let sedDocument of sedDocs" [label]="sedDocument.id">
@@ -66,14 +82,15 @@
                 </mat-select>
                 <button type="button" mat-flat-button (click)="clearSelectionData('yData')">clear</button>
               </div>
-              <div class="input-row">
+              <!-- TODO: eventually remove this if deemed not usable. Okay for merge. -->
+              <!--<div class="input-row">
                 <input matInput formControlName="name" />
-              </div>
+                <biosimulations-icon icon="info" matTooltip="Optional display name for this dataset."></biosimulations-icon>
+              </div>-->
             </ng-container>
           </div>
         </div>
       </div>
-      <mat-hint>Select the SED-ML data sets for the X and Y data of each curve.</mat-hint>
     </div>
 
     <div class="form-field-group">

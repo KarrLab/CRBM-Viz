@@ -112,11 +112,22 @@ export class DesignLine2DVisualizationComponent implements OnInit {
       curvesFormArray.removeAt(curvesFormArray.length - 1);
     }
 
+    const allDataSets = this.uriSedDataSetMap ? Object.keys(this.uriSedDataSetMap) : [];
+
+    // parse datasets to find 'Time' for x-axis
+    const timeOption = allDataSets.find((key) => {
+      const dataSet = this.uriSedDataSetMap[key];
+      return dataSet.name === 'Time';
+    });
+
+    // parse datasets to find y-axis data by filtering out 'Time'
+    const yDataOptions = allDataSets.filter((key) => key !== timeOption);
+
     while (curvesFormArray.length < numCurves) {
       const curve = this.formBuilder.group({
         name: [null],
-        xData: [[], [Validators.required]],
-        yData: [[], [Validators.required]],
+        xData: [timeOption ? [timeOption] : [], [Validators.required]],
+        yData: [yDataOptions, [Validators.required]],
       });
       curvesFormArray.push(curve);
     }

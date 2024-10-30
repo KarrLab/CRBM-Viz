@@ -21,9 +21,9 @@ import {
 export class CookieConsentComponent {
   public cookies: Cookie[] = [
     new RequiredCookie(),
+    new TrackingCookie(),
     new PerformanceCookie(),
     new FunctionalCookie(),
-    new TrackingCookie(),
   ];
 
   public cookieConsent: cookieConsentType = {
@@ -34,6 +34,7 @@ export class CookieConsentComponent {
   };
 
   public appName: string;
+  public termsShowing = false;
   public constructor(
     public dialogRef: MatDialogRef<CookieConsentComponent, cookieConsentType>,
     @Inject(APP_NAME_TOKEN) appName: string,
@@ -52,5 +53,15 @@ export class CookieConsentComponent {
 
   public submitConsent(): void {
     this.dialogRef.close(this.cookieConsent);
+  }
+
+  public showTerms(): void {
+    this.termsShowing = !this.termsShowing;
+  }
+
+  public declineCookies(): void {
+    this.cookieConsent.performance = false;
+    this.cookieConsent.functionality = false;
+    this.submitConsent();
   }
 }
