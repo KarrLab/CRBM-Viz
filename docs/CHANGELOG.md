@@ -1,5 +1,15 @@
 # Changelog
 
+## [9.61.3](https://github.com/biosimulations/biosimulations/compare/v9.61.2...v9.61.3) (2024-10-30)
+
+
+### Bug Fixes
+
+* added null handler for dataset mapping getter ([7fbf1a8](https://github.com/biosimulations/biosimulations/commit/7fbf1a8917d084ba4d9433a2bbc83294423fc6b6))
+* null handler for default model format in spec and form and whitespc ([c4eea35](https://github.com/biosimulations/biosimulations/commit/c4eea35d925ce295b224064fc78ec61139772746))
+* update format name in spec test ([f2731de](https://github.com/biosimulations/biosimulations/commit/f2731dedb9f3675a5a62e791d7198e5c1333fc0b))
+* update upload model test for proper test fixture ([7d16406](https://github.com/biosimulations/biosimulations/commit/7d16406464d7c9fe39ab77ec7c51056acdddce2a))
+
 ## [9.61.2](https://github.com/biosimulations/biosimulations/compare/v9.61.1...v9.61.2) (2024-10-16)
 
 
