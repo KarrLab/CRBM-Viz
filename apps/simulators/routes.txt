@@ -74,6 +74,7 @@
 /simulators/masspy
 /simulators/masspy/0.1.5
 /simulators/masspy/0.1.6
+/simulators/masspy/0.1.7
 /simulators/mcell
 /simulators/mcell/3.5.0
 /simulators/metanetx
