@@ -52,7 +52,7 @@ import {
   SimulationType,
 } from '@biosimulations/datamodel/common';
 import { BIOSIMULATIONS_FORMATS } from '@biosimulations/ontology/extra-sources';
-import { Observable, Subscription } from 'rxjs';
+import { firstValueFrom, Observable, Subscription } from 'rxjs';
 import { ConfigService } from '@biosimulations/config/angular';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { FileInput } from '@biosimulations/material-file-input';
@@ -296,6 +296,7 @@ export class CustomizeSimulationComponent implements OnInit, OnDestroy {
 
   public addParameterRow(modelChange: SedModelAttributeChange): void {
     if (modelChange.id !== null) {
+      console.log(`Id is not null: ${JSON.stringify(modelChange)}`);
       const newRow = this.formBuilder.group({
         name: [{ value: modelChange.name as string, disabled: true }],
         default: [{ value: +modelChange.newValue, disabled: true }],
@@ -308,7 +309,7 @@ export class CustomizeSimulationComponent implements OnInit, OnDestroy {
       this.rows.push(newRow);
       this.modelChanges.push(newRow);
     } else {
-      console.log('null id');
+      console.log(`ID is null: ${JSON.stringify(modelChange)}`);
     }
   }
 
@@ -493,25 +494,37 @@ export class CustomizeSimulationComponent implements OnInit, OnDestroy {
       this.rows.controls.forEach((val: AbstractControl<any, any>, i: number) => {
         const rowValueGroup = val as UntypedFormGroup;
         const newVal = rowValueGroup.controls.newValue.value;
-
-        if (newVal) {
-          this.containsSimulationChanges = true;
-          const paramChange: SedModelAttributeChange = {
-            _type: rowValueGroup.controls._type.value,
-            newValue: newVal,
-            target: rowValueGroup.controls.target.value,
-            id: rowValueGroup.controls.id.value,
-            name: rowValueGroup.controls.name.value,
-          };
-          // Add the parameter change to the sedModel
-          sedModel.changes.push(paramChange);
-        }
+        const defaultVal = rowValueGroup.controls.defaultValue.value;
+        this.containsSimulationChanges = true;
+        const paramChange: SedModelAttributeChange = {
+          _type: rowValueGroup.controls._type.value,
+          newValue: newVal ? newVal : defaultVal,
+          target: rowValueGroup.controls.target.value,
+          id: rowValueGroup.controls.id.value,
+          name: rowValueGroup.controls.name.value,
+        };
+        sedModel.changes.push(paramChange);
+        // if (newVal) {
+        //   this.containsSimulationChanges = true;
+        //   const paramChange: SedModelAttributeChange = {
+        //     _type: rowValueGroup.controls._type.value,
+        //     newValue: newVal,
+        //     target: rowValueGroup.controls.target.value,
+        //     id: rowValueGroup.controls.id.value,
+        //     name: rowValueGroup.controls.name.value,
+        //   };
+        //   // Add the parameter change to the sedModel
+        //   sedModel.changes.push(paramChange);
+        // }
       });
     } else {
       const allParams = this.getAllParameterSelections();
       this.containsSimulationChanges = allParams.length >= 1;
       allParams.forEach((paramChange: SedModelAttributeChange) => {
         sedModel.changes.push(paramChange);
+      });
+      sedModel.changes.forEach((param: SedModelChange) => {
+        console.log(`Got the following model change set in the SEDML: ${Object.keys(param)}`);
       });
     }
 
@@ -543,6 +556,7 @@ export class CustomizeSimulationComponent implements OnInit, OnDestroy {
   }
 
   public createNewArchive(queryParams: ReRunQueryParams): Promise<Blob | null> {
+    /* ORIGINAL STABLE CONTENT */
     this.gatherModelChanges();
     return new Promise((resolve, reject) => {
       const errorHandler = this.archiveError.bind(this);
@@ -580,6 +594,13 @@ export class CustomizeSimulationComponent implements OnInit, OnDestroy {
         formData.append('files', queryParams.modelFile as Blob);
       }
 
+      console.log(`The form data: `);
+      const formObj: Record<string, any> = {};
+      formData.forEach((value, key) => {
+        formObj[key] = value;
+      });
+      console.log(JSON.stringify(formObj));
+
       const createArchiveUrl = this.endpoints.getCombineArchiveCreationEndpoint(false);
       this.httpClient.post(createArchiveUrl, formData, { responseType: 'blob' }).subscribe(
         (blob: Blob) => {
@@ -598,6 +619,87 @@ export class CustomizeSimulationComponent implements OnInit, OnDestroy {
         },
       );
     });
+  }
+
+  public _createNewArchive(queryParams: ReRunQueryParams): Promise<Blob | null> {
+    this.gatherModelChanges();
+    return new Promise((resolve, reject) => {
+      const errorHandler = this.archiveError.bind(this);
+
+      const form = new FormData();
+      form.append('modelUrl', queryParams.modelUrl as string);
+      form.append('modelingFramework', queryParams.modelingFramework as string);
+      form.append('simulationType', queryParams.simulationType as string);
+      form.append('simulationAlgorithm', queryParams.simulationAlgorithm as string);
+
+      const introspectedSedDoc$ = _IntrospectNewProject(
+        this.httpClient,
+        form as FormData,
+        queryParams.modelUrl as string,
+        errorHandler,
+      );
+
+      const archive = CreateArchiveFromSedDoc(
+        this.uploadedSedDoc as SedDocument,
+        queryParams.modelUrl as string,
+        queryParams.modelFormat as string,
+        queryParams.modelFile as File,
+        queryParams.imageFileUrls as string[],
+      );
+
+      if (!archive) {
+        resolve(null);
+        return;
+      }
+
+      const formData = new FormData();
+      formData.append('specs', JSON.stringify(archive));
+      formData.append('download', 'true');
+      if (queryParams.modelFile) {
+        formData.append('files', queryParams.modelFile as Blob);
+      }
+
+      this.submitNewArchiveRequest(formData)
+        .then((result: Blob | null) => {
+          if (result) {
+            console.log('Archive generated successfully');
+            return result;
+          } else {
+            throw new Error('Request returned no data.');
+          }
+        })
+        .catch((error) => {
+          if (error.message == 'Request returned no data.') {
+            console.error('No data was returned from the archive generation request.');
+          } else {
+            console.error('Failed to generate the archive.', error);
+          }
+          throw error;
+        });
+    });
+  }
+
+  public async submitNewArchiveRequest(formData: FormData): Promise<Blob | null> {
+    const createArchiveUrl = this.endpoints.getCombineArchiveCreationEndpoint(false);
+    try {
+      const blob = await firstValueFrom(this.httpClient.post(createArchiveUrl, formData, { responseType: 'blob' }));
+
+      if (blob) {
+        console.log('Archive generated successfully');
+        return blob;
+      } else {
+        console.error('Failed to generate the archive.');
+        return null;
+      }
+    } catch (error) {
+      if (error instanceof HttpErrorResponse) {
+        console.error('Error creating archive:', error.message);
+        console.error('Full error details:', error);
+      } else {
+        console.error('Unexpected error occurred: ', error);
+      }
+      throw error;
+    }
   }
 
   public downloadBlob(archiveBlob: Blob): void {
