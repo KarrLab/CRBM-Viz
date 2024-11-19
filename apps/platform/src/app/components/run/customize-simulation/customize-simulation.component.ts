@@ -523,9 +523,6 @@ export class CustomizeSimulationComponent implements OnInit, OnDestroy {
       allParams.forEach((paramChange: SedModelAttributeChange) => {
         sedModel.changes.push(paramChange);
       });
-      sedModel.changes.forEach((param: SedModelChange) => {
-        console.log(`Got the following model change set in the SEDML: ${Object.keys(param)}`);
-      });
     }
 
     // Update the model in its place in the uploadedSedDoc
@@ -540,6 +537,7 @@ export class CustomizeSimulationComponent implements OnInit, OnDestroy {
       const selectedIndex = group.get('selectedRowIndex')?.value;
       const selectedRow = selectedIndex !== null ? this.rows.at(selectedIndex).value : null;
       const newValue = group.get('newValue')?.value;
+      const paramVal = newValue ? newValue : group.get('defaultValue')?.value;
 
       if (selectedRow && newValue) {
         const selection: SedModelAttributeChange = {
@@ -547,7 +545,7 @@ export class CustomizeSimulationComponent implements OnInit, OnDestroy {
           target: selectedRow.target,
           id: selectedRow.id,
           _type: selectedRow._type,
-          newValue: newValue,
+          newValue: paramVal,
         };
 
         return selection as SedModelAttributeChange;
@@ -593,13 +591,6 @@ export class CustomizeSimulationComponent implements OnInit, OnDestroy {
       if (queryParams.modelFile) {
         formData.append('files', queryParams.modelFile as Blob);
       }
-
-      console.log(`The form data: `);
-      const formObj: Record<string, any> = {};
-      formData.forEach((value, key) => {
-        formObj[key] = value;
-      });
-      console.log(JSON.stringify(formObj));
 
       const createArchiveUrl = this.endpoints.getCombineArchiveCreationEndpoint(false);
       this.httpClient.post(createArchiveUrl, formData, { responseType: 'blob' }).subscribe(
