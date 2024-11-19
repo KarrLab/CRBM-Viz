@@ -44,7 +44,6 @@ import {
   ReRunQueryParams,
   SedDocument,
   SedModel,
-  SedModelAttributeChange as CommonAttributeChange,
   SedModelChange,
   SedSimulation,
   SimulationRun,
@@ -52,17 +51,12 @@ import {
   SimulationType,
 } from '@biosimulations/datamodel/common';
 import { BIOSIMULATIONS_FORMATS } from '@biosimulations/ontology/extra-sources';
-import { firstValueFrom, Observable, Subscription } from 'rxjs';
+import { Observable, Subscription } from 'rxjs';
 import { ConfigService } from '@biosimulations/config/angular';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { FileInput } from '@biosimulations/material-file-input';
 import { CreateMaxFileSizeValidator, INTEGER_VALIDATOR } from '@biosimulations/shared/ui';
-import {
-  SedModelAttributeChange,
-  SedModelAttributeChangeTypeEnum,
-  SedModelChange as ClientSedChange,
-  SedTarget,
-} from '@biosimulations/combine-api-angular-client';
+import { SedModelAttributeChange, SedModelChange as ClientSedChange } from '@biosimulations/combine-api-angular-client';
 // eslint-disable-next-line @nrwl/nx/enforce-module-boundaries
 import { ViewService } from '@biosimulations/simulation-runs/service';
 import { Visualization, VisualizationList } from '@biosimulations/datamodel-simulation-runs';
@@ -615,87 +609,6 @@ export class CustomizeSimulationComponent implements OnInit, OnDestroy {
         },
       );
     });
-  }
-
-  public _createNewArchive(queryParams: ReRunQueryParams): Promise<Blob | null> {
-    this.gatherModelChanges();
-    return new Promise((resolve, reject) => {
-      const errorHandler = this.archiveError.bind(this);
-
-      const form = new FormData();
-      form.append('modelUrl', queryParams.modelUrl as string);
-      form.append('modelingFramework', queryParams.modelingFramework as string);
-      form.append('simulationType', queryParams.simulationType as string);
-      form.append('simulationAlgorithm', queryParams.simulationAlgorithm as string);
-
-      const introspectedSedDoc$ = _IntrospectNewProject(
-        this.httpClient,
-        form as FormData,
-        queryParams.modelUrl as string,
-        errorHandler,
-      );
-
-      const archive = CreateArchiveFromSedDoc(
-        this.uploadedSedDoc as SedDocument,
-        queryParams.modelUrl as string,
-        queryParams.modelFormat as string,
-        queryParams.modelFile as File,
-        queryParams.imageFileUrls as string[],
-      );
-
-      if (!archive) {
-        resolve(null);
-        return;
-      }
-
-      const formData = new FormData();
-      formData.append('specs', JSON.stringify(archive));
-      formData.append('download', 'true');
-      if (queryParams.modelFile) {
-        formData.append('files', queryParams.modelFile as Blob);
-      }
-
-      this.submitNewArchiveRequest(formData)
-        .then((result: Blob | null) => {
-          if (result) {
-            console.log('Archive generated successfully');
-            return result;
-          } else {
-            throw new Error('Request returned no data.');
-          }
-        })
-        .catch((error) => {
-          if (error.message == 'Request returned no data.') {
-            console.error('No data was returned from the archive generation request.');
-          } else {
-            console.error('Failed to generate the archive.', error);
-          }
-          throw error;
-        });
-    });
-  }
-
-  public async submitNewArchiveRequest(formData: FormData): Promise<Blob | null> {
-    const createArchiveUrl = this.endpoints.getCombineArchiveCreationEndpoint(false);
-    try {
-      const blob = await firstValueFrom(this.httpClient.post(createArchiveUrl, formData, { responseType: 'blob' }));
-
-      if (blob) {
-        console.log('Archive generated successfully');
-        return blob;
-      } else {
-        console.error('Failed to generate the archive.');
-        return null;
-      }
-    } catch (error) {
-      if (error instanceof HttpErrorResponse) {
-        console.error('Error creating archive:', error.message);
-        console.error('Full error details:', error);
-      } else {
-        console.error('Unexpected error occurred: ', error);
-      }
-      throw error;
-    }
   }
 
   public downloadBlob(archiveBlob: Blob): void {
