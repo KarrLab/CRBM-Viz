@@ -289,8 +289,9 @@ export class CustomizeSimulationComponent implements OnInit, OnDestroy {
   }
 
   public addParameterRow(modelChange: SedModelAttributeChange): void {
-    const match = modelChange.target.value.match(/(parameter|species|size)(?=\[@)/);
-    const label = match ? match[0] : modelChange.name;
+    // TODO: possibly implement this:
+    // const match = modelChange.target.value.match(/(parameter|species|size)(?=\[@)/);
+    // const label = match ? match[0] : modelChange.name;
 
     if (modelChange.id !== null) {
       const newRow = this.formBuilder.group({

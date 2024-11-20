@@ -136,7 +136,6 @@ export class SharedSimulationService {
     forkJoin({ simulationRun: simulationRun$, filesContent: filesContent$ })
       .pipe(
         switchMap(({ simulationRun, filesContent }) => {
-          console.log(`rerun name: ${simulationRun.name}`);
           const projectUrl = this.endpoints.getSimulationRunDownloadEndpoint(true, id);
           const queryParams: ReRunQueryParams = {
             projectUrl: projectUrl,
@@ -208,7 +207,6 @@ export class SharedSimulationService {
                       continue;
                     }
                     edamId = modelingFormat.id;
-                    console.log(`edamid: ${edamId}`);
                     queryParams.modelFormat = edamId;
                   }
                   // queryParams.modelFormat = edamId ? edamId : 'format_2585';

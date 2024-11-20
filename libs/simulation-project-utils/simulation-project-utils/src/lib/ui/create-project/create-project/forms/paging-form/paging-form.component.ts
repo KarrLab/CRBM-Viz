@@ -171,8 +171,6 @@ export class PagingFormComponent<TStepId extends string> implements OnDestroy, O
       this.currentFormStepComponent.populateFormFromFormStepData(currentData);
       this.fileUploadComponent = this.currentFormStepComponent;
     }
-    console.log(`load current form step!`);
-    console.log(`form step: ${this.isReRun}`);
   }
 
   private currentFormStep(): TStepId | null {
