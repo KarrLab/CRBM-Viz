@@ -4,6 +4,32 @@
 $PRIMARY: var(--primary-darker-color) !important;
 $ACCENT: var(--accent-darker-color) !important;
 
+.multipurpose-flat-button {
+  background: var(--tertiary-darker-color) !important;
+  transition: background-color ease-in-out 0.3s;
+
+  &.portal-view {
+    background: var(--quaternary-darker-color) !important;
+  }
+
+  &:hover {
+    background: var(--accent-darker-color) !important;
+  }
+}
+
+.card-footer {
+  margin-left: 1rem !important;
+  margin-bottom: 1rem !important;
+  display: flex;
+  flex-direction: column;
+
+  .footer-button {
+    &.portal-view {
+      margin-top: 1rem !important;
+    }
+  }
+}
+
 .metadata {
   overflow: auto;
   max-width: 1000px;

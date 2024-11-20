@@ -15,6 +15,7 @@ import {
   VisualizationList,
   Visualization,
   ListItem,
+  List,
 } from '@biosimulations/datamodel-simulation-runs';
 import { ViewService } from '@biosimulations/simulation-runs/service';
 import { ProjectService } from '@biosimulations/angular-api-client';
@@ -57,7 +58,8 @@ export class ViewComponent implements OnInit {
   public panelExpandedStatus: { [key: string]: boolean } = {};
   public portalUrl!: SafeResourceUrl;
   public usePortal = false;
-  private id!: string;
+  public id = '';
+  public runUrl: string | null = '';
 
   public constructor(
     private service: ViewService,
@@ -147,6 +149,17 @@ export class ViewComponent implements OnInit {
         );
       }),
     );
+
+    this.simulationRun$.subscribe((simulationRun: SimulationRunMetadata) => {
+      simulationRun.forEach((runData: List) => {
+        runData.items.forEach((item: ListItem) => {
+          if (item.title === 'Id') {
+            this.id = item.value;
+            this.runUrl = this.convertRunUrl(item.url as string);
+          }
+        });
+      });
+    });
 
     this.transformRunUrl();
     this.handleExpansionPanels();

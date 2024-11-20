@@ -21,20 +21,17 @@
       </div>
       <!-- End Left Column -->
 
+
       <!-- Start Right Column -->
       <mat-card class="viz-card">
         <mat-card-content class="viz-card-content">
-          <!-- Start ReRun Simulation Button -->
-          <mat-card-header class="viz-card-header"></mat-card-header>
-          <!-- End ReRun Simulation Button -->
-
           <mat-tab-group #tabGroup preserveContent="true" [dynamicHeight]="true" [selectedIndex]="selectedTabIndex">
             <!-- Start Visualizations Tab -->
             <mat-tab class="right-col-tab figures">
               <ng-template mat-tab-label>
                 <biosimulations-icon icon="write"></biosimulations-icon>
                 <div style="width: 5px"></div>
-                Figures
+                Project Figures
               </ng-template>
               <mat-card class="plots-card">
                 <mat-grid-list
@@ -132,7 +129,7 @@
               <ng-template mat-tab-label>
                 <biosimulations-icon icon="simulation"></biosimulations-icon>
                 <div style="width: 5px"></div>
-                Details
+                Project Details
               </ng-template>
               <mat-card class="details-card">
                 <mat-card-content>
@@ -231,19 +228,20 @@
               </mat-card>
             </mat-tab>
           </mat-tab-group>
-          <!--<div class="rerun-sim-button-container">
-            <button
-              mat-raised-button
-              class="multipurpose-flat-button rerun"
-              (click)="promptReRun()"
-              matTooltip="This feature is currently being developed!">
-              <div style="display: inline-block">
-                <span>Customize & ReRun Simulation</span>
-                <biosimulations-icon class="rerun-icon" icon="redo"></biosimulations-icon>
-              </div>
-            </button>
-          </div>-->
         </mat-card-content>
+        <div class="viz-card-footer">
+          <ng-container *ngIf="runUrl; else noUrl">
+            <a [href]="runUrl">
+              <button mat-flat-button class="multipurpose-flat-button footer-button run-view" matTooltip="View full simulation details including customizable plots, files, logs, and more.">
+                View Simulation Details
+                <biosimulations-icon icon="link" style="margin-left: 1rem !important;"></biosimulations-icon>
+              </button>
+            </a>
+          </ng-container>
+          <ng-template #noUrl>
+            <span>{{ id }}</span>
+          </ng-template>
+        </div>
       </mat-card>
       <!-- End Right Column -->
     </div>

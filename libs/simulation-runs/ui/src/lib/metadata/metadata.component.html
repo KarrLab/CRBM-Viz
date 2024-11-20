@@ -87,9 +87,14 @@
           </td>
         </tr>
       </table>
-      <a *ngIf="portalUrl" class="portal-view-container" [href]="portalUrl" target="_blank"
-        >View in Reproducibility Portal >
-      </a>
+      <div *ngIf="portalUrl" class="card-footer">
+        <a [href]="portalUrl">
+          <button mat-flat-button class="multipurpose-flat-button footer-button portal-view" matTooltip="View full simulation details including customizable plots, files, logs, and more.">
+            View project in Reproducibility Portal
+            <biosimulations-icon icon="link" style="margin-left: 1rem !important;"></biosimulations-icon>
+          </button>
+        </a>
+      </div>
     </mat-expansion-panel>
   </div>
 </div>
