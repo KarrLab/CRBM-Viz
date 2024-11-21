@@ -29,9 +29,11 @@
             <ng-container *ngFor="let data of overviewData">
               <a [href]="data.url">
                 <button mat-flat-button class="multipurpose-flat-button project-overview-button" [matTooltip]="data.tooltip">
-                  <biosimulations-icon style="margin-left: 1rem !important;" [icon]="data.icon"></biosimulations-icon>
-                  <!--{{ data.label }}-->
-                  {{ data.content }}
+                  <div class="overview-button-content">
+                    <biosimulations-icon class="overview-button-icon" [icon]="data.icon"></biosimulations-icon>
+                    <!--{{ data.label }}-->
+                    {{ data.content }}
+                  </div>
                 </button>
               </a>
             </ng-container>
@@ -64,7 +66,7 @@
               <ng-template mat-tab-label>
                 <biosimulations-icon icon="chart"></biosimulations-icon>
                 <div style="width: 5px"></div>
-                Figures
+                Project Figures
               </ng-template>
               <mat-card class="plots-card">
                 <mat-grid-list
@@ -94,7 +96,7 @@
               <ng-template mat-tab-label>
                 <biosimulations-icon icon="project"></biosimulations-icon>
                 <div style="width: 5px"></div>
-                Files
+                Project Files
               </ng-template>
               <mat-card class="files-card">
                 <mat-card-content>
@@ -162,7 +164,7 @@
               <ng-template mat-tab-label>
                 <biosimulations-icon icon="simulation"></biosimulations-icon>
                 <div style="width: 5px"></div>
-                Details
+                Project Details
               </ng-template>
               <mat-card class="details-card">
                 <mat-card-content>
