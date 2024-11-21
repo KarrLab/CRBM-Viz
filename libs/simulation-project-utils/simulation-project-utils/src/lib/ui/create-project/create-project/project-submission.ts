@@ -63,7 +63,6 @@ export function SubmitFormData(
   const formData = CreateSubmissionFormData(dataSource);
 
   if (!formData) {
-    console.log(`There is no form data. Returning null.`);
     return null;
   }
   const endpoints = new Endpoints();
@@ -111,7 +110,6 @@ export async function SubmitFormDataForArchive(
 ): Promise<string | null> {
   const formData = CreateSubmissionFormData(dataSource);
   if (!formData) {
-    console.log(`There is no form data. Returning null.`);
     return Promise.resolve(null);
   }
 
@@ -130,9 +128,7 @@ export async function SubmitFormDataForArchive(
       throw new Error('Network response was not ok');
     }
     const blob = await response.blob();
-    const url = window.URL.createObjectURL(blob);
-    console.log(`Generated URL: ${Object.keys(blob)}`);
-    return url;
+    return window.URL.createObjectURL(blob);
   } catch (error) {
     console.error('Error:', error);
     errorHandler();
