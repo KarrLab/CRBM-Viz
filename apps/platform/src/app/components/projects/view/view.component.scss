@@ -19,17 +19,16 @@
   max-width: 100%;
   width: 100% !important;
   height: 100px !important;
-  padding-bottom: 3rem !important;
+  padding-bottom: 2rem !important;
 
   .project-overview-button {
     margin-top: 0 !important;
     width: 275px !important;
     font-size: 16.5px !important;
-    height: 4.5rem !important;
+    height: 4.3rem !important;
     padding: 10px !important;
     text-align: center !important;
-    background-color: var(--primary-darker-color) !important;
-    transition: background-color 1s ease-in-out;
+    background: var(--tertiary-darker-color) !important;
 
     &:hover {
       background-color: var(--accent-darker-color) !important;
@@ -86,11 +85,9 @@
 }
 
 .viz-card-buttons {
-  border: 3px solid red;
   height: fit-content;
 
   .run-view {
-    border: 3px solid blue;
     margin-top: 2rem !important;
   }
 }
@@ -158,10 +155,27 @@
   }
 }
 
+.page-container {
+  background: url('../../../../../../../libs/shared/assets/src/assets/images/backgrounds/grey-3.png') no-repeat scroll
+    50% 50%;
+}
+
+.divider {
+  margin-bottom: 4rem;
+
+  @media (max-width: 1024px) {
+    margin-bottom: 2.5rem;
+  }
+
+  @media (max-width: 768px) {
+    margin-bottom: 1.5rem;
+  }
+}
+
 .display-data {
   flex-direction: row;
   font-family: 'Roboto', sans-serif;
-  margin-top: 3rem;
+  height: fit-content !important;
 
   @media (max-width: 768px) {
     flex-direction: column;

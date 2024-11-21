@@ -5,11 +5,9 @@ $PRIMARY: var(--primary-darker-color) !important;
 $ACCENT: var(--accent-darker-color) !important;
 
 .multipurpose-flat-button {
-  background: var(--tertiary-darker-color) !important;
-  transition: background-color ease-in-out 0.3s;
-
   &.portal-view {
-    background: var(--quaternary-darker-color) !important;
+    background-color: var(--primary-darker-color) !important;
+    font-weight: normal !important;
   }
 
   &:hover {

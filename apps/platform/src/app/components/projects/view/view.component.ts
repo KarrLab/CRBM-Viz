@@ -32,6 +32,7 @@ interface SimulationOverviewData {
   icon: BiosimulationsIcon | null;
   tooltip: string;
   content: string;
+  color?: string;
   label?: string;
 }
 
@@ -174,9 +175,15 @@ export class ViewComponent implements OnInit {
               url: item.url as string,
               label: btnLabel,
               content: item.value,
-              icon: itemId === 'Id' ? 'simulation' : itemId === 'Simulation algorithm' ? 'math' : 'simulator',
+              icon: (itemId === 'Id'
+                ? 'simulation'
+                : itemId === 'Simulation algorithm'
+                ? 'math'
+                : 'simulator') as BiosimulationsIcon,
               tooltip:
                 itemId === 'Id' ? 'View full simulation run details' : 'View ' + itemId.toLowerCase() + ' details',
+              color:
+                itemId === 'Simulation tool' ? '#8d1cce' : itemId == 'Simulation algorithm' ? '#8d1cce' : '#1479ed',
             };
             this.overviewData.push(overviewData);
           }
