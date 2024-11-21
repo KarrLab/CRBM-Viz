@@ -313,49 +313,39 @@ function CreateSedDocument(
   dataGenerators: SedDataGenerator[],
   dataSets: SedDataSet[],
 ): SedDocument {
-  // define report output specification
+  // create report and plot specifications for archive creation request params
   const report: SedReport = {
     _type: SedReportTypeEnum.SedReport,
     id: 'report',
     dataSets: dataSets,
   };
-  console.log(`Created report: ${JSON.stringify(report)}`);
 
-  // extract x-axis plot data (time)
   const timeData = dataSets.find((dataSet: SedDataSet) => dataSet.label.toLowerCase() === 'time') as SedDataSet;
   if (!timeData) {
     console.warn('No time data set found and thus no plot will be generated in the SEDML outputs.');
   }
-  console.log(`Extracted time dataset: ${JSON.stringify(timeData)}`);
 
-  // create 1-1 mapping of curves to datasets for y-axis data (without time)
   const curves: SedCurve[] = dataSets
     .filter((dataSet: SedDataSet) => dataSet.id !== timeData.id) // exclude time dataset
     .map((dataSet: SedDataSet) => ({
       id: `curve_${dataSet.id}`,
       name: dataSet.label,
       xDataGenerator: timeData.dataGenerator,
-      yDataGenerator: dataSet.dataGenerator, // link to the species concentration data generator
+      yDataGenerator: dataSet.dataGenerator,
       _type: SedCurveTypeEnum.SedCurve,
       style: undefined,
     }));
-  curves.forEach((curve: SedCurve) => {
-    console.log(`Constructed curve: ${JSON.stringify(curve)}`);
-  });
 
-  // define auto-generated 2d plot of species/observables dynamics
   const plot: SedPlot2D = {
     _type: SedPlot2DTypeEnum.SedPlot2D,
     id: 'plot_species_dynamics',
-    name: 'Species concentrations over time',
+    name: 'Figure1A(species_dynamics)',
     curves: curves,
     xScale: SedAxisScale.linear,
     yScale: SedAxisScale.linear,
   };
-  console.log(`Constructed plot: ${plot}`);
 
-  // return the custom archive creation request parameter for SEDML doc
-  const sedDoc: SedDocument = {
+  return {
     _type: SedDocumentTypeEnum.SedDocument,
     level: 1,
     version: 3,
@@ -366,9 +356,6 @@ function CreateSedDocument(
     dataGenerators: dataGenerators,
     outputs: [report, plot],
   };
-  console.log(`Constructed Sedml doc: ${JSON.stringify(sedDoc)}`);
-
-  return sedDoc;
 }
 
 /* CURRENT STABLE CREATE SED DOC METHOD: TO BE REMOVED OR REIMPLEMENTED PRIOR TO MERGE
