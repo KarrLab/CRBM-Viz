@@ -29,9 +29,9 @@
             <!-- Start Visualizations Tab -->
             <mat-tab class="right-col-tab figures">
               <ng-template mat-tab-label>
-                <biosimulations-icon icon="write"></biosimulations-icon>
+                <biosimulations-icon icon="chart"></biosimulations-icon>
                 <div style="width: 5px"></div>
-                Project Figures
+                Figures
               </ng-template>
               <mat-card class="plots-card">
                 <mat-grid-list
@@ -61,7 +61,7 @@
               <ng-template mat-tab-label>
                 <biosimulations-icon icon="project"></biosimulations-icon>
                 <div style="width: 5px"></div>
-                Project Files
+                Files
               </ng-template>
               <mat-card class="files-card">
                 <mat-card-content>
@@ -129,7 +129,7 @@
               <ng-template mat-tab-label>
                 <biosimulations-icon icon="simulation"></biosimulations-icon>
                 <div style="width: 5px"></div>
-                Project Details
+                Details
               </ng-template>
               <mat-card class="details-card">
                 <mat-card-content>
@@ -233,8 +233,8 @@
           <ng-container *ngIf="runUrl; else noUrl">
             <a [href]="runUrl">
               <button mat-flat-button class="multipurpose-flat-button footer-button run-view" matTooltip="View full simulation details including customizable plots, files, logs, and more.">
-                View Simulation Details
-                <biosimulations-icon icon="link" style="margin-left: 1rem !important;"></biosimulations-icon>
+                View Simulation Run
+                <biosimulations-icon icon="open" style="margin-left: 1rem !important;"></biosimulations-icon>
               </button>
             </a>
           </ng-container>
