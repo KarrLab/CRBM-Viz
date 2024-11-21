@@ -21,9 +21,11 @@ import {
   SedModelAttributeChangeTypeEnum,
   SedModelChange,
   SedModelTypeEnum,
-  // SedAxisScale,
-  // SedCurveTypeEnum,
-  // SedPlot2DTypeEnum,  TODO: uncomment this for sed plots
+  SedCurve,
+  SedCurveTypeEnum,
+  SedAxisScale,
+  SedPlot2D,
+  SedPlot2DTypeEnum,
   SedReportTypeEnum,
   SedSimulation,
   SedSteadyStateSimulationTypeEnum,
@@ -34,6 +36,7 @@ import {
   SedUniformTimeCourseSimulationTypeEnum,
   SedVariable,
   SedVariableTypeEnum,
+  SedReport,
 } from '@biosimulations/combine-api-angular-client';
 import { BIOSIMULATIONS_FORMATS_BY_ID } from '@biosimulations/ontology/extra-sources';
 import { SedDocument as CommonSedDoc, SimulationType, ValueType } from '@biosimulations/datamodel/common';
@@ -310,13 +313,73 @@ function CreateSedDocument(
   dataGenerators: SedDataGenerator[],
   dataSets: SedDataSet[],
 ): SedDocument {
-  // const curve = {
-  //   _type: SedCurveTypeEnum.SedCurve,
-  //   id: 'curve_time',
-  //   xDataGenerator: 'Time',
-  //   yDataGenerator: dataGenerators[0].id,
-  // }
+  // define report output specification
+  const report: SedReport = {
+    _type: SedReportTypeEnum.SedReport,
+    id: 'report',
+    dataSets: dataSets,
+  };
+  console.log(`Created report: ${JSON.stringify(report)}`);
 
+  // extract x-axis plot data (time)
+  const timeData = dataSets.find((dataSet: SedDataSet) => dataSet.label.toLowerCase() === 'time') as SedDataSet;
+  if (!timeData) {
+    console.warn('No time data set found and thus no plot will be generated in the SEDML outputs.');
+  }
+  console.log(`Extracted time dataset: ${JSON.stringify(timeData)}`);
+
+  // create 1-1 mapping of curves to datasets for y-axis data (without time)
+  const curves: SedCurve[] = dataSets
+    .filter((dataSet: SedDataSet) => dataSet.id !== timeData.id) // exclude time dataset
+    .map((dataSet: SedDataSet) => ({
+      id: `curve_${dataSet.id}`,
+      name: dataSet.label,
+      xDataGenerator: timeData.dataGenerator,
+      yDataGenerator: dataSet.dataGenerator, // link to the species concentration data generator
+      _type: SedCurveTypeEnum.SedCurve,
+      style: undefined,
+    }));
+  curves.forEach((curve: SedCurve) => {
+    console.log(`Constructed curve: ${JSON.stringify(curve)}`);
+  });
+
+  // define auto-generated 2d plot of species/observables dynamics
+  const plot: SedPlot2D = {
+    _type: SedPlot2DTypeEnum.SedPlot2D,
+    id: 'plot_species_dynamics',
+    name: 'Species concentrations over time',
+    curves: curves,
+    xScale: SedAxisScale.linear,
+    yScale: SedAxisScale.linear,
+  };
+  console.log(`Constructed plot: ${plot}`);
+
+  // return the custom archive creation request parameter for SEDML doc
+  const sedDoc: SedDocument = {
+    _type: SedDocumentTypeEnum.SedDocument,
+    level: 1,
+    version: 3,
+    styles: [],
+    models: [model],
+    simulations: [simulation],
+    tasks: [task],
+    dataGenerators: dataGenerators,
+    outputs: [report, plot],
+  };
+  console.log(`Constructed Sedml doc: ${JSON.stringify(sedDoc)}`);
+
+  return sedDoc;
+}
+
+/* CURRENT STABLE CREATE SED DOC METHOD: TO BE REMOVED OR REIMPLEMENTED PRIOR TO MERGE
+function _CreateSedDocument(
+  model: SedModel,
+  simulation: SedSimulation,
+  task: SedTask,
+  dataGenerators: SedDataGenerator[],
+  dataSets: SedDataSet[],
+): SedDocument {
+  // STABLE CONTENT
   return {
     _type: SedDocumentTypeEnum.SedDocument,
     level: 1,
@@ -331,17 +394,11 @@ function CreateSedDocument(
         _type: SedReportTypeEnum.SedReport,
         id: 'report',
         dataSets: dataSets,
-      },
-      // {
-      //   _type: SedPlot2DTypeEnum.SedPlot2D,
-      //   id: 'Figure1',
-      //   curves: [curve],
-      //   xScale: SedAxisScale.linear,
-      //   yScale: SedAxisScale.linear,
-      // }
+      }
     ],
   };
 }
+*/
 
 function CreateArchiveModelLocationValue(modelFile: File, modelUrl: string): CombineArchiveLocationValue {
   if (modelFile) {
