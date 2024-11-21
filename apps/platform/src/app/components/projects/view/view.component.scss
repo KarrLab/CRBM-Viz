@@ -27,13 +27,11 @@
   .project-overview-button {
     margin-top: 0 !important;
     width: 100% !important;
-    max-width: 80% !important;
     font-size: 12px !important;
     height: 4.5rem !important;
     padding: 10px !important;
     text-align: center !important;
-    border: 3px solid var(--primary-darkest-darker-color);
-    border-radius: 3px !important;
+    border: 3px solid white;
     background: var(--primary-darkest-darker-color) !important; // #001F54 !important;
   }
 
@@ -98,18 +96,6 @@
     margin-top: 2rem !important;
   }
 }
-/*.viz-card-footer {
-  margin-left: 1rem !important;
-  margin-bottom: 1rem !important;
-  display: flex;
-  flex-direction: column;
-
-  .footer-button {
-    &.portal-view {
-      margin-top: 1rem !important;
-    }
-  }
-}*/
 
 .display-data,
 .plotparent,
