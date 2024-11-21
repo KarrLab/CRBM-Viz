@@ -129,11 +129,15 @@ $theme-primary-lighter: #9bcff9;
 $theme-primary-lightest: #d2eafc;
 $theme-primary-lightestest: #e8f4fd;
 $theme-primary-darker: #1479ed;
+$theme-primary-darkest: #0e5dc7;
+$theme-primary-darkest-darker: #0a47a2;
 
 body {
   --primary-color: #{$theme-primary-main};
   --primary-lighter-color: #{$theme-primary-lighter};
   --primary-darker-color: #{$theme-primary-darker};
+  --primary-darkest-color: #{$theme-primary-darkest};
+  --primary-darkest-darker-color: #{$theme-primary-darkest-darker};
   --text-primary-color: #{$light-primary-text};
   --text-primary-lighter-color: #{$dark-primary-text};
   --text-primary-darker-color: #{$light-primary-text};

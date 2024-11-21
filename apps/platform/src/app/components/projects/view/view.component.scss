@@ -12,27 +12,33 @@
 
 .project-overview-button-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(10px, 1fr)) !important; // button width
-  gap: 10px;
+  grid-template-columns: repeat(auto-fit, minmax(0, 1fr)) !important; // button width
+  gap: 0;
   justify-content: center !important;
   align-items: center !important;
-  max-width: 100%;
-  width: 100% !important;
-  height: 100px !important;
-  padding-bottom: 2rem !important;
+  //max-width: 100%;
+  //width: 100% !important;
+  //height: 100px !important;
+  height: fit-content !important;
+  margin-bottom: 3rem !important;
+  margin-top: 1rem !important;
+  transition: 1s ease;
 
   .project-overview-button {
     margin-top: 0 !important;
-    width: 275px !important;
-    font-size: 16.5px !important;
-    height: 4.3rem !important;
+    width: 100% !important;
+    max-width: 80% !important;
+    font-size: 12px !important;
+    height: 4.5rem !important;
     padding: 10px !important;
     text-align: center !important;
-    background: var(--tertiary-darker-color) !important;
+    border: 3px solid var(--primary-darkest-darker-color);
+    border-radius: 3px !important;
+    background: var(--primary-darkest-darker-color) !important; // #001F54 !important;
+  }
 
-    &:hover {
-      background-color: var(--accent-darker-color) !important;
-    }
+  .project-overview-button:hover {
+    background-color: var(--primary-darker-color) !important;
   }
 }
 
@@ -41,9 +47,10 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  font-weight: normal !important;
 
   .overview-button-icon {
-    font-size: 22px !important;
+    font-size: 25px !important;
     margin-left: 0 !important;
     padding-bottom: 0.9rem !important;
   }
@@ -297,7 +304,8 @@ biosimulations-tab-page ::ng-deep .icon-list {
   height: 100%;
   width: 600px;
   max-width: 100%;
-  display: block;
+  margin-right: auto !important;
+  margin-left: auto !important;
   padding-top: 1rem;
 
   @media (max-width: 768px) {
