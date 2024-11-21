@@ -22,8 +22,18 @@ import { ProjectService } from '@biosimulations/angular-api-client';
 import { Dataset, WithContext } from 'schema-dts';
 import { BiosimulationsError } from '@biosimulations/shared/error-handler';
 import { ProjectSummary } from '@biosimulations/datamodel/common';
+import { BiosimulationsIcon } from '@biosimulations/shared/icons';
 
 type CombinedObservables = [ProjectMetadata | null, SimulationRunMetadata, File[], Path[], File[], VisualizationList[]];
+
+interface SimulationOverviewData {
+  id: string;
+  url: string;
+  icon: BiosimulationsIcon | null;
+  tooltip: string;
+  content: string;
+  label?: string;
+}
 
 @Component({
   selector: 'biosimulations-view',
@@ -52,6 +62,7 @@ export class ViewComponent implements OnInit {
   public projectSummary$!: Observable<ProjectSummary>;
   public visualizations$!: Observable<VisualizationList[]>;
   public plotVisualizations$!: Observable<Visualization[]>;
+  public overviewData: SimulationOverviewData[] = [];
 
   public jsonLdData$!: Observable<WithContext<Dataset>>;
   public cards: any[] = [];
@@ -150,15 +161,32 @@ export class ViewComponent implements OnInit {
       }),
     );
 
+    // extract overview button data
     this.simulationRun$.subscribe((simulationRun: SimulationRunMetadata) => {
       simulationRun.forEach((runData: List) => {
         runData.items.forEach((item: ListItem) => {
-          if (item.title === 'Id') {
-            this.id = item.value;
-            this.runUrl = this.convertRunUrl(item.url as string);
+          const itemId = item.title;
+          if (itemId === 'Id' || itemId === 'Simulation tool' || itemId === 'Simulation algorithm') {
+            const itemLabel = `${itemId}:\n${item.value}`;
+            const btnLabel = itemId === 'Id' ? `Simulation Run ${itemLabel}` : itemLabel;
+            const overviewData: SimulationOverviewData = {
+              id: itemId,
+              url: item.url as string,
+              label: btnLabel,
+              content: item.value,
+              icon: itemId === 'Id' ? 'simulation' : itemId === 'Simulation algorithm' ? 'math' : 'simulator',
+              tooltip:
+                itemId === 'Id' ? 'View full simulation run details' : 'View ' + itemId.toLowerCase() + ' details',
+            };
+            this.overviewData.push(overviewData);
           }
         });
       });
+
+      // ensure simulation id is first
+      this.overviewData.sort((a: SimulationOverviewData, b: SimulationOverviewData) =>
+        a.id === 'Id' ? -1 : b.id === 'Id' ? 1 : 0,
+      );
     });
 
     this.transformRunUrl();

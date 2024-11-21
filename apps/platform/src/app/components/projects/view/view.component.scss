@@ -10,6 +10,49 @@
   justify-content: center;
 }
 
+.project-overview-button-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(10px, 1fr)) !important; // button width
+  gap: 10px;
+  justify-content: center !important;
+  align-items: center !important;
+  max-width: 100%;
+  width: 100% !important;
+  height: 100px !important;
+  padding-bottom: 3rem !important;
+
+  .project-overview-button {
+    margin-top: 0 !important;
+    width: 275px !important;
+    font-size: 16.5px !important;
+    height: 75px !important;
+    padding: 10px !important;
+    text-align: center !important;
+  }
+}
+
+.card-header {
+  background-color: var(--primary-darker-color);
+  font-weight: 500;
+  font-size: medium;
+  color: white;
+  padding-top: 0.5rem;
+  padding-bottom: 0.5rem;
+  border-top: 2px;
+  border-radius: 4px 4px 0 0;
+  height: 100%;
+  margin-top: -1rem !important;
+
+  &.project {
+    font-size: 24px;
+  }
+
+  &.mat-expansion-panel-header.mat-expanded,
+  &:hover {
+    background-color: var(--primary-darker-color);
+  }
+}
+
 .multipurpose-flat-button {
   background: var(--tertiary-darker-color) !important;
   transition: background-color ease-in-out 0.3s;
@@ -23,7 +66,16 @@
   }
 }
 
-.viz-card-footer {
+.viz-card-buttons {
+  border: 3px solid red;
+  height: fit-content;
+
+  .run-view {
+    border: 3px solid blue;
+    margin-top: 2rem !important;
+  }
+}
+/*.viz-card-footer {
   margin-left: 1rem !important;
   margin-bottom: 1rem !important;
   display: flex;
@@ -34,7 +86,7 @@
       margin-top: 1rem !important;
     }
   }
-}
+}*/
 
 .display-data,
 .plotparent,
@@ -212,9 +264,7 @@ biosimulations-tab-page ::ng-deep .icon-list {
   height: 100%;
   width: 600px;
   max-width: 100%;
-  border: solid 1px #ccc;
   display: block;
-  border-radius: 4px;
   padding-top: 1rem;
 
   @media (max-width: 768px) {
