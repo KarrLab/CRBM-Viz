@@ -233,7 +233,8 @@
                         <ng-template #sectionsTemplate let-sections="sections" let-expanded="expanded">
                           <!-- Start Individual Detail Container -->
                           <div class="details-expansion-item-container" *ngFor="let section of sections">
-                            <mat-expansion-panel [expanded]="expanded">
+                            <mat-expansion-panel expanded="true">
+                              <!--<mat-expansion-panel [expanded]="expanded">-->
                               <mat-expansion-panel-header class="item-expansion-header details-title-expand">
                                 {{ section.title }}
                               </mat-expansion-panel-header>
