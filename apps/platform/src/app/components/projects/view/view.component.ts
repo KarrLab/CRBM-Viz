@@ -167,33 +167,37 @@ export class ViewComponent implements OnInit {
       simulationRun.forEach((runData: List) => {
         runData.items.forEach((item: ListItem) => {
           const itemId = item.title;
-          if (itemId === 'Id' || itemId === 'Simulation tool' || itemId === 'Simulation algorithm') {
-            const itemLabel = `${itemId}:\n${item.value}`;
-            const btnLabel = itemId === 'Id' ? `Simulation Run ${itemLabel}` : itemLabel;
-            const overviewData: SimulationOverviewData = {
-              id: itemId,
-              url: item.url as string,
-              label: btnLabel,
-              content: item.value,
-              icon: (itemId === 'Id'
-                ? 'simulation'
-                : itemId === 'Simulation algorithm'
-                ? 'math'
-                : 'simulator') as BiosimulationsIcon,
-              tooltip:
-                itemId === 'Id' ? 'View full simulation run details' : 'View ' + itemId.toLowerCase() + ' details',
-              color:
-                itemId === 'Simulation tool' ? '#8d1cce' : itemId == 'Simulation algorithm' ? '#8d1cce' : '#1479ed',
-            };
-            this.overviewData.push(overviewData);
+          if (itemId === 'Id') {
+            this.runUrl = this.convertRunUrl(item.url as string);
+            this.id = item.value;
           }
+          // if (itemId === 'Id' || itemId === 'Simulation tool' || itemId === 'Simulation algorithm') {
+          //   const itemLabel = `${itemId}:\n${item.value}`;
+          //   const btnLabel = itemId === 'Id' ? `Simulation Run ${itemLabel}` : itemLabel;
+          //   const overviewData: SimulationOverviewData = {
+          //     id: itemId,
+          //     url: item.url as string,
+          //     label: btnLabel,
+          //     content: item.value,
+          //     icon: (itemId === 'Id'
+          //       ? 'simulation'
+          //       : itemId === 'Simulation algorithm'
+          //       ? 'math'
+          //       : 'simulator') as BiosimulationsIcon,
+          //     tooltip:
+          //       itemId === 'Id' ? 'View full simulation run details' : 'View ' + itemId.toLowerCase() + ' details',
+          //     color:
+          //       itemId === 'Simulation tool' ? '#8d1cce' : itemId == 'Simulation algorithm' ? '#8d1cce' : '#1479ed',
+          //   };
+          //   this.overviewData.push(overviewData);
+          // }
         });
       });
 
       // ensure simulation id is first
-      this.overviewData.sort((a: SimulationOverviewData, b: SimulationOverviewData) =>
-        a.id === 'Id' ? -1 : b.id === 'Id' ? 1 : 0,
-      );
+      // this.overviewData.sort((a: SimulationOverviewData, b: SimulationOverviewData) =>
+      //   a.id === 'Id' ? -1 : b.id === 'Id' ? 1 : 0,
+      // );
     });
 
     this.transformRunUrl();

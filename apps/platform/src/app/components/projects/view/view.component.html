@@ -28,19 +28,18 @@
       <mat-expansion-panel class="viz-card" expanded="true" hideToggle="true" disabled="true">
         <mat-expansion-panel-header class="card-header">Project Overview</mat-expansion-panel-header>
         <mat-card-content class="viz-card-content">
-          <div class="project-overview-button-grid">
+          <!--<div class="project-overview-button-grid">
             <ng-container *ngFor="let data of overviewData">
               <a [href]="data.url">
                 <button mat-flat-button class="multipurpose-flat-button project-overview-button" [matTooltip]="data.tooltip">
                   <div class="overview-button-content">
                     <biosimulations-icon class="overview-button-icon" [icon]="data.icon"></biosimulations-icon>
-                    <!--{{ data.label }}-->
                     {{ data.content }}
                   </div>
                 </button>
               </a>
             </ng-container>
-          </div>
+          </div>-->
           <!-- Overview buttons -->
           <!--<div class="viz-card-buttons">
             <ng-container *ngIf="runUrl; else noUrl">
@@ -68,9 +67,11 @@
               <!-- Start Visualizations Tab -->
               <mat-tab class="right-col-tab figures">
                 <ng-template mat-tab-label>
-                  <biosimulations-icon icon="chart"></biosimulations-icon>
-                  <div style="width: 5px"></div>
-                  Project Figures
+                  <div class="tab-label figures-tab">
+                    <biosimulations-icon icon="chart" style="font-size: 30px !important;font-weight: bold !important;"></biosimulations-icon>
+                    <div style="height: 5px"></div>
+                    Figures
+                  </div>
                 </ng-template>
                 <mat-card class="plots-card">
                   <mat-grid-list
@@ -98,9 +99,11 @@
               <!-- Begin Project files Tab -->
               <mat-tab class="right-col-tab files">
                 <ng-template mat-tab-label>
-                  <biosimulations-icon icon="project"></biosimulations-icon>
-                  <div style="width: 5px"></div>
-                  Project Files
+                  <div class="tab-label files-tab">
+                    <biosimulations-icon icon="file" style="font-size: 30px !important;font-weight: bold !important;"></biosimulations-icon>
+                    <div style="height: 5px"></div>
+                    Files
+                  </div>
                 </ng-template>
                 <mat-card class="files-card">
                   <mat-card-content>
@@ -164,11 +167,13 @@
               <!-- End Project Files Tab -->
 
               <!-- Begin Project Details Tab -->
-              <mat-tab class="right-col-tab details">
+              <mat-tab class="right-col-tab details-tab">
                 <ng-template mat-tab-label>
-                  <biosimulations-icon icon="simulation"></biosimulations-icon>
-                  <div style="width: 5px"></div>
-                  Project Details
+                  <div class="tab-label details">
+                    <biosimulations-icon icon="info" style="font-size: 30px !important;font-weight: bold !important;"></biosimulations-icon>
+                    <div style="height: 5px"></div>
+                    Info
+                  </div>
                 </ng-template>
                 <mat-card class="details-card">
                   <mat-card-content>
@@ -269,19 +274,15 @@
             </mat-tab-group>
           </div>
         </mat-card-content>
-        <!--<div class="viz-card-footer">
-          <ng-container *ngIf="runUrl; else noUrl">
-            <a [href]="runUrl">
-              <button mat-flat-button class="multipurpose-flat-button footer-button run-view" matTooltip="View full simulation details including customizable plots, files, logs, and more.">
-                View Simulation Run
-                <biosimulations-icon icon="more" style="margin-left: 1rem !important;"></biosimulations-icon>
-              </button>
-            </a>
-          </ng-container>
-          <ng-template #noUrl>
-            <span>{{ id }}</span>
-          </ng-template>
-        </div>-->
+        <div class="simulation-view-button-container">
+          <h3 class="sim-view-btn-header" style="margin-bottom: -4.6rem !important; margin-top: 3rem !important;">View Full Simulation Details:</h3>
+          <a [href]="runUrl">
+            <button mat-flat-button class="multipurpose-flat-button simulator-view" matTooltip="View full simulation details including customizable plots, files, logs, and more.">
+              <biosimulations-icon icon="more" class="sim-run-btn-icon" style="margin-right: 0.5rem !important;"></biosimulations-icon>
+              #Id: {{ id }}
+            </button>
+          </a>
+        </div>
       </mat-expansion-panel>
       <!-- End Right Column -->
     </div>

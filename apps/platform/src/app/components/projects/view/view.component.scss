@@ -10,6 +10,29 @@
   justify-content: center;
 }
 
+/*.tab-label {
+  background-color: var(--primary-darkest-darker-color) !important;
+  border-radius: 3px !important;
+  color: white !important;
+  margin-top: 0.35rem !important;
+  width: 100% !important;
+  padding: 2rem 5rem !important;
+}*/
+
+.simulation-view-button-container {
+  .multipurpose-flat-button {
+    margin-top: 5rem !important;
+    margin-bottom: 1rem !important;
+    background-color: var(--primary-darkest-darker-color) !important;
+    transition: background-color 500ms ease;
+
+    &:hover {
+      background-color: var(--tertiary-darker-color) !important;
+      transform: scale(1.1) !important;
+    }
+  }
+}
+
 .project-overview-button-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(0, 1fr)) !important; // button width
@@ -26,7 +49,7 @@
 
   .project-overview-button {
     margin-top: 0 !important;
-    width: 100% !important;
+    width: 300px !important;
     font-size: 14px !important;
     height: 4.5rem !important;
     padding: 10px !important;
@@ -149,6 +172,7 @@
 }
 
 .page-container {
+  height: 100% !important;
   background: url('../../../../../../../libs/shared/assets/src/assets/images/backgrounds/grey-3.png') no-repeat scroll
     50% 50%;
 }
@@ -168,7 +192,7 @@
 .display-data {
   flex-direction: row;
   font-family: 'Roboto', sans-serif;
-  height: fit-content !important;
+  height: 100% !important;
 
   @media (max-width: 768px) {
     flex-direction: column;
