@@ -37,6 +37,7 @@
 /simulators/copasi/4.41.280
 /simulators/copasi/4.42.284
 /simulators/copasi/4.44.295
+/simulators/copasi/4.45.296
 /simulators/ecell4
 /simulators/ecell4/1.1.2
 /simulators/epilog
@@ -153,6 +154,7 @@
 /simulators/vcell/7.5.0.99
 /simulators/vcell/7.6.0.40
 /simulators/vcell/7.7.0.7
+/simulators/vcell/7.7.0.9
 /simulators/winbestkit
 /simulators/winbestkit/2.0.9
 /simulators/xpp
