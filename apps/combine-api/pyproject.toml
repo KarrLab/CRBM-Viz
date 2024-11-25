@@ -13,7 +13,7 @@ connexion = {extras = ["swagger-ui"], version = "^2.14.2"}
 # openapi-schema-validator = "^0.4.3"
 requests = "2.31.0"
 botocore = "^1.29.89"
-jsonschema = "<=4.18.0"
+jsonschema = "*"
 openapi-schema-validator = "<=0.7.4"
 python-dotenv = "^0.14.0"
 orjson = "^3.8.7"
