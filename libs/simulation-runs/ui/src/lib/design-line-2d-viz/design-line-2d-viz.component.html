@@ -41,7 +41,12 @@
             <!--<div class="input-heading">X data set *</div>-->
             <ng-container *ngFor="let curve of curvesFormGroups; index as iCurve" [formGroupName]="iCurve">
               <div class="input-row">
-                <mat-select formControlName="xData" required disableOptionCentering multiple matTooltip="Click to select x-axis datasets.">
+                <mat-select
+                  formControlName="xData"
+                  required
+                  disableOptionCentering
+                  multiple
+                  matTooltip="Click to select x-axis datasets.">
                   <mat-optgroup *ngFor="let sedDocument of sedDocs" [label]="sedDocument.id">
                     <mat-optgroup *ngFor="let output of sedDocument.outputs" [label]="output.name || output.id">
                       <mat-option
