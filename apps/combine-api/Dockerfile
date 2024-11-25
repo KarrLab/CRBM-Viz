@@ -316,7 +316,6 @@ COPY ./pytest.ini /app/pytest.ini
 COPY ./README.md /app/README.md
 
 RUN chmod 755 poetry.toml \
-    && poetry lock --no-cache \
     && poetry install --no-cache
 
 #
