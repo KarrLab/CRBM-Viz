@@ -1,6 +1,6 @@
 from openapi_core.validation.response.validators import V31ResponseValidator
 from openapi_core.validation.request.validators import V31RequestValidator
-from openapi_core.spec import Spec
+from openapi_core import Spec
 from openapi_spec_validator import validate_spec as validate_api_spec
 from openapi_spec_validator.readers import read_from_filename as read_api_spec_from_filename
 import os
