@@ -12,8 +12,8 @@ services:
         USER_GID: 1000
     volumes:
     - ..:/workspace:cached
-    ports:
-      - "4200:4200"
+    # ports:
+    #   - "4200:4200"
 
     # Overrides default command so things don't shut down after the process ends.
     command: sleep infinity
