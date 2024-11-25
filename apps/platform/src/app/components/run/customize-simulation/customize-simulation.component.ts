@@ -44,7 +44,6 @@ import {
   ReRunQueryParams,
   SedDocument,
   SedModel,
-  SedModelAttributeChange as CommonAttributeChange,
   SedModelChange,
   SedSimulation,
   SimulationRun,
@@ -57,12 +56,7 @@ import { ConfigService } from '@biosimulations/config/angular';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { FileInput } from '@biosimulations/material-file-input';
 import { CreateMaxFileSizeValidator, INTEGER_VALIDATOR } from '@biosimulations/shared/ui';
-import {
-  SedModelAttributeChange,
-  SedModelAttributeChangeTypeEnum,
-  SedModelChange as ClientSedChange,
-  SedTarget,
-} from '@biosimulations/combine-api-angular-client';
+import { SedModelAttributeChange, SedModelChange as ClientSedChange } from '@biosimulations/combine-api-angular-client';
 // eslint-disable-next-line @nrwl/nx/enforce-module-boundaries
 import { ViewService } from '@biosimulations/simulation-runs/service';
 import { Visualization, VisualizationList } from '@biosimulations/datamodel-simulation-runs';
@@ -295,6 +289,10 @@ export class CustomizeSimulationComponent implements OnInit, OnDestroy {
   }
 
   public addParameterRow(modelChange: SedModelAttributeChange): void {
+    // TODO: possibly implement this:
+    // const match = modelChange.target.value.match(/(parameter|species|size)(?=\[@)/);
+    // const label = match ? match[0] : modelChange.name;
+
     if (modelChange.id !== null) {
       const newRow = this.formBuilder.group({
         name: [{ value: modelChange.name as string, disabled: true }],
@@ -307,8 +305,6 @@ export class CustomizeSimulationComponent implements OnInit, OnDestroy {
 
       this.rows.push(newRow);
       this.modelChanges.push(newRow);
-    } else {
-      console.log('null id');
     }
   }
 
@@ -378,6 +374,7 @@ export class CustomizeSimulationComponent implements OnInit, OnDestroy {
       selectedRowIndex: [null],
       searchControl: [''],
       newValue: [''],
+      default: [''],
     });
 
     this.parameterSelections.push(newParameterSelection);
@@ -487,25 +484,38 @@ export class CustomizeSimulationComponent implements OnInit, OnDestroy {
   // Form Submission
 
   public gatherModelChanges(): void {
+    // extract sedModel obj from doc
     const sedModel = this.uploadedSedDoc.models.find((m) => m.id === this.uploadedSedDoc.models[0].id) as SedModel;
+
+    // clear the changes TODO: should the custom rerun be based on the original run or the previous custom rerun?
+    sedModel.changes.length = 0;
 
     if (!this.useDropdown) {
       this.rows.controls.forEach((val: AbstractControl<any, any>, i: number) => {
         const rowValueGroup = val as UntypedFormGroup;
         const newVal = rowValueGroup.controls.newValue.value;
-
-        if (newVal) {
-          this.containsSimulationChanges = true;
-          const paramChange: SedModelAttributeChange = {
-            _type: rowValueGroup.controls._type.value,
-            newValue: newVal,
-            target: rowValueGroup.controls.target.value,
-            id: rowValueGroup.controls.id.value,
-            name: rowValueGroup.controls.name.value,
-          };
-          // Add the parameter change to the sedModel
-          sedModel.changes.push(paramChange);
-        }
+        const defaultVal = rowValueGroup.controls.defaultValue.value;
+        this.containsSimulationChanges = true;
+        const paramChange: SedModelAttributeChange = {
+          _type: rowValueGroup.controls._type.value,
+          newValue: newVal ? newVal : defaultVal,
+          target: rowValueGroup.controls.target.value,
+          id: rowValueGroup.controls.id.value,
+          name: rowValueGroup.controls.name.value,
+        };
+        sedModel.changes.push(paramChange);
+        // if (newVal) {
+        //   this.containsSimulationChanges = true;
+        //   const paramChange: SedModelAttributeChange = {
+        //     _type: rowValueGroup.controls._type.value,
+        //     newValue: newVal,
+        //     target: rowValueGroup.controls.target.value,
+        //     id: rowValueGroup.controls.id.value,
+        //     name: rowValueGroup.controls.name.value,
+        //   };
+        //   // Add the parameter change to the sedModel
+        //   sedModel.changes.push(paramChange);
+        // }
       });
     } else {
       const allParams = this.getAllParameterSelections();
@@ -527,14 +537,15 @@ export class CustomizeSimulationComponent implements OnInit, OnDestroy {
       const selectedIndex = group.get('selectedRowIndex')?.value;
       const selectedRow = selectedIndex !== null ? this.rows.at(selectedIndex).value : null;
       const newValue = group.get('newValue')?.value;
+      const paramVal = newValue ? newValue : group.get('defaultValue')?.value;
 
-      if (selectedRow && newValue) {
+      if (newValue) {
         const selection: SedModelAttributeChange = {
           name: selectedRow.name,
           target: selectedRow.target,
           id: selectedRow.id,
           _type: selectedRow._type,
-          newValue: newValue,
+          newValue: paramVal,
         };
 
         return selection as SedModelAttributeChange;
@@ -543,6 +554,7 @@ export class CustomizeSimulationComponent implements OnInit, OnDestroy {
   }
 
   public createNewArchive(queryParams: ReRunQueryParams): Promise<Blob | null> {
+    /* ORIGINAL STABLE CONTENT */
     this.gatherModelChanges();
     return new Promise((resolve, reject) => {
       const errorHandler = this.archiveError.bind(this);
@@ -895,21 +907,21 @@ export class CustomizeSimulationComponent implements OnInit, OnDestroy {
           specsContainUnsupportedModel = true;
         }
 
-        let apiChange: SedModelAttributeChange;
-        model.changes.forEach((change: SedModelChange) => {
-          switch (change) {
-            case change as CommonAttributeChange:
-              console.log(`Common attribute change!`);
-              apiChange = {
-                _type: SedModelAttributeChangeTypeEnum.SedModelAttributeChange,
-                newValue: change.newValue,
-                target: change.target as SedTarget,
-                id: change.id as string,
-                name: change.name,
-              };
-              this.addParameterRow(apiChange);
-          }
-        });
+        // let apiChange: SedModelAttributeChange;
+        // model.changes.forEach((change: SedModelChange) => {
+        //   switch (change) {
+        //     case change as CommonAttributeChange:
+        //       console.log(`Common attribute change!`);
+        //       apiChange = {
+        //         _type: SedModelAttributeChangeTypeEnum.SedModelAttributeChange,
+        //         newValue: change.newValue,
+        //         target: change.target as SedTarget,
+        //         id: change.id as string,
+        //         name: change.name,
+        //       };
+        //       this.addParameterRow(apiChange);
+        //   }
+        // });
       });
 
       sedDoc.simulations.forEach((sim: SedSimulation): void => {

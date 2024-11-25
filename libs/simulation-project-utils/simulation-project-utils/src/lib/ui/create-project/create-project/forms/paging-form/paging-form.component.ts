@@ -63,18 +63,12 @@ export class PagingFormComponent<TStepId extends string> implements OnDestroy, O
       loadContent();
     });
     this.subscriptions.push(subscription);
-
-    if (!this.nextButton) {
-      console.log(`no next button!`);
-    }
   }
 
   private clickNextButton(): void {
-    // Ensure that nextButton is defined and accessible
     if (this.nextButton && this.nextButton.nativeElement) {
       this.nextButton.nativeElement.click();
     } else {
-      // Optionally, handle the case where the button is not available
       console.warn('Next button was not available to click programmatically.');
     }
   }
@@ -171,8 +165,6 @@ export class PagingFormComponent<TStepId extends string> implements OnDestroy, O
       this.currentFormStepComponent.populateFormFromFormStepData(currentData);
       this.fileUploadComponent = this.currentFormStepComponent;
     }
-    console.log(`load current form step!`);
-    console.log(`form step: ${this.isReRun}`);
   }
 
   private currentFormStep(): TStepId | null {

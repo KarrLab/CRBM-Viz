@@ -14,7 +14,6 @@ import { catchError } from 'rxjs/operators';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { HtmlSnackBarComponent } from '@biosimulations/shared/ui';
 import { Visualization, DesignVisualization, VisualizationList } from '@biosimulations/datamodel-simulation-runs';
-// import { urls } from '@biosimulations/config/common';
 import { DesignHistogram1DVisualizationComponent } from '../design-histogram-1d-viz/design-histogram-1d-viz.component';
 import { DesignHeatmap2DVisualizationComponent } from '../design-heatmap-2d-viz/design-heatmap-2d-viz.component';
 import { DesignLine2DVisualizationComponent } from '../design-line-2d-viz/design-line-2d-viz.component';
@@ -37,30 +36,37 @@ type DesignVisualizationComponent =
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class SelectVisualizationComponent implements OnInit, OnDestroy {
-  private vegaFormatCombineUri: string;
+  @ViewChild(DesignHistogram1DVisualizationComponent)
+  public designHistogram1DVisualization?: DesignHistogram1DVisualizationComponent;
+
+  @ViewChild(DesignHeatmap2DVisualizationComponent)
+  public designHeatmap2DVisualizationComponent?: DesignHeatmap2DVisualizationComponent;
+
+  @ViewChild(DesignLine2DVisualizationComponent)
+  public designLine2DVisualizationComponent?: DesignLine2DVisualizationComponent;
 
   @Input()
-  visualizations!: VisualizationList[];
+  public visualizations!: VisualizationList[];
 
   @Input()
-  runSucceeded = true;
+  public runSucceeded = true;
 
   @Input()
-  isCustomReRun = false;
+  public isCustomReRun = false;
 
   @Output()
-  renderVisualization = new EventEmitter<Visualization>();
+  public renderVisualization = new EventEmitter<Visualization>();
 
-  formGroup: UntypedFormGroup;
-  userHistogram1DFormGroup: UntypedFormGroup;
-  userHeatmap2DFormGroup: UntypedFormGroup;
-  userLine2DFormGroup: UntypedFormGroup;
+  public formGroup: UntypedFormGroup;
+  public userHistogram1DFormGroup: UntypedFormGroup;
+  public userHeatmap2DFormGroup: UntypedFormGroup;
+  public userLine2DFormGroup: UntypedFormGroup;
 
   private endpoints = new Endpoints();
-
+  private vegaFormatCombineUri: string;
   private subscriptions: Subscription[] = [];
 
-  constructor(
+  public constructor(
     private formBuilder: UntypedFormBuilder,
     private combineApiService: CombineApiService,
     private simRunService: SimulationRunService,
@@ -90,10 +96,8 @@ export class SelectVisualizationComponent implements OnInit, OnDestroy {
     this.userLine2DFormGroup.disable();
   }
 
-  public ngOnInit() {
+  public ngOnInit(): void {
     this.formGroup.get('visualization')?.valueChanges.subscribe((selectedVisualization) => {
-      console.log('Visualization selected:', selectedVisualization);
-      console.log(`The form group control for viz: `);
       this.selectVisualization();
     });
   }
@@ -102,18 +106,12 @@ export class SelectVisualizationComponent implements OnInit, OnDestroy {
     this.subscriptions.forEach((subscription) => subscription.unsubscribe());
   }
 
-  private getSelectedVisualization(): Visualization {
-    return (this.formGroup.controls.visualization as UntypedFormControl).value;
-  }
-
-  selectVisualization(): void {
-    console.log('Disabling all form groups...');
+  public selectVisualization(): void {
     this.userHistogram1DFormGroup.disable();
     this.userHeatmap2DFormGroup.disable();
     this.userLine2DFormGroup.disable();
 
     const visualization = this.getSelectedVisualization();
-    console.log(`THE VISUALIZATION SELECTED: ${visualization._type}`);
     if (visualization._type === 'Histogram1DVisualization') {
       this.userHistogram1DFormGroup.enable();
     } else if (visualization._type === 'Heatmap2DVisualization') {
@@ -121,22 +119,12 @@ export class SelectVisualizationComponent implements OnInit, OnDestroy {
     } else if (visualization._type === 'Line2DVisualization') {
       this.userLine2DFormGroup.enable();
     } else if (visualization._type === 'SedPlot2DVisualization') {
-      console.log('Its sed plot');
       this.userLine2DFormGroup.enable();
       this.userHeatmap2DFormGroup.enable();
     }
   }
 
-  @ViewChild(DesignHistogram1DVisualizationComponent)
-  designHistogram1DVisualization?: DesignHistogram1DVisualizationComponent;
-
-  @ViewChild(DesignHeatmap2DVisualizationComponent)
-  designHeatmap2DVisualizationComponent?: DesignHeatmap2DVisualizationComponent;
-
-  @ViewChild(DesignLine2DVisualizationComponent)
-  designLine2DVisualizationComponent?: DesignLine2DVisualizationComponent;
-
-  viewVisualization(): void {
+  public viewVisualization(): void {
     const visualization = this.getSelectedVisualization();
     const designVisualizationComponent = this.getDesignVisualizationComponent();
     if (designVisualizationComponent) {
@@ -144,11 +132,10 @@ export class SelectVisualizationComponent implements OnInit, OnDestroy {
         designVisualizationComponent.getPlotlyDataLayout(),
       );
     }
-    console.log(`Emitting vis: ${visualization}`);
     this.renderVisualization.emit(visualization);
   }
 
-  exportVisualization(format: 'vega' | 'archive'): void {
+  public exportVisualization(format: 'vega' | 'archive'): void {
     this.snackBar.openFromComponent(HtmlSnackBarComponent, {
       data: {
         message: 'Please wait while your visualization is exported',
@@ -242,6 +229,10 @@ export class SelectVisualizationComponent implements OnInit, OnDestroy {
       )
       .subscribe();
     this.subscriptions.push(vegaSpecSub);
+  }
+
+  private getSelectedVisualization(): Visualization {
+    return (this.formGroup.controls.visualization as UntypedFormControl).value;
   }
 
   private getDesignVisualizationComponent(): DesignVisualizationComponent | null {

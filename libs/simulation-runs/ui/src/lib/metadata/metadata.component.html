@@ -43,53 +43,60 @@
   </div>
 
   <div *ngIf="projectSummary" fxGrid>
-    <mat-expansion-panel class="summary-card" expanded="true" hideToggle="true" disabled="true">
+    <mat-expansion-panel *ngIf="projectSummary" class="summary-card" expanded="true" hideToggle="true" disabled="true">
       <mat-expansion-panel-header class="card-header">Project Summary</mat-expansion-panel-header>
-      <table aria-label="simulation summary">
-        <tr *ngIf="biologyList(projectSummary) || taxaList(projectSummary)">
-          <th>Biology:</th>
-          <td>
-            <ng-container *ngIf="biologyList(projectSummary)">
-              <ng-container *ngFor="let biologyTerm of biologyList(projectSummary); first as isFirst">
-                <ng-container *ngIf="!isFirst"> and </ng-container>
-                <b>{{ biologyTerm }}</b>
+      <mat-card-content>
+        <table aria-label="simulation summary">
+          <tr *ngIf="biologyList(projectSummary) || taxaList(projectSummary)">
+            <th>Biology:</th>
+            <td>
+              <ng-container *ngIf="biologyList(projectSummary)">
+                <ng-container *ngFor="let biologyTerm of biologyList(projectSummary); first as isFirst">
+                  <ng-container *ngIf="!isFirst"> and </ng-container>
+                  <b>{{ biologyTerm }}</b>
+                </ng-container>
               </ng-container>
-            </ng-container>
-            <ng-container *ngIf="taxaList(projectSummary)">
-              in
-              <ng-container *ngFor="let taxaTerm of taxaList(projectSummary); first as isFirst">
-                <ng-container *ngIf="!isFirst"> or </ng-container>
-                <b>{{ taxaTerm }}</b>
+              <ng-container *ngIf="taxaList(projectSummary)">
+                in
+                <ng-container *ngFor="let taxaTerm of taxaList(projectSummary); first as isFirst">
+                  <ng-container *ngIf="!isFirst"> or </ng-container>
+                  <b>{{ taxaTerm }}</b>
+                </ng-container>
               </ng-container>
-            </ng-container>
-          </td>
-        </tr>
-        <tr>
-          <th>Simulation:</th>
-          <td>
-            <ng-container *ngIf="simulationType(projectSummary)">
-              <b>{{ simulationType(projectSummary) }}</b
-              >,
-            </ng-container>
-            <ng-container *ngIf="simulator(projectSummary)">
-              simulated with <b>{{ simulator(projectSummary) }}</b
-              >,
-            </ng-container>
-            <ng-container *ngIf="formats(projectSummary)">
-              model encoded in <b>{{ formats(projectSummary) }}</b>
-            </ng-container>
-          </td>
-        </tr>
-        <tr *ngIf="citation(projectSummary) as citation">
-          <th>Citation:</th>
-          <td>
-            <a href="{{ citation?.uri }}">{{ citation?.label }}</a>
-          </td>
-        </tr>
-      </table>
-      <a *ngIf="portalUrl" class="portal-view-container" [href]="portalUrl" target="_blank"
-        >View in Reproducibility Portal >
-      </a>
+            </td>
+          </tr>
+          <tr>
+            <th>Simulation:</th>
+            <td>
+              <ng-container *ngIf="simulationType(projectSummary)">
+                <b>{{ simulationType(projectSummary) }}</b
+                >,
+              </ng-container>
+              <ng-container *ngIf="simulator(projectSummary)">
+                simulated with <b>{{ simulator(projectSummary) }}</b
+                >,
+              </ng-container>
+              <ng-container *ngIf="formats(projectSummary)">
+                model encoded in <b>{{ formats(projectSummary) }}</b>
+              </ng-container>
+            </td>
+          </tr>
+          <tr *ngIf="citation(projectSummary) as citation">
+            <th>Citation:</th>
+            <td>
+              <a href="{{ citation?.uri }}">{{ citation?.label }}</a>
+            </td>
+          </tr>
+        </table>
+        <div *ngIf="portalUrl" class="card-footer">
+          <a [href]="portalUrl">
+            <button mat-flat-button class="multipurpose-flat-button footer-button portal-view" matTooltip="View project essentials in the liteweight Reproducibility Portal.">
+              <biosimulations-icon icon="link" style="margin-right: 0.5rem !important;"></biosimulations-icon>
+              View project in Reproducibility Portal
+            </button>
+          </a>
+        </div>
+      </mat-card-content>
     </mat-expansion-panel>
   </div>
 </div>

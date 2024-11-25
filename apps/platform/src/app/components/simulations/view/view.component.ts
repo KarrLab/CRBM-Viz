@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { HttpErrorResponse } from '@angular/common/http';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
 import { MatTabChangeEvent } from '@angular/material/tabs';
 import { Observable, of, combineLatest, map, pluck, mergeMap, iif, Subject } from 'rxjs';
 import { shareReplay, catchError, concatAll, takeUntil } from 'rxjs/operators';
@@ -74,7 +74,6 @@ export class ViewComponent implements OnInit {
     private sharedViewService: SharedViewService,
     private viewService: ViewService,
     private route: ActivatedRoute,
-    private router: Router,
   ) {}
 
   public ngOnInit(): void {
@@ -208,37 +207,12 @@ export class ViewComponent implements OnInit {
     );
 
     this.initFilesSubscription();
-    console.log(` ---- THIS SIMULATION HAS sbml: ${this.hasSbml}`);
-  }
-
-  public setHasSbml(): void {
-    this.files$.subscribe((path: Path[] | null | undefined | false) => {
-      switch (path) {
-        case (path as null) || (path as undefined) || (path as false):
-          console.log(`Path is not full!`);
-          break;
-        case path as Path[]:
-          path.forEach((path: Path) => {
-            if (path.location.includes('.xml') || path.location.includes('sbml')) {
-              console.log(`Has SBML!`);
-              this.hasSbml = true;
-            }
-          });
-          break;
-      }
-    });
-  }
-
-  public ngOnDestroy(): void {
-    this.destroyed$.next();
-    this.destroyed$.complete();
   }
 
   private initFilesSubscription(): void {
     this.files$.pipe(takeUntil(this.destroyed$)).subscribe((files: Path[] | null | undefined | false) => {
       if (files) {
         files.forEach((file: Path) => {
-          console.log(`File in project url: ${file.location}`);
           if (file.location.includes('jpg')) {
             switch (file) {
               case file as File:
@@ -296,7 +270,6 @@ export class ViewComponent implements OnInit {
 
   public renderVisualization(visualization: Visualization): void {
     this.visualization = visualization;
-    console.log('Received visualization for rendering:', visualization);
     this.viewVisualizationTabDisabled = false;
     this.selectedTabIndex = this.visualizationTabIndex;
   }

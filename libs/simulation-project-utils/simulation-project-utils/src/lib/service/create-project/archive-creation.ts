@@ -21,9 +21,11 @@ import {
   SedModelAttributeChangeTypeEnum,
   SedModelChange,
   SedModelTypeEnum,
-  // SedAxisScale,
-  // SedCurveTypeEnum,
-  // SedPlot2DTypeEnum,  TODO: uncomment this for sed plots
+  SedCurve,
+  SedCurveTypeEnum,
+  SedAxisScale,
+  SedPlot2D,
+  SedPlot2DTypeEnum,
   SedReportTypeEnum,
   SedSimulation,
   SedSteadyStateSimulationTypeEnum,
@@ -34,6 +36,7 @@ import {
   SedUniformTimeCourseSimulationTypeEnum,
   SedVariable,
   SedVariableTypeEnum,
+  SedReport,
 } from '@biosimulations/combine-api-angular-client';
 import { BIOSIMULATIONS_FORMATS_BY_ID } from '@biosimulations/ontology/extra-sources';
 import { SedDocument as CommonSedDoc, SimulationType, ValueType } from '@biosimulations/datamodel/common';
@@ -259,7 +262,6 @@ function CreateSedSimulation(
 }
 
 function CreateSedTask(model: SedModel, simulation: SedSimulation): SedTask {
-  console.log(`sed task model to create: ${model.source}`);
   return {
     _type: SedTaskTypeEnum.SedTask,
     id: 'task_1',
@@ -310,13 +312,64 @@ function CreateSedDocument(
   dataGenerators: SedDataGenerator[],
   dataSets: SedDataSet[],
 ): SedDocument {
-  // const curve = {
-  //   _type: SedCurveTypeEnum.SedCurve,
-  //   id: 'curve_time',
-  //   xDataGenerator: 'Time',
-  //   yDataGenerator: dataGenerators[0].id,
-  // }
+  // create sedml output request param spec including dataset reports by default
+  const sedOutputs: Array<SedReport | SedPlot2D> = [
+    {
+      _type: SedReportTypeEnum.SedReport,
+      id: 'report',
+      dataSets: dataSets,
+    },
+  ];
 
+  // extract plot data with curves if applicable and add it to sedml output
+  const timeData = dataSets.find((dataSet: SedDataSet) => dataSet.label.toLowerCase() === 'time') as SedDataSet;
+  if (!timeData) {
+    console.warn('No time data set found and thus no plot will be generated in the SEDML outputs.');
+  } else {
+    const curves: SedCurve[] = dataSets
+      .filter((dataSet: SedDataSet) => dataSet.id !== timeData.id) // exclude time dataset
+      .map((dataSet: SedDataSet) => ({
+        id: `curve_${dataSet.id}`,
+        name: dataSet.label,
+        xDataGenerator: timeData.dataGenerator,
+        yDataGenerator: dataSet.dataGenerator,
+        _type: SedCurveTypeEnum.SedCurve,
+        style: undefined,
+      }));
+
+    const plot: SedPlot2D = {
+      _type: SedPlot2DTypeEnum.SedPlot2D,
+      id: 'plot_observables_dynamics',
+      name: 'Figure1a',
+      curves: curves,
+      xScale: SedAxisScale.linear,
+      yScale: SedAxisScale.linear,
+    };
+    sedOutputs.push(plot);
+  }
+
+  return {
+    _type: SedDocumentTypeEnum.SedDocument,
+    level: 1,
+    version: 3,
+    styles: [],
+    models: [model],
+    simulations: [simulation],
+    tasks: [task],
+    dataGenerators: dataGenerators,
+    outputs: sedOutputs,
+  };
+}
+
+/* CURRENT STABLE CREATE SED DOC METHOD: TO BE REMOVED OR REIMPLEMENTED PRIOR TO MERGE
+function _CreateSedDocument(
+  model: SedModel,
+  simulation: SedSimulation,
+  task: SedTask,
+  dataGenerators: SedDataGenerator[],
+  dataSets: SedDataSet[],
+): SedDocument {
+  // STABLE CONTENT
   return {
     _type: SedDocumentTypeEnum.SedDocument,
     level: 1,
@@ -331,17 +384,11 @@ function CreateSedDocument(
         _type: SedReportTypeEnum.SedReport,
         id: 'report',
         dataSets: dataSets,
-      },
-      // {
-      //   _type: SedPlot2DTypeEnum.SedPlot2D,
-      //   id: 'Figure1',
-      //   curves: [curve],
-      //   xScale: SedAxisScale.linear,
-      //   yScale: SedAxisScale.linear,
-      // }
+      }
     ],
   };
 }
+*/
 
 function CreateArchiveModelLocationValue(modelFile: File, modelUrl: string): CombineArchiveLocationValue {
   if (modelFile) {

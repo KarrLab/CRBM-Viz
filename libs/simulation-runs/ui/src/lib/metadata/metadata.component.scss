@@ -4,6 +4,29 @@
 $PRIMARY: var(--primary-darker-color) !important;
 $ACCENT: var(--accent-darker-color) !important;
 
+.multipurpose-flat-button {
+  &.portal-view {
+    background-color: var(--primary-darker-color) !important;
+    font-weight: normal !important;
+  }
+
+  &:hover {
+    background: var(--accent-darker-color) !important;
+  }
+}
+
+.card-footer {
+  margin-bottom: 1rem !important;
+  display: flex;
+  flex-direction: column;
+
+  .footer-button {
+    &.portal-view {
+      margin-top: 1rem !important;
+    }
+  }
+}
+
 .metadata {
   overflow: auto;
   max-width: 1000px;

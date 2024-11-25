@@ -219,7 +219,6 @@ export class CreateProjectDataSource implements IMultiStepFormDataSource<CreateP
     simMethodData.framework = framework;
     simMethodData.simulationType = simulationType;
     simMethodData.algorithm = algorithm;
-    console.log(`-- THE FRAMEWORK TYPE AND ALG: ${framework}, ${simulationType}, ${algorithm}`);
     this.formData[CreateProjectFormStep.FrameworkSimTypeAndAlgorithm] = simMethodData;
   }
 

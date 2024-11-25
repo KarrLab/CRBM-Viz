@@ -43,7 +43,6 @@ export class AppComponent implements OnInit, AfterViewInit {
   public ngOnInit(): void {
     if (this.checkForHealth) {
       this.healthy$ = this.healthService.isHealthy();
-      console.log(this.healthy$);
     }
     this.checkClientScreenSimulations();
   }

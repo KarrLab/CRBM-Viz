@@ -133,7 +133,6 @@ export class PlotlyVisualizationComponent implements AfterViewInit, OnDestroy, O
   }
 
   public handleResize(resize: ResizeObserverEntry): void {
-    console.log('onResize', resize);
     this.resizeDebounce();
   }
 

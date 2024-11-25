@@ -7,10 +7,9 @@ readme = "README.md"
 packages = [{include = "combine_api"}]
 
 [tool.poetry.dependencies]
-python = "^3.9"
+python = "^3.10"
 flask = ">=2"
 connexion = {extras = ["swagger-ui"], version = "^2.14.2"}
-openapi-schema-validator = "^0.4.3"
 requests = "2.31.0"
 botocore = "^1.29.89"
 python-dotenv = "^0.14.0"
@@ -19,24 +18,29 @@ flask-cors = "^3.0.10"
 pyyaml = "^6.0"
 boto3 = "^1.26.89"
 kisao = ">=2.34"
-biosimulators_utils = {extras = ["bngl", "cellml", "lems", "logging", "neuroml", "sbml", "smoldyn"], version = "^0.1.187"}
+biosimulators-utils = {extras = ["bngl", "cellml", "lems", "logging", "neuroml", "sbml", "smoldyn"], version = "^0.2.3"}
 parameterized = "^0.8.1"
 pytest = "^7.2.2"
 swagger-ui-bundle = "^0.0.9"
 python-libsbml = "^5.19.7"
 types-flask = "^1.1.6"
-libcellml = "^0.4.0"
-openapi-spec-validator = "^0.5.5"
+libcellml = "^0.5.0"
 typed-dotenv = "^1.0.1"
 stringcase = "^1.2.0"
 boto3-type-annotations = "^0.3.1"
-openapi-core = "^0.17.0"
 py-swagger-ui = "^1.1.0"
 gunicorn = "^20.1.0"
 biosimulators-copasi = "^0.1.35"
 biosimulators-gillespy2 = "^0.1.37"
-# biosimulator-processes = "0.0.14"
-# biosimulators-simularium = ">=0.5.24"
+# openapi-core = "^0.17.0"
+# jsonschema = "*"
+# openapi-spec-validator = "^0.5.5"
+# openapi-schema-validator = "<=0.7.4"
+# openapi-schema-validator = "^0.4.3"
+openapi-core = "^0.19.4"
+jsonschema = "^4.23.0"
+openapi-spec-validator = "^0.7.1"
+openapi-schema-validator = "^0.6.2"
 
 [tool.poetry.group.dev.dependencies]
 pytest = "^7.2.2"  # No updates required

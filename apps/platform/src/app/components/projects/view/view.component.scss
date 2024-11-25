@@ -10,6 +10,116 @@
   justify-content: center;
 }
 
+/*.tab-label {
+  background-color: var(--primary-darkest-darker-color) !important;
+  border-radius: 3px !important;
+  color: white !important;
+  margin-top: 0.35rem !important;
+  width: 100% !important;
+  padding: 2rem 5rem !important;
+}*/
+
+.simulation-view-button-container {
+  .multipurpose-flat-button {
+    margin-top: 5rem !important;
+    margin-bottom: 1rem !important;
+    background-color: var(--primary-darkest-darker-color) !important;
+    transition: background-color 500ms ease;
+
+    &:hover {
+      background-color: var(--tertiary-darker-color) !important;
+      transform: scale(1.1) !important;
+    }
+  }
+}
+
+.project-overview-button-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(0, 1fr)) !important; // button width
+  gap: 0;
+  justify-content: center !important;
+  align-items: center !important;
+  //max-width: 100%;
+  //width: 100% !important;
+  //height: 100px !important;
+  height: fit-content !important;
+  margin-bottom: 3rem !important;
+  margin-top: 1rem !important;
+  transition: 1s ease;
+
+  .project-overview-button {
+    margin-top: 0 !important;
+    width: 300px !important;
+    font-size: 14px !important;
+    height: 4.5rem !important;
+    padding: 10px !important;
+    text-align: center !important;
+    border: 3px solid white;
+    background: var(--primary-darkest-darker-color) !important; // #001F54 !important;
+  }
+
+  .project-overview-button:hover {
+    background-color: var(--primary-darker-color) !important;
+  }
+}
+
+.overview-button-content {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-weight: normal !important;
+
+  .overview-button-icon {
+    font-size: 26px !important;
+    margin-left: 0 !important;
+    padding-bottom: 0.9rem !important;
+  }
+}
+
+.card-header {
+  background-color: var(--primary-darker-color);
+  font-weight: 500;
+  font-size: medium;
+  color: white;
+  padding-top: 0.5rem;
+  padding-bottom: 0.5rem;
+  border-top: 2px;
+  border-radius: 4px 4px 0 0;
+  height: 100%;
+  margin-top: -1rem !important;
+
+  &.project {
+    font-size: 24px;
+  }
+
+  &.mat-expansion-panel-header.mat-expanded,
+  &:hover {
+    background-color: var(--primary-darker-color);
+  }
+}
+
+.multipurpose-flat-button {
+  background: var(--tertiary-darker-color) !important;
+  transition: background-color ease-in-out 0.3s;
+
+  &.portal-view {
+    background: var(--quaternary-darker-color) !important;
+  }
+
+  &:hover {
+    background: var(--accent-darker-color) !important;
+  }
+}
+
+.viz-card-buttons {
+  height: fit-content;
+
+  .run-view {
+    margin-top: 2rem !important;
+  }
+}
+
 .display-data,
 .plotparent,
 .item-expansion-header,
@@ -32,7 +142,6 @@
 }
 
 .spinner-container,
-.viz-card-header,
 .figure-card,
 .figure-card-header,
 .files-item {
@@ -62,10 +171,28 @@
   }
 }
 
+.page-container {
+  height: 100% !important;
+  background: url('../../../../../../../libs/shared/assets/src/assets/images/backgrounds/grey-3.png') no-repeat scroll
+    50% 50%;
+}
+
+.divider {
+  margin-bottom: 4rem;
+
+  @media (max-width: 1024px) {
+    margin-bottom: 2.5rem;
+  }
+
+  @media (max-width: 768px) {
+    margin-bottom: 1.5rem;
+  }
+}
+
 .display-data {
   flex-direction: row;
   font-family: 'Roboto', sans-serif;
-  margin-top: 3rem;
+  height: 100% !important;
 
   @media (max-width: 768px) {
     flex-direction: column;
@@ -187,9 +314,6 @@ biosimulations-tab-page ::ng-deep .icon-list {
   height: 100%;
   width: 600px;
   max-width: 100%;
-  border: solid 1px #ccc;
-  display: block;
-  border-radius: 4px;
   padding-top: 1rem;
 
   @media (max-width: 768px) {

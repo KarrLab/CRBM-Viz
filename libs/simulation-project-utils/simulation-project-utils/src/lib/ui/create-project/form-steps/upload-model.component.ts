@@ -110,7 +110,6 @@ export class UploadModelComponent implements IFormStepComponent, OnInit {
 
   public archiveIsUploaded(archiveUploaded: boolean): void {
     this.archiveDetected = archiveUploaded;
-    console.log(`Archive is uploaded: ${this.archiveDetected}`);
   }
 
   private formValidator(formGroup: UntypedFormGroup): ValidationErrors | null {

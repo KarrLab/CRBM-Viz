@@ -1,7 +1,7 @@
 #############
 ### base ###
 #############
-FROM python:3.11-buster as base
+FROM python:3.10-buster as base
 
 WORKDIR /app
 
@@ -307,16 +307,16 @@ RUN curl -sSL https://install.python-poetry.org | python3 - \
     && chmod 755 poetry.toml
 
 # Copy over dependency list
-COPY ./poetry.lock /app/poetry.lock
+# COPY ./poetry.lock /app/poetry.lock
 COPY ./pyproject.toml /app/pyproject.toml
 COPY ./combine_api/ /app/combine_api/
 COPY ./vendor/ /app/vendor/
 COPY ./tests/ /app/tests/
-#COPY ./pytest.ini /app/pytest.ini
+COPY ./pytest.ini /app/pytest.ini
 COPY ./README.md /app/README.md
 
-RUN chmod 755 poetry.toml && \
-    poetry install
+RUN chmod 755 poetry.toml \
+    && poetry install --no-cache
 
 #
 ## set up matplotlib font manager
@@ -370,4 +370,3 @@ LABEL \
     org.opencontainers.image.authors="BioSimulations Team <info@biosimulations.org>" \
     org.opencontainers.image.vendor="BioSimulations Team" \
     org.opencontainers.image.licenses="MIT"
-

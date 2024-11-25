@@ -1,0 +1,5 @@
+[[redirects]]
+  from = "https://run.biosimulations.org/*"
+  to = "https://biosimulations.org/:splat"
+  status = 301
+  force = true
