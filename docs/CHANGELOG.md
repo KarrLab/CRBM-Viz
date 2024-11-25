@@ -1,5 +1,24 @@
 # Changelog
 
+## [9.62.0](https://github.com/biosimulations/biosimulations/compare/v9.61.3...v9.62.0) (2024-11-25)
+
+
+### Bug Fixes
+
+* added form value handler for custom simulation archive creation req ([60624c9](https://github.com/biosimulations/biosimulations/commit/60624c9622b36b3eccec81164c6b5091e283f652))
+* combine-api python 3.10, biosimulators_utils 0.2.3, libcellml 0.5.0 ([395456f](https://github.com/biosimulations/biosimulations/commit/395456f1a8520088b504bb888d40610a56ea76e4))
+* fixed openapi import in combine test ([2f2b169](https://github.com/biosimulations/biosimulations/commit/2f2b1698bc8b074afc98ccb05866acb24ff7fe87))
+* regen lock and correct openapi versions ([7d5d26f](https://github.com/biosimulations/biosimulations/commit/7d5d26f641a5ef9407d1c56049eebdc81f1fbd2b))
+* remove lock for lock file gen in build and fix pytest ([bf351c2](https://github.com/biosimulations/biosimulations/commit/bf351c2663ae1e5257ebd04cf350d5f5b104e0f3))
+* update customize simulation params for custom archive request ([5e6beeb](https://github.com/biosimulations/biosimulations/commit/5e6beebf957e87b4d32cc505e47149d8a1bbb042))
+* update dev container for appropriate post build commands ([070cc07](https://github.com/biosimulations/biosimulations/commit/070cc0799cb8f1551a8ad2f26e97faaa9df54745))
+
+
+### Features
+
+* added netlify.toml for redirect from dispatch to platform ([d3b6201](https://github.com/biosimulations/biosimulations/commit/d3b6201ba47674b54cd8b4e95b20587210b915c1))
+* added simulation project overview buttons with links ([ac04e01](https://github.com/biosimulations/biosimulations/commit/ac04e01c77abd974269917b0c10890718d4c8d08))
+
 ## [9.61.3](https://github.com/biosimulations/biosimulations/compare/v9.61.2...v9.61.3) (2024-10-30)
 
 
