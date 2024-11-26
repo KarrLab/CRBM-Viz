@@ -7,7 +7,7 @@ services:
       context: . 
       dockerfile: ./api.devcontainer/Dockerfile
       args: 
-        VARIANT: 16-bullseye
+        VARIANT: 18-bullseye
         USER_UID: 1000  # On Linux, you may need to update USER_UID and USER_GID below if not your local UID is not 1000.
         USER_GID: 1000
     volumes:
@@ -22,6 +22,8 @@ services:
       - nats
       - redis
       - mongo
+    env_file:
+      - ../config/config.env
   
   nats:
     image: nats:latest

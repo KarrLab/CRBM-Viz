@@ -1,6 +1,6 @@
 # See here for image contents: https://github.com/microsoft/vscode-dev-containers/tree/v0.192.0/containers/javascript-node/.devcontainer/base.Dockerfile
 
-ARG VARIANT="16-bullseye"
+ARG VARIANT="18-bullseye"
 FROM mcr.microsoft.com/vscode/devcontainers/javascript-node:0-${VARIANT}
 ENV DEBIAN_FRONTEND=noninteractive
 RUN apt-get update && apt-get install -y \
