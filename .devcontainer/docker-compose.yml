@@ -21,7 +21,31 @@ services:
     depends_on:
       - nats
       - redis-primary
-      - mongo
+      # - mongo
+    env_file:
+      - ../config/config.env
+  
+  dispatch-service: 
+    platform: linux/amd64
+    build: 
+      context: . 
+      dockerfile: ./dispatch-service.devcontainer/Dockerfile
+      args: 
+        VARIANT: 18-bullseye
+        USER_UID: 1000  # On Linux, you may need to update USER_UID and USER_GID below if not your local UID is not 1000.
+        USER_GID: 1000
+    volumes:
+    - ..:/workspace  # ..:/workspace:cached
+    ports:
+      - "4444:4444"
+    user: "504"
+    command: sleep infinity  # Overrides default command so things don't shut down after the process ends.
+    networks:
+      - biosimulations-net
+    depends_on:
+      - nats
+      - redis-primary
+      # - mongo
     env_file:
       - ../config/config.env
   
@@ -33,7 +57,6 @@ services:
     networks:
       - biosimulations-net
     
-  
   redis-primary:
     image: redis:latest
     restart: unless-stopped
@@ -42,13 +65,13 @@ services:
     networks:
       - biosimulations-net
   
-  mongo: 
-    image: mongo:latest
-    restart: unless-stopped
-    ports: 
-      - "27017:27017"
-    networks:
-      - biosimulations-net
+  # mongo: 
+  #   image: mongo:latest
+  #   restart: unless-stopped
+  #   ports: 
+  #     - "27017:27017"
+  #   networks:
+  #     - biosimulations-net
   
   # app: 
   #   build: 
