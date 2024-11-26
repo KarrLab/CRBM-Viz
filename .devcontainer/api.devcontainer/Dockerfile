@@ -3,8 +3,9 @@
 ARG VARIANT="16-bullseye"
 FROM mcr.microsoft.com/vscode/devcontainers/javascript-node:0-${VARIANT}
 ENV DEBIAN_FRONTEND=noninteractive
-RUN apt-get update && apt-get -y install --no-install-recommends \
+RUN apt-get update && apt-get install -y \
      python3 \
+     git \
      make \
      g++ \
      libcairo2-dev \
@@ -12,9 +13,10 @@ RUN apt-get update && apt-get -y install --no-install-recommends \
      libjpeg-dev \
      libgif-dev \
      librsvg2-dev \
-     && su node -c "git config --global pull.rebase true" \
-     && su node -c "npm install -g @nrwl/cli commitizen" \
-     && apt-get clean \
-     && rm -rf /var/lib/apt/lists/*
+     && npm install -g @nrwl/cli commitizen \
+     && git config --global pull.rebase true
 
+RUN npx husky install
+# && su node -c "git config --global pull.rebase true" \
+# && su node -c "npm install -g @nrwl/cli commitizen"
 # ENTRYPOINT ["npx", "nx", "run", "platform:serve", "--host", "0.0.0.0", "--port", "4200"]

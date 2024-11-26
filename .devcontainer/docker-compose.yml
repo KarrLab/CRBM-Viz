@@ -1,35 +1,68 @@
 version: '3'
 
-services: 
-  app: 
+services:
+  api: 
+    platform: linux/amd64
     build: 
       context: . 
-      dockerfile: Dockerfile
+      dockerfile: ./api.devcontainer/Dockerfile
       args: 
         VARIANT: 16-bullseye
-        # On Linux, you may need to update USER_UID and USER_GID below if not your local UID is not 1000.
-        USER_UID: 1000
+        USER_UID: 1000  # On Linux, you may need to update USER_UID and USER_GID below if not your local UID is not 1000.
         USER_GID: 1000
     volumes:
-    - ..:/workspace:cached
-    # ports:
-    #   - "4200:4200"
-
-    # Overrides default command so things don't shut down after the process ends.
-    command: sleep infinity
+    - ..:/workspace  # ..:/workspace:cached
+    ports:
+      - "4444:4444"
+    user: "504"
+    command: sleep infinity  # Overrides default command so things don't shut down after the process ends.
+    networks:
+      - biosimulations-net
+    depends_on:
+      - nats
+      - redis
+      - mongo
+  
   nats:
     image: nats:latest
     restart: unless-stopped
     ports: 
       - "4222:4222"
+    networks:
+      - biosimulations-net
+    
+  
   redis:
     image: redis:latest
     restart: unless-stopped
     ports: 
       - "6379:6379"
+    networks:
+      - biosimulations-net
+  
   mongo: 
     image: mongo:latest
     restart: unless-stopped
     ports: 
       - "27017:27017"
+    networks:
+      - biosimulations-net
+  
+  # app: 
+  #   build: 
+  #     context: . 
+  #     dockerfile: Dockerfile
+  #     args: 
+  #       VARIANT: 16-bullseye
+  #       USER_UID: 1000  # On Linux, you may need to update USER_UID and USER_GID below if not your local UID is not 1000.
+  #       USER_GID: 1000
+  #   volumes:
+  #   - ..:/workspace  # ..:/workspace:cached
+  #   ports:
+  #     - "4200:4200"
+  #   command: sleep infinity  # Overrides default command so things don't shut down after the process ends.
+
+networks:
+  biosimulations-net:
+    driver: bridge
   
