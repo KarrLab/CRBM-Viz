@@ -20,7 +20,7 @@ services:
       - biosimulations-net
     depends_on:
       - nats
-      - redis
+      - redis-primary
       - mongo
     env_file:
       - ../config/config.env
@@ -34,7 +34,7 @@ services:
       - biosimulations-net
     
   
-  redis:
+  redis-primary:
     image: redis:latest
     restart: unless-stopped
     ports: 
