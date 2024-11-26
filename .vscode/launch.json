@@ -8,7 +8,18 @@
       "runtimeExecutable": "npx",
       "runtimeArgs": ["nx", "run", "api:serve"],
       "skipFiles": ["<node_internals>/**"],
-      "port": 9229, // Ensure Nx is configured to open this port for debugging
+      "port": 9229, // ensure Nx is configured to open this port for debugging
+      "console": "integratedTerminal",
+      "internalConsoleOptions": "neverOpen"
+    },
+    {
+      "type": "node",
+      "request": "launch",
+      "name": "Launch Nx Dispatch-Service: Serve",
+      "runtimeExecutable": "npx",
+      "runtimeArgs": ["nx", "run", "dispatch-service:serve"],
+      "skipFiles": ["<node_internals>/**"],
+      "port": 9229,
       "console": "integratedTerminal",
       "internalConsoleOptions": "neverOpen"
     },
