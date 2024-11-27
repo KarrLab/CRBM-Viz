@@ -40,6 +40,7 @@ services:
         USER_GID: 1000
     volumes:
     - ..:/workspace  # :cached
+    - /workspace/package.json:/workspace/package.json:cached
     user: "504"
     command: sleep infinity  # Overrides default command so things don't shut down after the process ends.
     networks:
