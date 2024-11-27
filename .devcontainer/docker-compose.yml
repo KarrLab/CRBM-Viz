@@ -1,91 +1,118 @@
-version: '3'
+networks:
+  biosimulations-dev-net:
+    driver: bridge
 
 services:
-  api: 
-    platform: linux/amd64
-    build: 
-      context: . 
-      dockerfile: ./api.devcontainer/Dockerfile
-      args: 
-        VARIANT: 18-bullseye
-        USER_UID: 1000  # On Linux, you may need to update USER_UID and USER_GID below if not your local UID is not 1000.
-        USER_GID: 1000
-    volumes:
-    - ..:/workspace  # ..:/workspace:cached
-    ports:
-      - "4444:4444"
-    user: "504"
-    command: sleep infinity  # Overrides default command so things don't shut down after the process ends.
-    networks:
-      - biosimulations-net
-    depends_on:
-      - nats
-      - redis-primary
-      # - mongo
-    env_file:
-      - ../config/config.env
-  
-  dispatch-service: 
-    platform: linux/amd64
-    build: 
-      context: . 
-      dockerfile: ./dispatch-service.devcontainer/Dockerfile
-      args: 
-        VARIANT: 18-bullseye
-        USER_UID: 1000  # On Linux, you may need to update USER_UID and USER_GID below if not your local UID is not 1000.
-        USER_GID: 1000
-    volumes:
-    - ..:/workspace  # ..:/workspace:cached
-    user: "504"
-    command: sleep infinity  # Overrides default command so things don't shut down after the process ends.
-    networks:
-      - biosimulations-net
-    depends_on:
-      - nats
-      - redis-primary
-      # - mongo
-    env_file:
-      - ../config/config.env
-  
+  # -- external services --
   nats:
     image: nats:latest
     restart: unless-stopped
     ports: 
       - "4222:4222"
     networks:
-      - biosimulations-net
-    
+      - biosimulations-dev-net
+
   redis-primary:
     image: redis:latest
     restart: unless-stopped
     ports: 
       - "6379:6379"
     networks:
-      - biosimulations-net
-  
+      - biosimulations-dev-net
+
   # mongo: 
   #   image: mongo:latest
   #   restart: unless-stopped
   #   ports: 
   #     - "27017:27017"
   #   networks:
-  #     - biosimulations-net
+  #     - biosimulations-dev-net
+
+  # -- app service --
+  app: 
+    platform: linux/amd64
+    build: 
+      context: . 
+      dockerfile: ./Dockerfile  # ./api.devcontainer/Dockerfile
+      args: 
+        VARIANT: 18-bullseye
+        USER_UID: 1000  # On Linux, you may need to update USER_UID and USER_GID below if not your local UID is not 1000.
+        USER_GID: 1000
+    volumes:
+    - ..:/workspace  # :cached
+    user: "504"
+    command: sleep infinity  # Overrides default command so things don't shut down after the process ends.
+    networks:
+      - biosimulations-dev-net
+    depends_on:
+      - nats
+      - redis-primary
+      # - mongo
+    env_file:
+      - ../config/config.env
   
-  # app: 
+  # -- multi-container strategy TODO: uncomment this --
+  # api: 
+  #   platform: linux/amd64
   #   build: 
   #     context: . 
-  #     dockerfile: Dockerfile
+  #     dockerfile: ./Dockerfile  # ./api.devcontainer/Dockerfile
   #     args: 
-  #       VARIANT: 16-bullseye
+  #       VARIANT: 18-bullseye
   #       USER_UID: 1000  # On Linux, you may need to update USER_UID and USER_GID below if not your local UID is not 1000.
   #       USER_GID: 1000
   #   volumes:
-  #   - ..:/workspace  # ..:/workspace:cached
+  #   - ..:/workspace  # :cached
   #   ports:
-  #     - "4200:4200"
+  #     - "4444:4444"
+  #   user: "504"
   #   command: sleep infinity  # Overrides default command so things don't shut down after the process ends.
-
-networks:
-  biosimulations-net:
-    driver: bridge
+  #   networks:
+  #     - biosimulations-dev-net
+  #   depends_on:
+  #     - nats
+  #     - redis-primary
+  #     # - mongo
+  #   env_file:
+  #     - ../config/config.env
+  # dispatch-service: 
+  #   platform: linux/amd64
+  #   build: 
+  #     context: . 
+  #     dockerfile: ./Dockerfile  # ./dispatch-service.devcontainer/Dockerfile
+  #     args: 
+  #       VARIANT: 18-bullseye
+  #       USER_UID: 1000
+  #       USER_GID: 1000
+  #   volumes:
+  #   - ..:/workspace  # cached
+  #   user: "504"
+  #   command: sleep infinity   
+  #   networks:
+  #     - biosimulations-dev-net
+  #   depends_on:
+  #     - nats
+  #     - redis-primary
+  #     # - mongo
+  #   env_file:
+  #     - ../config/config.env
+  # platform: 
+  #   platform: linux/amd64
+  #   build: 
+  #     context: . 
+  #     dockerfile: ./Dockerfile  # ./platform.devcontainer/Dockerfile
+  #     args: 
+  #       VARIANT: 18-bullseye
+  #       USER_UID: 1000 
+  #       USER_GID: 1000
+  #   volumes:
+  #   - ..:/workspace  # :cached
+  #   user: "504"
+  #   command: sleep infinity   
+  #   networks:
+  #     - biosimulations-dev-net
+  #   depends_on:
+  #     - nats
+  #     - redis-primary
+  #     # - mongo
   

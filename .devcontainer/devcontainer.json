@@ -25,16 +25,13 @@
     "github.copilot"
   ],
 
-  // Use 'forwardPorts' to make a list of ports inside the container available locally.
-  "forwardPorts": [4222, 3333, 4200],
+  // define the ports that need to be available in the container, as per the docker-compose.yml file (api, dispatch-service, redis, nats, platform, etc)
+  "forwardPorts": [4444, 7777, 4200, 6379, 4222],
 
   // Use 'postCreateCommand' to run commands after the container is created.
-  "postCreateCommand": "npm install",
+  "postCreateCommand": "npm install && npm install --platform=linux --arch=x64 sharp && npm rebuild sharp --platform=linux --arch=x64"
 
   // check ports: netstat -tuln
-
   // Comment out connect as root instead. More info: https://aka.ms/vscode-remote/containers/non-root.
-  "remoteUser": "node"
-
-  // once container is built run: npx nx run platform:serve --host 0.0.0.0 --port 4200
+  // "remoteUser": "alexanderpatrie"
 }

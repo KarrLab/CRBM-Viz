@@ -3,7 +3,7 @@
 {
   "name": "Biosimulations",
   "dockerComposeFile": "../docker-compose.yml",
-  "service": "platform",
+  "service": "combine-api",
   "workspaceFolder": "/workspace",
 
   // Set *default* container specific settings.json values on container create.
@@ -26,15 +26,15 @@
   ],
 
   // Use 'forwardPorts' to make a list of ports inside the container available locally.
-  "forwardPorts": [4200],
+  // "forwardPorts": [4222, 3333, 4200],
 
   // Use 'postCreateCommand' to run commands after the container is created.
-  "postCreateCommand": "npm install"
+  "postCreateCommand": "npm install",
 
   // check ports: netstat -tuln
 
   // Comment out connect as root instead. More info: https://aka.ms/vscode-remote/containers/non-root.
-  // "remoteUser": "alexanderpatrie"
+  "remoteUser": "node"
 
   // once container is built run: npx nx run platform:serve --host 0.0.0.0 --port 4200
 }
