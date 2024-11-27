@@ -119,12 +119,13 @@ services:
   combine-api: 
     platform: linux/amd64
     build: 
-      context: . 
-      dockerfile: ./Dockerfile  # ./platform.devcontainer/Dockerfile
+      context: ../apps/combine-api 
+      dockerfile: ../../.devcontainer/combine-api.devcontainer/Dockerfile  # ./combine-api.devcontainer/Dockerfile
       args: 
-        VARIANT: 18-bullseye
         USER_UID: 1000 
         USER_GID: 1000
+        VARIANT: "3.10-bullseye"
+        POETRY_VERSION: "1.8.4"
     volumes:
     - ..:/workspace  # :cached
     user: "504"
