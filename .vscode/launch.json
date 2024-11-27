@@ -35,6 +35,15 @@
       //  "internalConsoleOptions": "neverOpen"
     },
     {
+      "type": "debugpy",
+      "request": "launch",
+      "name": "Serve Combine-API",
+      "program": "${workspaceFolder}/apps/combine-api/src/main.py",
+      "args": [],
+      "cwd": "${workspaceFolder}",
+      "env": {},
+      },
+    {
       "type": "node",
       "request": "attach",
       "name": "Attach to Nx",

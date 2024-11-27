@@ -6,10 +6,7 @@
   "service": "combine-api",
   "workspaceFolder": "/workspace",
 
-  // Set *default* container specific settings.json values on container create.
-  "settings": {},
-
-  // Add the IDs of extensions you want installed when the container is created.
+    // Add the IDs of extensions you want installed when the container is created.
   "customizations": {
     "vscode": {
       "extensions": ["ms-python.python", "ms-python.vscode-pylance", "eamodio.gitlens", "github.copilot"]
@@ -22,6 +19,10 @@
     //     "content": "export PATH=$PATH:/workspace/node_modules/.bin"
     //   }
     // }
+  },
+
+  "features": {
+    "github-cli": "latest"
   },
 
   // Use 'forwardPorts' to make a list of ports inside the container available locally.
