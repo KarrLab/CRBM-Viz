@@ -1,0 +1,25 @@
+{
+  "configurations": [
+    {
+      "type": "debugpy",
+      "request": "launch",
+      "name": "Launch Combine API",
+      "program": "${workspaceFolder}/${input:programPath}",
+      "console": "integratedTerminal"
+    },
+    {
+      "type": "python",
+      "request": "launch",
+      "name": "Launch Combine API with Gunicorn",
+      "module": "gunicorn",
+      "args": [
+        "-w",
+        "4", // Number of worker processes
+        "-b",
+        "127.0.0.1:8000", // Bind to address and port
+        "app:app" // Module and application instance
+      ],
+      "console": "integratedTerminal"
+    }
+  ]
+}

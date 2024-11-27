@@ -10,26 +10,25 @@
   "settings": {},
 
   // Add the IDs of extensions you want installed when the container is created.
-  "extensions": [
-    "mikael.angular-beastcode",
-    "angular.ng-template",
-    "aaron-bond.better-comments",
-    "ms-kubernetes-tools.vscode-kubernetes-tools",
-    "nrwl.angular-console",
-    "msjsdiag.debugger-for-chrome",
-    "firefox-devtools.vscode-firefox-debug",
-    "esbenp.prettier-vscode",
-    "dbaeumer.vscode-eslint",
-    "firsttris.vscode-jest-runner",
-    "eamodio.gitlens",
-    "github.copilot"
-  ],
+  "customizations": {
+    "vscode": {
+      "extensions": ["ms-python.python", "ms-python.vscode-pylance", "eamodio.gitlens", "github.copilot"]
+    }
+    // "settings": {
+    //   "terminal.integrated.shell.linux": "/bin/bash"
+    // },
+    // "files": {
+    //   "/root/.bashrc": {
+    //     "content": "export PATH=$PATH:/workspace/node_modules/.bin"
+    //   }
+    // }
+  },
 
   // Use 'forwardPorts' to make a list of ports inside the container available locally.
   // "forwardPorts": [4222, 3333, 4200],
 
   // Use 'postCreateCommand' to run commands after the container is created.
-  "postCreateCommand": "npm install",
+  // "postCreateCommand": "npm install",
 
   // check ports: netstat -tuln
 

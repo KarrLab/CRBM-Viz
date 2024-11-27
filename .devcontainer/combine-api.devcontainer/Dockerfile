@@ -1,7 +1,7 @@
 #############
 ### base ###
 #############
-FROM python:3.10-buster as base
+FROM ghcr.io/devcontainers/templates/python:10-bullseye as base
 
 WORKDIR /app
 
@@ -351,22 +351,3 @@ CMD /bin/bash /xvfb-startup.sh \
         --log-level debug \
         --log-file=-
 
-#############
-### build ###
-#############
-FROM base as build
-
-ARG app
-ENV APP=$app
-
-RUN echo building ${app}
-
-LABEL \
-    org.opencontainers.image.title="BioSimulations ${app}" \
-    org.opencontainers.image.description="Docker image for BioSimulations ${app}" \
-    org.opencontainers.image.url="https://biosimulations.org/" \
-    org.opencontainers.image.documentation="https://docs.biosimulations.org/" \
-    org.opencontainers.image.source="https://github.com/biosimulations/biosimulations" \
-    org.opencontainers.image.authors="BioSimulations Team <info@biosimulations.org>" \
-    org.opencontainers.image.vendor="BioSimulations Team" \
-    org.opencontainers.image.licenses="MIT"

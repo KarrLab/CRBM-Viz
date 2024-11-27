@@ -30,7 +30,7 @@ export interface SimdataAPIConnectionAsyncOptions {
         const endpoints = new Endpoints(env);
         const simdataBaseUrl = endpoints.getSimdataApiBaseUrl(false);
         const logger = new Logger(SimdataApiNestClientWrapperModule.name);
-        logger.log(`Using Combine API: ${simdataBaseUrl}`);
+        logger.log(`Using Simdata API: ${simdataBaseUrl}`);
         return new SimdataAPIConfiguration({
           basePath: simdataBaseUrl,
         });

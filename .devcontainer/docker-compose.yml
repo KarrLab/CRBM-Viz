@@ -29,31 +29,7 @@ services:
   #     - biosimulations-dev-net
 
   # -- app service --
-  app: 
-    platform: linux/amd64
-    build: 
-      context: . 
-      dockerfile: ./Dockerfile  # ./api.devcontainer/Dockerfile
-      args: 
-        VARIANT: 18-bullseye
-        USER_UID: 1000  # On Linux, you may need to update USER_UID and USER_GID below if not your local UID is not 1000.
-        USER_GID: 1000
-    volumes:
-    - ..:/workspace  # :cached
-    - /workspace/package.json:/workspace/package.json:cached
-    user: "504"
-    command: sleep infinity  # Overrides default command so things don't shut down after the process ends.
-    networks:
-      - biosimulations-dev-net
-    depends_on:
-      - nats
-      - redis-primary
-      # - mongo
-    env_file:
-      - ../config/config.env
-  
-  # -- multi-container strategy TODO: uncomment this --
-  # api: 
+  # app: 
   #   platform: linux/amd64
   #   build: 
   #     context: . 
@@ -64,8 +40,7 @@ services:
   #       USER_GID: 1000
   #   volumes:
   #   - ..:/workspace  # :cached
-  #   ports:
-  #     - "4444:4444"
+  #   - /workspace/package.json:/workspace/package.json:cached
   #   user: "504"
   #   command: sleep infinity  # Overrides default command so things don't shut down after the process ends.
   #   networks:
@@ -76,44 +51,88 @@ services:
   #     # - mongo
   #   env_file:
   #     - ../config/config.env
-  # dispatch-service: 
-  #   platform: linux/amd64
-  #   build: 
-  #     context: . 
-  #     dockerfile: ./Dockerfile  # ./dispatch-service.devcontainer/Dockerfile
-  #     args: 
-  #       VARIANT: 18-bullseye
-  #       USER_UID: 1000
-  #       USER_GID: 1000
-  #   volumes:
-  #   - ..:/workspace  # cached
-  #   user: "504"
-  #   command: sleep infinity   
-  #   networks:
-  #     - biosimulations-dev-net
-  #   depends_on:
-  #     - nats
-  #     - redis-primary
-  #     # - mongo
-  #   env_file:
-  #     - ../config/config.env
-  # platform: 
-  #   platform: linux/amd64
-  #   build: 
-  #     context: . 
-  #     dockerfile: ./Dockerfile  # ./platform.devcontainer/Dockerfile
-  #     args: 
-  #       VARIANT: 18-bullseye
-  #       USER_UID: 1000 
-  #       USER_GID: 1000
-  #   volumes:
-  #   - ..:/workspace  # :cached
-  #   user: "504"
-  #   command: sleep infinity   
-  #   networks:
-  #     - biosimulations-dev-net
-  #   depends_on:
-  #     - nats
-  #     - redis-primary
-  #     # - mongo
+  
+  # -- multi-container strategy TODO: uncomment this --
+  api: 
+    platform: linux/amd64
+    build: 
+      context: . 
+      dockerfile: ./Dockerfile  # ./api.devcontainer/Dockerfile
+      args: 
+        VARIANT: 18-bullseye
+        USER_UID: 1000  # On Linux, you may need to update USER_UID and USER_GID below if not your local UID is not 1000.
+        USER_GID: 1000
+    volumes:
+    - ..:/workspace  # :cached
+    ports:
+      - "4444:4444"
+    user: "504"
+    command: sleep infinity  # Overrides default command so things don't shut down after the process ends.
+    networks:
+      - biosimulations-dev-net
+    depends_on:
+      - nats
+      - redis-primary
+      # - mongo
+    env_file:
+      - ../config/config.env
+  dispatch-service: 
+    platform: linux/amd64
+    build: 
+      context: . 
+      dockerfile: ./Dockerfile  # ./dispatch-service.devcontainer/Dockerfile
+      args: 
+        VARIANT: 18-bullseye
+        USER_UID: 1000
+        USER_GID: 1000
+    volumes:
+    - ..:/workspace  # cached
+    user: "504"
+    command: sleep infinity   
+    networks:
+      - biosimulations-dev-net
+    depends_on:
+      - nats
+      - redis-primary
+      # - mongo
+    env_file:
+      - ../config/config.env
+  platform: 
+    platform: linux/amd64
+    build: 
+      context: . 
+      dockerfile: ./Dockerfile  # ./platform.devcontainer/Dockerfile
+      args: 
+        VARIANT: 18-bullseye
+        USER_UID: 1000 
+        USER_GID: 1000
+    volumes:
+    - ..:/workspace  # :cached
+    user: "504"
+    command: sleep infinity   
+    networks:
+      - biosimulations-dev-net
+    depends_on:
+      - nats
+      - redis-primary
+      # - mongo
+  combine-api: 
+    platform: linux/amd64
+    build: 
+      context: . 
+      dockerfile: ./Dockerfile  # ./platform.devcontainer/Dockerfile
+      args: 
+        VARIANT: 18-bullseye
+        USER_UID: 1000 
+        USER_GID: 1000
+    volumes:
+    - ..:/workspace  # :cached
+    user: "504"
+    command: sleep infinity   
+    networks:
+      - biosimulations-dev-net
+    depends_on:
+      - nats
+      - redis-primary
+      # - mongo
   
