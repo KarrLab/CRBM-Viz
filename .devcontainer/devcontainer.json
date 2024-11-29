@@ -1,0 +1,45 @@
+// For format details, see https://aka.ms/devcontainer.json. For config options, see the README at:
+// https://github.com/microsoft/vscode-dev-containers/tree/v0.192.0/containers/javascript-node
+{
+  "name": "Biosimulations App Dev",
+  "dockerComposeFile": "docker-compose.yml",
+  "service": "dev",
+  "workspaceFolder": "/workspace",
+  "customizations": {
+    "build": {
+      "args": {
+        "COMBINE_DIR": "${localWorkspaceFolder}/apps/combine-api"
+      }
+    },
+    "vscode": {
+      "extensions": [
+        "ms-python.python",
+        "ms-python.debugpy",
+        "ms-python.vscode-pylance",
+        "eamodio.gitlens",
+        "github.copilot",
+        "mikael.angular-beastcode",
+        "angular.ng-template",
+        "aaron-bond.better-comments",
+        "ms-kubernetes-tools.vscode-kubernetes-tools",
+        "nrwl.angular-console",
+        "msjsdiag.debugger-for-chrome",
+        "firefox-devtools.vscode-firefox-debug",
+        "esbenp.prettier-vscode",
+        "dbaeumer.vscode-eslint",
+        "firsttris.vscode-jest-runner"
+      ]
+    }
+    // "settings": {
+    //   "terminal.integrated.shell.linux": "/bin/bash"
+    // },
+    // "files": {
+    //   "/root/.bashrc": {
+    //     "content": "export PATH=$PATH:/workspace/node_modules/.bin"
+    //   }
+    // }
+  },
+  "forwardPorts": [4444, 4200, 3333, 7777, 4222, 6379, 3334],
+  "postCreateCommand": "rm -f /workspace/node_modules/.ngcc_lock_file && npm install && poetry install -C /workspace/apps/combine-api --no-cache"
+  // npm rebuild sharp --platform=linux --arch=x64
+}

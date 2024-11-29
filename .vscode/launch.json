@@ -4,7 +4,7 @@
     {
       "type": "node",
       "request": "launch",
-      "name": "Serve API",
+      "name": "Serve:API",
       "runtimeExecutable": "npx",
       "runtimeArgs": ["nx", "run", "api:serve"],
       "skipFiles": ["<node_internals>/**"],
@@ -15,50 +15,50 @@
     {
       "type": "node",
       "request": "launch",
-      "name": "Serve Dispatch-Service",
+      "name": "Serve:Dispatch-Service",
       "runtimeExecutable": "npx",
       "runtimeArgs": ["nx", "run", "dispatch-service:serve"],
       "skipFiles": ["<node_internals>/**"],
       "port": 9229,
       "console": "integratedTerminal"
-      // "internalConsoleOptions": "neverOpen"
     },
-    {
-      "type": "node",
-      "request": "launch",
-      "name": "Serve Platform",
-      "runtimeExecutable": "npx",
-      "runtimeArgs": ["nx", "run", "platform:serve", "--host", "0.0.0.0", "--port", "4200"],
-      "skipFiles": ["<node_internals>/**"],
-      "port": 9229,
-      "console": "integratedTerminal"
-      //  "internalConsoleOptions": "neverOpen"
-    },
-    {
-      "type": "debugpy",
-      "request": "launch",
-      "name": "Serve Combine-API",
-      "program": "${workspaceFolder}/apps/combine-api/src/main.py",
-      "args": [],
-      "cwd": "${workspaceFolder}",
-      "env": {},
-      },
     {
       "type": "node",
       "request": "attach",
-      "name": "Attach to Nx",
+      "name": "attach:nx",
       "port": 9229,
       "address": "localhost",
       "restart": true,
       "protocol": "inspector",
       "skipFiles": ["<node_internals>/**"],
       "outFiles": ["${workspaceFolder}/dist/**/*.js"]
+    },
+    {
+      "type": "debugpy",
+      "request": "launch",
+      "name": "launch:debugpy",
+      "program": "${workspaceFolder}/${input:programPath}",
+      "console": "integratedTerminal"
+    },
+    {
+      "type": "python",
+      "request": "launch",
+      "name": "Serve:Combine-API",
+      "module": "gunicorn",
+      "args": [
+        "-w",
+        "4", // Number of worker processes
+        "-b",
+        "127.0.0.1:8000", // Bind to address and port
+        "app:app" // Module and application instance
+      ],
+      "console": "integratedTerminal"
     }
   ],
   "compounds": [
     {
-      "name": "Full Stack Debug",
-      "configurations": ["Serve API", "Serve Dispatch-Service", "Serve Platform"]
+      "name": "Debug > Services > NestJS",
+      "configurations": ["Serve:API", "Serve:Dispatch-Service"]
     }
   ]
 }

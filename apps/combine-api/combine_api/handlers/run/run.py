@@ -15,6 +15,7 @@ import requests
 import requests.exceptions
 import werkzeug.wrappers.response  # noqa: F401
 import zipfile
+import logging
 from combine_api.app_config import (
   ENVVAR_RUN_COMBINE_ARCHIVE_TIMEOUT
 )
@@ -31,6 +32,7 @@ IGNORED_ENV_VARS = [
     'LOG_PATH',
 ]
 
+logger = logging.getLogger()
 
 def handler(body, archiveFile=None):
     """ Execute the SED-ML files in a COMBINE/OMEX archive.
@@ -44,6 +46,7 @@ def handler(body, archiveFile=None):
         :obj:`werkzeug.wrappers.response.Response`: response with the results and log of the run in the
             ``SimulationRunResults`` schema
     """
+    logger.log('Sim Run handler called!')
     archive_file = archiveFile
     archive_url = body.get('archiveUrl', None)
     simulator_id = body['simulator']

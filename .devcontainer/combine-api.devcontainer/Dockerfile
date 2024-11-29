@@ -25,6 +25,7 @@ RUN apt-get update -y
 ENV PATH="/opt/poetry/bin:$PATH"
 ENV POETRY_HOME=/opt/poetry
 RUN curl -sSL https://install.python-poetry.org | python3 - \
+    && poetry config virtualenvs.create true \
     && poetry config cache-dir "/poetry/.cache" --local \
     && chmod 755 poetry.toml
 
@@ -32,6 +33,7 @@ RUN curl -sSL https://install.python-poetry.org | python3 - \
 COPY . .
 
 RUN chmod 755 poetry.toml \
+    && poetry env use 3.10 \
     && poetry install --no-cache
 
 #

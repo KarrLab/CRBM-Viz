@@ -1,0 +1,24 @@
+services:
+  # -- internal services (python) --
+  combine-api: 
+    platform: linux/amd64
+    build: 
+      context: ../apps/combine-api
+      dockerfile: ../../.devcontainer/combine-api.devcontainer/Dockerfile  # ./combine-api.devcontainer/Dockerfile
+      args: 
+        USER_UID: 1000 
+        USER_GID: 1000
+        VARIANT: "3.10-bullseye"
+        POETRY_VERSION: "1.8.4"
+    volumes:
+    - ..:/workspace:cached
+    # user: "504"
+    command: sleep infinity   
+    networks:
+      - devnet
+    depends_on:
+      - nats
+      - redis-primary
+      # - mongo
+    ports:
+      - "3333:3333"
