@@ -60,8 +60,8 @@ services:
       dockerfile: ./Dockerfile  # ./api.devcontainer/Dockerfile
       args: 
         VARIANT: 18-bullseye
-        USER_UID: 1000  # On Linux, you may need to update USER_UID and USER_GID below if not your local UID is not 1000.
-        USER_GID: 1000
+        USER_UID: 504  # On Linux, you may need to update USER_UID and USER_GID below if not your local UID is not 1000.
+        USER_GID: 20
     volumes:
     - ..:/workspace  # :cached
     ports:
@@ -83,8 +83,8 @@ services:
       dockerfile: ./Dockerfile  # ./dispatch-service.devcontainer/Dockerfile
       args: 
         VARIANT: 18-bullseye
-        USER_UID: 1000
-        USER_GID: 1000
+        USER_UID: 504
+        USER_GID: 20
     volumes:
     - ..:/workspace  # cached
     user: "504"
@@ -104,8 +104,8 @@ services:
       dockerfile: ./Dockerfile  # ./platform.devcontainer/Dockerfile
       args: 
         VARIANT: 18-bullseye
-        USER_UID: 1000 
-        USER_GID: 1000
+        USER_UID: 504 
+        USER_GID: 20
     volumes:
     - ..:/workspace  # :cached
     user: "504"
@@ -122,8 +122,8 @@ services:
       context: ../apps/combine-api 
       dockerfile: ../../.devcontainer/combine-api.devcontainer/Dockerfile  # ./combine-api.devcontainer/Dockerfile
       args: 
-        USER_UID: 1000 
-        USER_GID: 1000
+        USER_UID: 504 
+        USER_GID: 20
         VARIANT: "3.10-bullseye"
         POETRY_VERSION: "1.8.4"
     volumes:
