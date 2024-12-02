@@ -36,6 +36,20 @@
 
   // Use 'postCreateCommand' to run commands after the container is created.
   "postCreateCommand": "poetry env use 3.10 && poetry install --no-cache",
+  "postStartCommand": 
+            [   "poetry", "run", "python", "-m", "gunicorn",
+                "--bind", "0.0.0.0:3333", 
+                "combine_api.app:app",
+                "--workers", "2",
+                "--threads", "4",
+                "--worker-class", "gthread",
+                "--max-requests", "1000",
+                "--timeout", "30",
+                "--keep-alive", "5",
+                "--worker-tmp-dir", "/dev/shm",
+                "--log-level", "debug",
+                "--log-file", "-"
+            ],
 
   // check ports: netstat -tuln
 
