@@ -13,6 +13,8 @@ declare -A ONTOLOGY_URLS=( \
     ["sio"]="https://raw.githubusercontent.com/MaastrichtU-IDS/semanticscience/master/ontology/sio/release/sio-release.owl" \
     ["spdx"]="https://raw.githubusercontent.com/spdx/license-list-data/master/json/licenses.json" \
     )
+      
+# KiSAO url should be consistent with kisao python package used in combine-api service.
 
 # list of ontologies that needs to be updated
 # specified by single command-line argument with comma-separated list of ontology ids
