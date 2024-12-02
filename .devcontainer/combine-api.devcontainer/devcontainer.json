@@ -15,15 +15,8 @@
         "eamodio.gitlens",
         "github.copilot"
       ]
-    }
-    // "settings": {
-    //   "terminal.integrated.shell.linux": "/bin/bash"
-    // },
-    // "files": {
-    //   "/root/.bashrc": {
-    //     "content": "export PATH=$PATH:/workspace/node_modules/.bin"
-    //   }
-    // }
+    },
+    "settings": {}
   },
 
   "features": {
@@ -32,7 +25,7 @@
   },
 
   // Use 'forwardPorts' to make a list of ports inside the container available locally.
-  // "forwardPorts": [4222, 3333, 4200],
+  "forwardPorts": [3333],
 
   // Use 'postCreateCommand' to run commands after the container is created.
   "postCreateCommand": "poetry env use 3.10 && poetry install --no-cache",
@@ -55,6 +48,4 @@
 
   // Comment out connect as root instead. More info: https://aka.ms/vscode-remote/containers/non-root.
   "remoteUser": "vscode"
-
-  // once container is built run: npx nx run platform:serve --host 0.0.0.0 --port 4200
 }
