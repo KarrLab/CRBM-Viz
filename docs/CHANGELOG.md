@@ -1,5 +1,12 @@
 # Changelog
 
+## [9.62.1](https://github.com/biosimulations/biosimulations/compare/v9.62.0...v9.62.1) (2024-12-02)
+
+
+### Bug Fixes
+
+* correct log from simdata api client wrapper module ([4dba520](https://github.com/biosimulations/biosimulations/commit/4dba5203afda00d5759a02885796f01972677ec4))
+
 ## [9.62.0](https://github.com/biosimulations/biosimulations/compare/v9.61.3...v9.62.0) (2024-11-25)
 
 
