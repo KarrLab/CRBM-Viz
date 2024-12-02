@@ -17,7 +17,7 @@ orjson = "^3.8.7"
 flask-cors = "^3.0.10"
 pyyaml = "^6.0"
 boto3 = "^1.26.89"
-kisao = ">=2.34"
+kisao = ">=2.34"  # check consistency with https://raw.githubusercontent.com/SED-ML/KiSAO/deploy/kisao.owl
 biosimulators-utils = {extras = ["bngl", "cellml", "lems", "logging", "neuroml", "sbml", "smoldyn"], version = "^0.2.3"}
 parameterized = "^0.8.1"
 pytest = "^7.2.2"
