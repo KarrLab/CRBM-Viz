@@ -4,7 +4,7 @@
   "name": "Biosimulations",
   "dockerComposeFile": "../docker-compose.yml",
   "service": "combine-api",
-  "workspaceFolder": "/workspace",
+  "workspaceFolder": "/workspace/apps/combine-api",
 
     // Add the IDs of extensions you want installed when the container is created.
   "customizations": {
@@ -27,14 +27,15 @@
   },
 
   "features": {
-    "github-cli": "latest"
+    "github-cli": "latest",
+    "python": "3.10"
   },
 
   // Use 'forwardPorts' to make a list of ports inside the container available locally.
   // "forwardPorts": [4222, 3333, 4200],
 
   // Use 'postCreateCommand' to run commands after the container is created.
-  // "postCreateCommand": "npm install",
+  "postCreateCommand": "poetry env use 3.10 && poetry install --no-cache",
 
   // check ports: netstat -tuln
 

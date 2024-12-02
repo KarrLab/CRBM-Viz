@@ -3,21 +3,24 @@
         {
             "type": "debugpy",
             "request": "launch",
-            "name": "Launch Combine API",
-            "program": "${workspaceFolder}/${input:programPath}",
-            "console": "integratedTerminal"
-        },
-        {
-            "type": "python",
-            "request": "launch",
-            "name": "Launch Combine API with Gunicorn",
+            "name": "Serve:Combine-API",
             "module": "gunicorn",
             "args": [
-                "-w", "4",  // Number of worker processes
-                "-b", "127.0.0.1:8000",  // Bind to address and port
-                "app:app"  // Module and application instance
+                "--bind", "0.0.0.0:3333", 
+                "combine_api.app:app",
+                "--workers", "2",
+                "--threads", "4",
+                "--worker-class", "gthread",
+                "--max-requests", "1000",
+                "--timeout", "30",
+                "--keep-alive", "5",
+                "--worker-tmp-dir", "/dev/shm",
+                "--log-level", "debug",
+                "--log-file", "-"
             ],
-            "console": "integratedTerminal"
+            "console": "integratedTerminal",
+            "python": "${workspaceFolder}/.venv/bin/python"
         }
+      
     ]
 }
