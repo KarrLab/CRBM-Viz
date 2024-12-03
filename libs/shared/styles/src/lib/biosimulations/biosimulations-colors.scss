@@ -160,11 +160,13 @@ $theme-accent-main: #ff9800;
 $theme-accent-lighter: #ffe0b2;
 $theme-accent-lightest: #fff4e5;
 $theme-accent-darker: #ff7b00;
+$theme-accent-darkest: #e66a00;
 
 body {
   --accent-color: #{$theme-accent-main};
   --accent-lighter-color: #{$theme-accent-lighter};
   --accent-darker-color: #{$theme-accent-darker};
+  --accent-darkest-color: #{$theme-accent-darkest};
   --text-accent-color: #{$dark-primary-text};
   --text-accent-lighter-color: #{$dark-primary-text};
   --text-accent-darker-color: #{$dark-primary-text};
