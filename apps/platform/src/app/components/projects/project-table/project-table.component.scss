@@ -20,7 +20,11 @@ a {
   color: var(--primary-darker-color);
 
   &:hover {
-    color: var(--accent-darker-color);
-    transition: color 0.3s ease;
+    color: var(--primary-darkest-darker-color);
+    transition: color 0.4s ease;
   }
+}
+
+.project-cell {
+  font-weight: bold !important;
 }
