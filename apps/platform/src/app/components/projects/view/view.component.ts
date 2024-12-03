@@ -23,6 +23,7 @@ import { Dataset, WithContext } from 'schema-dts';
 import { BiosimulationsError } from '@biosimulations/shared/error-handler';
 import { ProjectSummary } from '@biosimulations/datamodel/common';
 import { BiosimulationsIcon } from '@biosimulations/shared/icons';
+import { Endpoints } from '@biosimulations/config/common';
 
 type CombinedObservables = [ProjectMetadata | null, SimulationRunMetadata, File[], Path[], File[], VisualizationList[]];
 
@@ -72,6 +73,7 @@ export class ViewComponent implements OnInit {
   public usePortal = false;
   public id = '';
   public runUrl: string | null = '';
+  private endpoints = new Endpoints();
 
   public constructor(
     private service: ViewService,
@@ -168,39 +170,14 @@ export class ViewComponent implements OnInit {
         runData.items.forEach((item: ListItem) => {
           const itemId = item.title;
           if (itemId === 'Id') {
-            this.runUrl = this.convertRunUrl(item.url as string);
+            const currentWindowLocation = window.location.href;
+            const local = currentWindowLocation.startsWith('http://localhost');
+            this.runUrl = this.convertRunUrl(item.url as string, local);
             this.id = item.value;
           }
-          // if (itemId === 'Id' || itemId === 'Simulation tool' || itemId === 'Simulation algorithm') {
-          //   const itemLabel = `${itemId}:\n${item.value}`;
-          //   const btnLabel = itemId === 'Id' ? `Simulation Run ${itemLabel}` : itemLabel;
-          //   const overviewData: SimulationOverviewData = {
-          //     id: itemId,
-          //     url: item.url as string,
-          //     label: btnLabel,
-          //     content: item.value,
-          //     icon: (itemId === 'Id'
-          //       ? 'simulation'
-          //       : itemId === 'Simulation algorithm'
-          //       ? 'math'
-          //       : 'simulator') as BiosimulationsIcon,
-          //     tooltip:
-          //       itemId === 'Id' ? 'View full simulation run details' : 'View ' + itemId.toLowerCase() + ' details',
-          //     color:
-          //       itemId === 'Simulation tool' ? '#8d1cce' : itemId == 'Simulation algorithm' ? '#8d1cce' : '#1479ed',
-          //   };
-          //   this.overviewData.push(overviewData);
-          // }
         });
       });
-
-      // ensure simulation id is first
-      // this.overviewData.sort((a: SimulationOverviewData, b: SimulationOverviewData) =>
-      //   a.id === 'Id' ? -1 : b.id === 'Id' ? 1 : 0,
-      // );
     });
-
-    this.transformRunUrl();
     this.handleExpansionPanels();
   }
 
@@ -217,27 +194,15 @@ export class ViewComponent implements OnInit {
     return visualizations;
   }
 
-  private transformRunUrl(): void {
-    this.simulationRun$.subscribe((run: SimulationRunMetadata) => {
-      run.forEach((value, key) => {
-        value.items.forEach((val: ListItem) => {
-          if (val.url?.includes('run.biosimulations')) {
-            const runUrl = val.url;
-            val.url = this.convertRunUrl(runUrl);
-          }
-        });
-      });
-    });
-  }
-
-  private convertRunUrl(url: string): string {
+  private convertRunUrl(url: string, local: boolean = false): string {
     /* Converts dispatch runs to platform url */
     const runUrl = new URL(url);
-    const ext = runUrl.hostname.split('.').slice(-2).join('.');
+    const protocol = local ? 'http' : 'https';
+    const ext = local ? 'localhost:4200' : runUrl.hostname.split('.').slice(-2).join('.');
     const seg = runUrl.pathname.split('/');
     const runId = seg.pop();
     this.generatePortalUrl(runId as string);
-    return `https://${ext}/runs/${runId}`;
+    return `${protocol}://${ext}/runs/${runId}`;
   }
 
   private generatePortalUrl(runId: string): void {
