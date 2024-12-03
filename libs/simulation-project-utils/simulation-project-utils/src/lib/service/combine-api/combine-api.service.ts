@@ -146,7 +146,7 @@ export class CombineApiService {
           params: params,
         })
         .pipe(
-          timeout(2500),
+          timeout(8000),
           retryWhen(retryStrategy.handler.bind(retryStrategy)),
           catchError((error: HttpErrorResponse): Observable<undefined> => {
             if (!environment.production) {
