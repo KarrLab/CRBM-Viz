@@ -40,6 +40,15 @@ button {
   padding-bottom: 0.2rem !important;
 }
 
+.hint-button {
+  font-size: 30px;
+  padding-left: 3rem !important;
+
+  biosimulations-icon {
+    color: var(--primary-darkest-darker-color) !important;
+  }
+}
+
 .advanced-content {
   margin-top: 3rem !important;
   margin-bottom: 3rem !important;

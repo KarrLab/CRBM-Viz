@@ -1,0 +1,26 @@
+{
+    "configurations": [
+        {
+            "type": "debugpy",
+            "request": "launch",
+            "name": "Serve:Combine-API",
+            "module": "gunicorn",
+            "args": [
+                "--bind", "0.0.0.0:3333", 
+                "combine_api.app:app",
+                "--workers", "2",
+                "--threads", "4",
+                "--worker-class", "gthread",
+                "--max-requests", "1000",
+                "--timeout", "30",
+                "--keep-alive", "5",
+                "--worker-tmp-dir", "/dev/shm",
+                "--log-level", "debug",
+                "--log-file", "-"
+            ],
+            "console": "integratedTerminal",
+            "python": "${workspaceFolder}/.venv/bin/python"
+        }
+      
+    ]
+}

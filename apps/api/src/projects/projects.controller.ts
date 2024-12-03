@@ -1,4 +1,5 @@
 import { permissions, OptionalAuth } from '@biosimulations/auth/nest';
+import { Logger } from '@nestjs/common';
 import {
   Project,
   ProjectFilterQueryItem,
@@ -45,6 +46,7 @@ import { scopes } from '@biosimulations/auth/common';
 @ApiTags('Projects')
 @Controller('projects')
 export class ProjectsController {
+  private logger = new Logger('ProjectsController');
   public constructor(private service: ProjectsService) {}
 
   @Get()
@@ -58,6 +60,7 @@ export class ProjectsController {
   })
   public async getProjects(): Promise<Project[]> {
     const projects = await this.service.getProjects();
+    this.logger.log('Get projects called!');
     return projects.map((proj) => this.returnProject(proj));
   }
 

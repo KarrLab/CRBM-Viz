@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, AfterViewInit } from '@angular/core';
 import { Params, ActivatedRoute } from '@angular/router';
 import { UntypedFormBuilder, UntypedFormGroup, Validators, ValidationErrors } from '@angular/forms';
 import { DispatchService } from '../../../services/dispatch/dispatch.service';
@@ -41,6 +41,7 @@ interface SimulatorIdNameDisabled {
   id: string;
   name: string;
   disabled: boolean;
+  version?: string;
 }
 
 interface Simulator {
@@ -65,7 +66,7 @@ interface Algorithm {
   templateUrl: './dispatch.component.html',
   styleUrls: ['./dispatch.component.scss'],
 })
-export class DispatchComponent implements OnInit, OnDestroy {
+export class DispatchComponent implements OnInit, OnDestroy, AfterViewInit {
   public formGroup: UntypedFormGroup;
 
   // Form control option lists
@@ -79,10 +80,14 @@ export class DispatchComponent implements OnInit, OnDestroy {
   public exampleCombineArchivesUrl: string;
   public emailUrl!: string;
   public isReRun = false;
-
+  public originalSim!: SimulatorIdNameDisabled;
   // Lifecycle state
   public submitPushed = false;
   private subscriptions: Subscription[] = [];
+  public hintShowing = false;
+  public archiveHintShowing = false;
+  public simulatorHintShowing = false;
+  public capabilitiesHintShowing = false;
 
   // Data loaded from network
   private modelFormatsMap?: OntologyTermsMap;
@@ -131,8 +136,8 @@ export class DispatchComponent implements OnInit, OnDestroy {
     this.formGroup.controls.modelFormats.disable();
     this.formGroup.controls.simulationAlgorithms.disable();
     this.formGroup.controls.simulationAlgorithmSubstitutionPolicy.disable();
-    this.formGroup.controls.simulator.disable();
-    this.formGroup.controls.simulatorVersion.disable();
+    this.formGroup.controls.simulator.enable();
+    this.formGroup.controls.simulatorVersion.enable();
 
     const exampleCombineArchivesUrlTokens = [
       'https://github.com',
@@ -148,6 +153,25 @@ export class DispatchComponent implements OnInit, OnDestroy {
   // Life cycle
 
   public ngOnInit(): void {
+    this.activateRoute.queryParams.subscribe((params: ReRunQueryParams) => {
+      if (params.projectUrl) {
+        this.isReRun = true;
+        this.formGroup.controls.projectUrl.setValue(params.projectUrl);
+        this.formGroup.controls.name.setValue(params.runName);
+
+        const originalSim: SimulatorIdNameDisabled = {
+          id: params.simulator as string,
+          name: params.simulator as string,
+          disabled: false,
+          version: params.simulatorVersion,
+        };
+        this.originalSim = originalSim;
+        this.simulators.push(originalSim);
+        this.formGroup.controls.simulator.setValue(originalSim.name);
+        this.formGroup.controls.simulatorVersion.setValue(originalSim.version);
+      }
+    });
+
     const loadObs = this.loader.loadSimulationUtilData();
     const loadSub = loadObs.subscribe(this.loadComplete.bind(this));
     this.subscriptions.push(loadSub);
@@ -159,12 +183,32 @@ export class DispatchComponent implements OnInit, OnDestroy {
         this.formGroup.value.emailConsent = true;
       }
     });
+  }
 
-    this.activateRoute.queryParams.subscribe((params: ReRunQueryParams) => {
-      if (params.projectUrl) {
-        this.isReRun = true;
-      }
-    });
+  public showArchiveHint(): void {
+    this.archiveHintShowing = !this.archiveHintShowing;
+  }
+
+  public showSimulatorHint(): void {
+    this.simulatorHintShowing = !this.simulatorHintShowing;
+  }
+
+  public showCapabilitiesHint(): void {
+    this.capabilitiesHintShowing = !this.capabilitiesHintShowing;
+  }
+
+  public ngAfterViewInit(): void {
+    // this.submitReRun();
+    console.log('ngAfterViewInit');
+  }
+
+  public submitReRun(): void {
+    if (this.isReRun) {
+      console.log('Automatically submitting the form!');
+      this.onFormSubmit();
+    } else {
+      console.log('NOT Automatically submitting the form!');
+    }
   }
 
   public ngOnDestroy(): void {
