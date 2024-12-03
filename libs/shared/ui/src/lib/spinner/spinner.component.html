@@ -1,1 +1,11 @@
-<mat-spinner></mat-spinner>
+<ng-container *ngIf="label; else noLabel">
+  <div class="spinner-parent">
+    <h3>{{ label }}</h3>
+    <mat-spinner></mat-spinner>
+  </div>
+</ng-container>
+
+<ng-template #noLabel>
+  <mat-spinner></mat-spinner>
+</ng-template>
+
