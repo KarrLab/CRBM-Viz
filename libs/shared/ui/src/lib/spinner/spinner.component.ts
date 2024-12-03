@@ -1,8 +1,11 @@
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
 
 @Component({
   selector: 'biosimulations-spinner',
   templateUrl: './spinner.component.html',
   styleUrls: ['./spinner.component.scss'],
 })
-export class SpinnerComponent {}
+export class SpinnerComponent {
+  @Input()
+  public title?: string;
+}
