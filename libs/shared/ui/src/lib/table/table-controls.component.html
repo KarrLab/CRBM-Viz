@@ -154,6 +154,7 @@
                       <mat-list-item *ngFor="let value of table.columnFilterData[column.id]">
                         <mat-checkbox
                           #checkbox
+                          [matTooltip]="value.formattedValue"
                           [checked]="value.checked"
                           (change)="table.filterSetValue(column, value, checkbox.checked)"
                           ng-attr-title
