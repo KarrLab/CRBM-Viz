@@ -14,6 +14,12 @@ button {
   float: right;
 }
 
+.hint-button {
+  // color: var(--accent-darkest-color);
+  font-size: 30px;
+  padding-left: 3rem;
+}
+
 .update {
   font-size: small;
 }
@@ -32,6 +38,12 @@ button {
   }
 }
 
+.card-form-section-title {
+  &.advanced-title {
+    background-color: var(--primary-darkest-darker-color) !important;
+    font-weight: normal !important;
+  }
+}
 .advanced-title {
   background-color: var(--accent-darker-color) !important;
   font-weight: bold !important;
