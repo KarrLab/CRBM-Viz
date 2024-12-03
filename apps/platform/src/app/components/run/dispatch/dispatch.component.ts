@@ -410,7 +410,7 @@ export class DispatchComponent implements OnInit, OnDestroy {
         _type: 'KisaoAlgorithmSubstitution',
         algorithms: [alg, alg],
         //minPolicy: ALGORITHM_SUBSTITUTION_POLICIES[AlgorithmSubstitutionPolicyLevels.SAME_METHOD],
-        minPolicy: ALGORITHM_SUBSTITUTION_POLICIES[AlgorithmSubstitutionPolicyLevels.ANY],
+        minPolicy: ALGORITHM_SUBSTITUTION_POLICIES[AlgorithmSubstitutionPolicyLevels.SAME_FRAMEWORK],
       };
     });
   }
