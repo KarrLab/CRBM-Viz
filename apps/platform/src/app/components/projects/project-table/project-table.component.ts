@@ -36,9 +36,6 @@ export class ProjectTableDataSource extends DataSource<FormattedProjectSummary> 
       distinctUntilChanged(),
       takeUntil(this._destroying$),
       switchMap((criteria) => {
-        const filterDesc: string | undefined = criteria.filters
-          ?.map((item) => item.target.toString() + '=[' + item.allowable_values.join(',') + ']')
-          .join(', ');
         return this.browseService.getProjects(criteria);
       }),
     );

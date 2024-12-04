@@ -17,7 +17,6 @@ import { DispatchService } from '../../../services/dispatch/dispatch.service';
 import { SimulationService } from '../../../services/simulation/simulation.service';
 import { CombineApiService } from '../../../services/combine-api/combine-api.service';
 import {
-  _IntrospectNewProject,
   CreateArchiveFromSedDoc,
   CustomizableSedDocumentData,
   FormStepData,
@@ -311,19 +310,6 @@ export class CustomizeSimulationComponent implements OnInit, OnDestroy {
 
   public enableEmail(checked: boolean): void {
     this.emailEnabled = checked;
-  }
-
-  public clearOverrides(checked: boolean): void {
-    /* Clear original simulation parameter changes/overrides if checked */
-    if (checked) {
-      this.parameterSelections.removeAt(this.parameterSelections.length - 1);
-      const originalChange = this.uploadedSedDoc.models[0].changes.pop();
-      this.originalModelChanges.push(originalChange as SedModelChange);
-    } else {
-      this.originalModelChanges.forEach((change: SedModelChange): void => {
-        this.uploadedSedDoc.models[0].changes.push(change as any);
-      });
-    }
   }
 
   public setAttributesFromQueryParams(): void {
