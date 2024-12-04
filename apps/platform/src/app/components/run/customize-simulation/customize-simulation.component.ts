@@ -91,6 +91,7 @@ interface Algorithm {
   styleUrls: ['./customize-simulation.component.scss'],
 })
 export class CustomizeSimulationComponent implements OnInit, OnDestroy {
+  public simulationFiles: Record<string, string>[] = [];
   public formGroup: UntypedFormGroup;
   public variablesFormGroup: UntypedFormGroup;
 
@@ -328,29 +329,41 @@ export class CustomizeSimulationComponent implements OnInit, OnDestroy {
   public setAttributesFromQueryParams(): void {
     /* Set component attributes from Query params */
     this.activateRoute.queryParams.subscribe((params: ReRunQueryParams) => {
+      // set params
       this.simParams = params;
 
-      // TODO: set urls here
+      // set runId
       this.reRunId = params.runId as string;
 
       if (params.projectUrl) {
         this.isReRun = true;
       }
 
+      // set model data
       this.modelData = {
         modelUrl: params.modelUrl as string,
         modelFormat: params.modelFormat as string,
       };
 
+      // set alg data
       this.simMethodData = {
         simulationType: params.simulationType as SimulationType,
         framework: params.modelingFramework as string,
         algorithm: params.simulationAlgorithm as string,
       };
 
+      // set license
       this.needsLicense = (params.simulator?.includes('cobra') || params.simulator?.includes('rba')) as boolean;
+
+      // set files
+      JSON.parse(params.files as string).forEach((file: Record<string, string>) => {
+        if (!file.format.endsWith('sbml') && !file.name.endsWith('.sedml') && !file.name.startsWith('manifest')) {
+          this.simulationFiles.push(file);
+        }
+      });
     });
 
+    // introspect new project
     const handler = this.archiveError.bind(this);
     this.introspectionData$ = IntrospectNewProject(
       this.httpClient,
@@ -565,19 +578,12 @@ export class CustomizeSimulationComponent implements OnInit, OnDestroy {
       form.append('simulationType', queryParams.simulationType as string);
       form.append('simulationAlgorithm', queryParams.simulationAlgorithm as string);
 
-      const introspectedSedDoc$ = _IntrospectNewProject(
-        this.httpClient,
-        form as FormData,
-        queryParams.modelUrl as string,
-        errorHandler,
-      );
-
       const archive = CreateArchiveFromSedDoc(
         this.uploadedSedDoc as SedDocument,
         queryParams.modelUrl as string,
         queryParams.modelFormat as string,
-        queryParams.modelFile as File,
-        queryParams.imageFileUrls as string[],
+        // queryParams.modelFile as File,
+        this.simulationFiles,
       );
 
       if (!archive) {

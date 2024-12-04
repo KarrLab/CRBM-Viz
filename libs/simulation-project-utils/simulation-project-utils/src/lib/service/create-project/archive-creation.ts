@@ -1,5 +1,6 @@
 import {
   CombineArchive,
+  CombineArchiveContent,
   CombineArchiveContentFileTypeEnum,
   CombineArchiveContentTypeEnum,
   CombineArchiveContentUrlTypeEnum,
@@ -11,6 +12,9 @@ import {
   SedAlgorithmParameterChange,
   SedAlgorithmParameterChangeTypeEnum,
   SedAlgorithmTypeEnum,
+  SedAxisScale,
+  SedCurve,
+  SedCurveTypeEnum,
   SedDataGenerator,
   SedDataGeneratorTypeEnum,
   SedDataSet,
@@ -21,11 +25,9 @@ import {
   SedModelAttributeChangeTypeEnum,
   SedModelChange,
   SedModelTypeEnum,
-  SedCurve,
-  SedCurveTypeEnum,
-  SedAxisScale,
   SedPlot2D,
   SedPlot2DTypeEnum,
+  SedReport,
   SedReportTypeEnum,
   SedSimulation,
   SedSteadyStateSimulationTypeEnum,
@@ -36,7 +38,6 @@ import {
   SedUniformTimeCourseSimulationTypeEnum,
   SedVariable,
   SedVariableTypeEnum,
-  SedReport,
 } from '@biosimulations/combine-api-angular-client';
 import { BIOSIMULATIONS_FORMATS_BY_ID } from '@biosimulations/ontology/extra-sources';
 import { SedDocument as CommonSedDoc, SimulationType, ValueType } from '@biosimulations/datamodel/common';
@@ -100,16 +101,16 @@ export function CreateArchiveFromSedDoc(
   sedDoc: SedDocument | CommonSedDoc,
   modelUrl: string,
   modelFormat: string,
-  modelFile: File,
-  imageUrls: string[],
+  // modelFile: File,
+  files?: Record<string, string>[],
 ): CombineArchive {
-  /* To be used in customize-simulation */
+  /* To be used in customize-simulation (creating the archive based on an existing simulation) */
   const model = sedDoc.models[0] as SedModel;
   const modelContent = {
     _type: CombineArchiveContentUrlTypeEnum.CombineArchiveContentUrl,
     url: modelUrl,
   };
-  return CompleteArchive(modelFormat, sedDoc, modelContent, model.source, imageUrls);
+  return CompleteArchive(modelFormat, sedDoc, modelContent, model.source, files);
 }
 
 function CreateSedModelChanges(modelChanges: Record<string, string>[], namespaces: Namespace[]): SedModelChange[] {
@@ -472,29 +473,27 @@ function getFileNameFromUrl(url: string): string | undefined {
 function CompleteArchive(
   modelFormat: string,
   sedDoc: SedDocument | CommonSedDoc,
-  locationValue: CombineArchiveLocationValue,
-  modelPath: string,
-  imageUrls: string[],
+  modelLocationValue: CombineArchiveLocationValue,
+  modelLocation: string,
+  auxFiles?: Record<string, string | boolean>[],
 ): CombineArchive {
-  const modelFormatUri = BIOSIMULATIONS_FORMATS_BY_ID[modelFormat].biosimulationsMetadata?.omexManifestUris[0];
-  const sedUri = 'http://identifiers.org/combine.specifications/sed-ml';
-
-  return {
+  // add model file and sedml to archive (required)
+  const archive = {
     _type: CombineArchiveTypeEnum.CombineArchive,
     contents: [
       {
         _type: CombineArchiveContentTypeEnum.CombineArchiveContent,
-        format: modelFormatUri as string,
+        format: BIOSIMULATIONS_FORMATS_BY_ID[modelFormat].biosimulationsMetadata?.omexManifestUris[0] as string,
         master: false,
         location: {
           _type: CombineArchiveLocationTypeEnum.CombineArchiveLocation,
-          path: modelPath,
-          value: locationValue,
+          path: modelLocation,
+          value: modelLocationValue,
         },
       },
       {
         _type: CombineArchiveContentTypeEnum.CombineArchiveContent,
-        format: sedUri,
+        format: 'http://identifiers.org/combine.specifications/sed-ml',
         master: true,
         location: {
           _type: CombineArchiveLocationTypeEnum.CombineArchiveLocation,
@@ -504,4 +503,24 @@ function CompleteArchive(
       },
     ],
   };
+
+  // add each existing non-sedml or non-model file to the archive
+  auxFiles?.forEach((file) => {
+    const fileContent: CombineArchiveContent = {
+      _type: CombineArchiveContentTypeEnum.CombineArchiveContent,
+      format: file.format as string,
+      master: file.master as boolean,
+      location: {
+        _type: CombineArchiveLocationTypeEnum.CombineArchiveLocation,
+        path: file.location as string,
+        value: {
+          _type: CombineArchiveContentUrlTypeEnum.CombineArchiveContentUrl,
+          url: file.url as string,
+        },
+      },
+    };
+    archive.contents.push(fileContent);
+  });
+
+  return archive;
 }
