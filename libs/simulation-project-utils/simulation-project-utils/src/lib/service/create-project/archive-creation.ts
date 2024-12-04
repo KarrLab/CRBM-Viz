@@ -101,16 +101,16 @@ export function CreateArchiveFromSedDoc(
   sedDoc: SedDocument | CommonSedDoc,
   modelUrl: string,
   modelFormat: string,
-  // modelFile: File,
   files?: Record<string, string>[],
 ): CombineArchive {
   /* To be used in customize-simulation (creating the archive based on an existing simulation) */
   const model = sedDoc.models[0] as SedModel;
-  const modelContent = {
+  const modelLocationValue = {
     _type: CombineArchiveContentUrlTypeEnum.CombineArchiveContentUrl,
     url: modelUrl,
   };
-  return CompleteArchive(modelFormat, sedDoc, modelContent, model.source, files);
+
+  return CompleteArchive(modelFormat, sedDoc, modelLocationValue, model.source, files);
 }
 
 function CreateSedModelChanges(modelChanges: Record<string, string>[], namespaces: Namespace[]): SedModelChange[] {
@@ -185,7 +185,6 @@ function CreateSedModel(
 
   let modelSource = '';
   if (modelUrl) {
-    console.log(`found model url!`);
     const sourcePathNames = new URL(modelUrl).pathname;
     const parts = sourcePathNames.split('/').filter((part) => part !== '');
     modelSource = parts[parts.length - 1];
@@ -506,20 +505,22 @@ function CompleteArchive(
 
   // add each existing non-sedml or non-model file to the archive
   auxFiles?.forEach((file) => {
-    const fileContent: CombineArchiveContent = {
-      _type: CombineArchiveContentTypeEnum.CombineArchiveContent,
-      format: file.format as string,
-      master: file.master as boolean,
-      location: {
-        _type: CombineArchiveLocationTypeEnum.CombineArchiveLocation,
-        path: file.location as string,
-        value: {
-          _type: CombineArchiveContentUrlTypeEnum.CombineArchiveContentUrl,
-          url: file.url as string,
+    if (file.name !== modelLocation) {
+      const fileContent: CombineArchiveContent = {
+        _type: CombineArchiveContentTypeEnum.CombineArchiveContent,
+        format: file.format as string,
+        master: file.master as boolean,
+        location: {
+          _type: CombineArchiveLocationTypeEnum.CombineArchiveLocation,
+          path: file.location as string,
+          value: {
+            _type: CombineArchiveContentUrlTypeEnum.CombineArchiveContentUrl,
+            url: file.url as string,
+          },
         },
-      },
-    };
-    archive.contents.push(fileContent);
+      };
+      archive.contents.push(fileContent);
+    }
   });
 
   return archive;

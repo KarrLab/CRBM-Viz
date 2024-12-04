@@ -357,7 +357,7 @@ export class CustomizeSimulationComponent implements OnInit, OnDestroy {
 
       // set files
       JSON.parse(params.files as string).forEach((file: Record<string, string>) => {
-        if (!file.format.endsWith('sbml') && !file.name.endsWith('.sedml') && !file.name.startsWith('manifest')) {
+        if (!file.name.endsWith('.sedml') && !file.name.startsWith('manifest')) {
           this.simulationFiles.push(file);
         }
       });
@@ -582,7 +582,6 @@ export class CustomizeSimulationComponent implements OnInit, OnDestroy {
         this.uploadedSedDoc as SedDocument,
         queryParams.modelUrl as string,
         queryParams.modelFormat as string,
-        // queryParams.modelFile as File,
         this.simulationFiles,
       );
 
@@ -602,7 +601,6 @@ export class CustomizeSimulationComponent implements OnInit, OnDestroy {
       this.httpClient.post(createArchiveUrl, formData, { responseType: 'blob' }).subscribe(
         (blob: Blob) => {
           if (blob) {
-            console.log('Archive generated successfully');
             resolve(blob); // Return the blob instead of triggering download
           } else {
             console.error('Failed to generate the archive.');
