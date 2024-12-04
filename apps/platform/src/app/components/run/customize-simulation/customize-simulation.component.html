@@ -200,7 +200,7 @@
             <div *ngIf="!useDropdown">
               <div formArrayName="rows" class="model-changes-grid">
                 <div *ngFor="let row of rows.controls; let i = index" [formGroupName]="i">
-                  <mat-form-field appearance="outline" class="grid-input">
+                  <mat-form-field appearance="outline" class="grid-input" [matTooltip]="row.get('name')?.value">
                     <mat-label class="grid-label">Parameter Name</mat-label>
                     <input matInput type="text" formControlName="name" class="grid-label" />
                   </mat-form-field>
