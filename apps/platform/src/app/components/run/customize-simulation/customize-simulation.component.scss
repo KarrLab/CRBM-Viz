@@ -150,11 +150,9 @@ mat-option:hover {
 
 .grid-input {
   color: rgb(0, 0, 0, 0.6);
-  background-color: rgb(0, 0, 0, 0.04);
+  background-color: #f7f7f7 !important;
   padding: 3pt;
   box-sizing: border-box;
-
-  // margin-right: 2rem;
 
   &:not(.name) {
     width: 300px !important;
