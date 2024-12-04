@@ -53,12 +53,14 @@ biosimulations-tab-page ::ng-deep .icon-list {
 
 .project-metadata-container {
   max-width: 50%;
-  // border: 3px solid red;
 }
 
 .simulation-run-view-parent-container {
-  min-height: 1550px;
-  height: fit-content !important;
+  // max-height: 1550px;
+  // min-height: fit-content !important;
+  //min-height: 1550px;
+  min-height: 1000px !important;
+  // height: fit-content !important;
   margin-left: 3rem;
   margin-right: 3rem;
   padding-bottom: 3rem;
