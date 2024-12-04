@@ -13,22 +13,19 @@ import { ProjectFilterQueryItem, ProjectFilterStatsItem } from '@biosimulations/
 export class ProjectTableDataSource extends DataSource<FormattedProjectSummary> {
   public paginator: MatPaginator | undefined;
   public sort: MatSort | undefined;
-  private _destroying$: Subject<void> = new Subject<void>();
+  public filterQueryItems$ = new BehaviorSubject<ProjectFilterQueryItem[]>([]);
+  public datalength = 0;
+  public searchTermChange?: EventEmitter<string>;
 
+  private _destroying$: Subject<void> = new Subject<void>();
   private searchCriteria$ = new BehaviorSubject(new SearchCriteria());
   private searchCriteria = new SearchCriteria();
-
-  public filterQueryItems$ = new BehaviorSubject<ProjectFilterQueryItem[]>([]);
+  private projectTableComponent!: ProjectTableComponent;
   private filterQueryItems: ProjectFilterQueryItem[] = [];
-
   private formattedProjectSummaryQueryResults$: Observable<FormattedProjectSummaryQueryResults>;
   private formattedProjectSummaries$ = new BehaviorSubject<FormattedProjectSummary[]>([]);
 
-  public datalength = 0;
-  public searchTermChange?: EventEmitter<string>;
-  private projectTableComponent!: ProjectTableComponent;
-
-  constructor(private browseService: BrowseService, projectTableComponent: ProjectTableComponent) {
+  public constructor(private browseService: BrowseService, projectTableComponent: ProjectTableComponent) {
     super();
 
     this.projectTableComponent = projectTableComponent;
@@ -42,9 +39,6 @@ export class ProjectTableDataSource extends DataSource<FormattedProjectSummary> 
         const filterDesc: string | undefined = criteria.filters
           ?.map((item) => item.target.toString() + '=[' + item.allowable_values.join(',') + ']')
           .join(', ');
-        console.log(
-          `fetching results with SearchCriteria: filter=${filterDesc}, search=${criteria.searchText}, pageIndex=${criteria.pageIndex}, pageSize=${criteria.pageSize}`,
-        );
         return this.browseService.getProjects(criteria);
       }),
     );
@@ -63,7 +57,7 @@ export class ProjectTableDataSource extends DataSource<FormattedProjectSummary> 
    * the returned stream emits new items.
    * @returns A stream of the items to be rendered.
    */
-  connect(): Observable<FormattedProjectSummary[]> {
+  public connect(): Observable<FormattedProjectSummary[]> {
     if (this.paginator && this.sort && this.searchTermChange) {
       // emit a new searchCriteria upon each Search Term event
       this.searchTermChange.subscribe((stringEvent) => {
@@ -105,7 +99,7 @@ export class ProjectTableDataSource extends DataSource<FormattedProjectSummary> 
    *  Called when the table is being destroyed. Use this function, to clean up
    * any open connections or free any held resources that were set up during connect.
    */
-  disconnect(): void {
+  public disconnect(): void {
     this._destroying$.next();
     this._destroying$.complete();
   }
@@ -117,23 +111,20 @@ export class ProjectTableDataSource extends DataSource<FormattedProjectSummary> 
   styleUrls: ['./project-table.component.scss'],
 })
 export class ProjectTableComponent implements AfterViewInit {
-  @ViewChild(MatPaginator) paginator!: MatPaginator;
-  @ViewChild(MatSort) sort!: MatSort;
-  @ViewChild(MatTable) table!: MatTable<FormattedProjectSummary>;
-  dataSource: ProjectTableDataSource;
-
-  /** Columns displayed in the table. Columns IDs can be added, removed, or reordered. */
+  @ViewChild(MatPaginator) public paginator!: MatPaginator;
+  @ViewChild(MatSort) public sort!: MatSort;
+  @ViewChild(MatTable) public table!: MatTable<FormattedProjectSummary>;
+  @Input() public searchTerm = '';
+  @Output() public searchTermChange: EventEmitter<string> = new EventEmitter<string>();
+  @Output() public filterStats$ = new BehaviorSubject([] as ProjectFilterStatsItem[]);
+  public dataSource: ProjectTableDataSource;
   public displayedColumns = ['id', 'title'];
-  @Input() searchTerm = '';
-  @Output() searchTermChange: EventEmitter<string> = new EventEmitter<string>();
 
-  @Output() filterStats$ = new BehaviorSubject([] as ProjectFilterStatsItem[]);
-
-  constructor(browseService: BrowseService) {
+  public constructor(browseService: BrowseService) {
     this.dataSource = new ProjectTableDataSource(browseService, this);
   }
 
-  public onKeyUpEvent(event: KeyboardEvent) {
+  public onKeyUpEvent(event: KeyboardEvent): void {
     this.searchTermChange.next(this.searchTerm);
   }
 
@@ -141,15 +132,13 @@ export class ProjectTableComponent implements AfterViewInit {
     const filterDesc: string = filterQueryItems
       .map((item) => item.target.toString() + '=[' + item.allowable_values.join(',') + ']')
       .join(', ');
-    console.log(`onFilterQueryChanged() called with ${filterDesc}`);
     this.dataSource.filterQueryItems$.next(filterQueryItems);
   }
 
-  ngAfterViewInit(): void {
+  public ngAfterViewInit(): void {
     this.dataSource.sort = this.sort;
     this.dataSource.paginator = this.paginator;
     this.table.dataSource = this.dataSource;
     this.dataSource.searchTermChange = this.searchTermChange;
-    console.log(this.dataSource);
   }
 }
