@@ -17,4 +17,10 @@ export class FullPageSpinnerComponent {
 
   @Input()
   label?: string;
+
+  @Input()
+  public messages: string[] = ['']; // Array of messages to display
+
+  @Input()
+  public intervalDuration: number = 3000; // Duration for each message in milliseconds
 }

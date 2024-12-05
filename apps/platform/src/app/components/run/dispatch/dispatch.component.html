@@ -379,7 +379,10 @@
   </biosimulations-page>
 
   <ng-template #loading>
-    <biosimulations-full-page-spinner label="Loading Simulators..."></biosimulations-full-page-spinner>
-
+    <biosimulations-full-page-spinner
+      [label]="'Loading...'"
+      [messages]="['simulators...', 'model formats...', 'compatible algorithms...', 'almost there...']"
+      [intervalDuration]="1000"
+    ></biosimulations-full-page-spinner>
   </ng-template>
 </div>

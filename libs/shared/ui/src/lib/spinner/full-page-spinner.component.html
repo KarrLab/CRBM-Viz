@@ -3,5 +3,10 @@
   [class.containerHasBreadcrumbs]="containerHasBreadcrumbs"
   [class.containerHasTabs]="containerHasTabs"
   [class.containerHasPadding]="containerHasPadding">
-  <biosimulations-spinner [label]="label ? label : ''"> </biosimulations-spinner>
+  <biosimulations-spinner
+    [label]="'Loading '"
+    [messages]="messages"
+    [intervalDuration]="intervalDuration">
+  </biosimulations-spinner>
+
 </div>
