@@ -12,8 +12,15 @@
 }
 
 .input-row {
-  text-overflow: ellipsis !important;
   width: fit-content !important;
+
+  &.x-axis {
+    mat-select {
+      &:focus {
+        width: 400px !important;
+      }
+    }
+  }
 }
 
 .form-section {

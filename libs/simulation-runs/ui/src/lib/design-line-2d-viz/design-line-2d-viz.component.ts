@@ -115,14 +115,15 @@ export class DesignLine2DVisualizationComponent implements OnInit {
     const allDataSets = this.uriSedDataSetMap ? Object.keys(this.uriSedDataSetMap) : [];
 
     // parse datasets to find 'Time' for x-axis
-    const timeOption = allDataSets.find((key) => {
+    const timeOption = allDataSets.find((key: string): boolean => {
       const dataSet = this.uriSedDataSetMap[key];
-      return dataSet.name === 'Time';
+      return dataSet.id.toLowerCase().endsWith('time');  // return dataSet.name === 'Time';
     });
 
     // parse datasets to find y-axis data by filtering out 'Time'
-    const yDataOptions = allDataSets.filter((key) => key !== timeOption);
+    const yDataOptions = allDataSets.filter((key: string): boolean => key !== timeOption);
 
+    // iterate over curves and add to spec
     while (curvesFormArray.length < numCurves) {
       const curve = this.formBuilder.group({
         name: [null],

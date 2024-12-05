@@ -1,1 +1,15 @@
-<mat-spinner></mat-spinner>
+<div class="spinner-container">
+  <div class="spinner">
+    <mat-spinner></mat-spinner>
+  </div>
+  <div class="spinner-label">
+    <span *ngIf="label; else noLabel">{{ label }}</span>
+    <span *ngIf="currentMessage">{{ currentMessage }}</span>
+  </div>
+</div>
+
+
+<ng-template #noLabel>
+  <mat-spinner></mat-spinner>
+</ng-template>
+

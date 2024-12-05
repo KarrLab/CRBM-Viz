@@ -1,5 +1,5 @@
 <div class="form-parent-container platform-run">
-  <biosimulations-page heading="Run a simulation" *ngIf="simulators.length; else loading">
+  <biosimulations-page heading="Run a simulation" *ngIf="simulators.length > 0; else loading">
     <form [formGroup]="formGroup" (ngSubmit)="onFormSubmit()">
       <!-- UPLOADFILE -->
       <mat-card class="card-form-section mat-elevation-z3">
@@ -22,8 +22,10 @@
             <input matInput formControlName="projectUrl" (ngModelChange)="projectControlUpdated()" />
           </mat-form-field>
         </div>
-
-        <mat-card-content class="card-hints 0">
+        <div class="hint-button">
+          <biosimulations-icon matTooltip="Click for more info" (click)="toggleHint('archive')" icon="info"></biosimulations-icon>
+        </div>
+        <mat-card-content class="card-hints 0" *ngIf="hintsShowing['archive']">
           <mat-hint>
             <p>
               Select a method for providing a COMBINE/OMEX archive which describes one or more simulations (in SED-ML
@@ -92,7 +94,10 @@
             <input matInput formControlName="name" placeholder="Knockout of gene A" required />
           </mat-form-field>
         </div>
-        <mat-card-content class="card-hints 5">
+        <div class="hint-button">
+          <biosimulations-icon matTooltip="Click for more info" (click)="toggleHint('metadata')" icon="info"></biosimulations-icon>
+        </div>
+        <mat-card-content class="card-hints 5" *ngIf="hintsShowing['metadata']">
           <mat-hint>
             Provide a name for your modeling project. If you execute multiple projects, this name will help you identify
             this project among all of your projects.
@@ -110,7 +115,7 @@
             <mat-select
               formControlName="simulator"
               disableOptionCentering
-              placeholder="COPASI"
+              placeholder="Virtual Cell"
               (ngModelChange)="simulatorControlUpdated()"
               required>
               <mat-option *ngFor="let simulator of simulators" [value]="simulator.id" [disabled]="simulator.disabled">
@@ -118,16 +123,23 @@
               </mat-option>
             </mat-select>
           </mat-form-field>
+
           <mat-form-field class="card-form-field" appearance="fill">
             <mat-label>Version of the simulation tool</mat-label>
             <mat-select formControlName="simulatorVersion" disableOptionCentering placeholder="latest" required>
+              <mat-option *ngIf="originalSim" [value]="originalSim.version">
+                {{ originalSim.version }}
+              </mat-option>
               <mat-option *ngFor="let simulatorVersion of simulatorVersions" [value]="simulatorVersion">
                 {{ simulatorVersion }}
               </mat-option>
             </mat-select>
           </mat-form-field>
         </div>
-        <mat-card-content class="card-hints 2">
+        <div class="hint-button">
+          <biosimulations-icon matTooltip="Click for more info" (click)="toggleHint('simulator')" icon="info"></biosimulations-icon>
+        </div>
+        <mat-card-content class="card-hints 2" *ngIf="hintsShowing['simulator']">
           <mat-hint>
             <p>
               Select a simulation tool which is capable of executing your archive and a version of that tool. This tool
@@ -175,63 +187,69 @@
               <mat-card-header class="card-form-section-title cap advanced-title"
                 >Capabilities required to execute your COMBINE/OMEX archive</mat-card-header
               >
+              <ng-container *ngIf="simulators.length > 2; else dataLoading">
+                <div class="input-group">
+                  <mat-form-field class="card-form-field" appearance="fill">
+                    <mat-label>Model formats involved in the archive</mat-label>
+                    <mat-select
+                      formControlName="modelFormats"
+                      (ngModelChange)="controlImpactingEligibleSimulatorsUpdated()"
+                      multiple>
+                      <mat-option *ngFor="let format of modelFormats" [value]="format.id" [disabled]="format.disabled">
+                        {{ format.name }}
+                      </mat-option>
+                    </mat-select>
+                  </mat-form-field>
 
-              <div class="input-group">
-                <mat-form-field class="card-form-field" appearance="fill">
-                  <mat-label>Model formats involved in the archive</mat-label>
-                  <mat-select
-                    formControlName="modelFormats"
-                    (ngModelChange)="controlImpactingEligibleSimulatorsUpdated()"
-                    multiple>
-                    <mat-option *ngFor="let format of modelFormats" [value]="format.id" [disabled]="format.disabled">
-                      {{ format.name }}
-                    </mat-option>
-                  </mat-select>
-                </mat-form-field>
+                  <mat-form-field class="card-form-field" appearance="fill">
+                    <mat-label>Algorithms involved in the archive</mat-label>
+                    <mat-select
+                      formControlName="simulationAlgorithms"
+                      (ngModelChange)="controlImpactingEligibleSimulatorsUpdated()"
+                      multiple>
+                      <mat-option
+                        *ngFor="let algorithm of simulationAlgorithms"
+                        [value]="algorithm.id"
+                        [disabled]="algorithm.disabled">
+                        {{ algorithm.name }}
+                      </mat-option>
+                    </mat-select>
+                  </mat-form-field>
 
-                <mat-form-field class="card-form-field" appearance="fill">
-                  <mat-label>Algorithms involved in the archive</mat-label>
-                  <mat-select
-                    formControlName="simulationAlgorithms"
-                    (ngModelChange)="controlImpactingEligibleSimulatorsUpdated()"
-                    multiple>
-                    <mat-option
-                      *ngFor="let algorithm of simulationAlgorithms"
-                      [value]="algorithm.id"
-                      [disabled]="algorithm.disabled">
-                      {{ algorithm.name }}
-                    </mat-option>
-                  </mat-select>
-                </mat-form-field>
+                  <mat-form-field class="card-form-field" appearance="fill">
+                    <mat-label>Algorithm substitution policy level</mat-label>
+                    <mat-select
+                      formControlName="simulationAlgorithmSubstitutionPolicy"
+                      (ngModelChange)="controlImpactingEligibleSimulatorsUpdated()">
+                      <mat-option *ngFor="let policy of algorithmSubstitutionPolicies" [value]="policy.level">
+                        {{ policy.level }}. {{ policy.name }}
+                      </mat-option>
+                    </mat-select>
+                  </mat-form-field>
+                </div>
+                <div class="hint-button">
+                  <biosimulations-icon matTooltip="Click for more info" (click)="toggleHint('capabilities')" icon="info"></biosimulations-icon>
+                </div>
+                <mat-card-content class="card-hints 1" *ngIf="hintsShowing['capabilities']">
+                  <mat-hint>
+                    Use the above menus to narrow the list of simulation tools below to those tools which have the
+                    capabilities to execute your COMBINE/OMEX archive (tools which support the model formats and
+                    simulation algorithms of the models and simulations described by your COMBINE/OMEX archive).
+                  </mat-hint>
+                  <mat-error *ngIf="shouldShowUnsupportedModelError()">
+                    Your COMBINE/OMEX archive involves model formats that are not supported by any simulation tool
+                    available through runBioSimulations.
+                  </mat-error>
+                  <mat-error *ngIf="shouldShowUnsupportedAlgorithmError()">
+                    Your COMBINE/OMEX archive involves simulation algorithms that are not supported by any simulation tool
+                    available through runBioSimulations.
+                  </mat-error>
+                </mat-card-content>
+              </ng-container>
 
-                <mat-form-field class="card-form-field" appearance="fill">
-                  <mat-label>Algorithm substitution policy level</mat-label>
-                  <mat-select
-                    formControlName="simulationAlgorithmSubstitutionPolicy"
-                    (ngModelChange)="controlImpactingEligibleSimulatorsUpdated()">
-                    <mat-option *ngFor="let policy of algorithmSubstitutionPolicies" [value]="policy.level">
-                      {{ policy.level }}. {{ policy.name }}
-                    </mat-option>
-                  </mat-select>
-                </mat-form-field>
-              </div>
-
-              <mat-card-content class="card-hints 1">
-                <mat-hint>
-                  Use the above menus to narrow the list of simulation tools below to those tools which have the
-                  capabilities to execute your COMBINE/OMEX archive (tools which support the model formats and
-                  simulation algorithms of the models and simulations described by your COMBINE/OMEX archive).
-                </mat-hint>
-
-                <mat-error *ngIf="shouldShowUnsupportedModelError()">
-                  Your COMBINE/OMEX archive involves model formats that are not supported by any simulation tool
-                  available through runBioSimulations.
-                </mat-error>
-                <mat-error *ngIf="shouldShowUnsupportedAlgorithmError()">
-                  Your COMBINE/OMEX archive involves simulation algorithms that are not supported by any simulation tool
-                  available through runBioSimulations.
-                </mat-error>
-              </mat-card-content>
+              <ng-template #dataLoading>
+                <biosimulations-spinner label="Loading Simulation Capabilities..."></biosimulations-spinner>
+              </ng-template>
             </mat-card>
 
             <mat-card class="card-form-section mat-elevation-z3">
@@ -242,8 +260,10 @@
               <mat-checkbox formControlName="academicPurpose" color="primary">
                 The purpose of this simulation is academic research or education.
               </mat-checkbox>
-
-              <mat-card-content class="card-hints 3">
+              <div class="hint-button">
+                <biosimulations-icon matTooltip="Click for more info" (click)="toggleHint('solvers')" icon="info"></biosimulations-icon>
+              </div>
+              <mat-card-content class="card-hints 3" *ngIf="hintsShowing['solvers']">
                 <mat-hint>
                   <p>
                     Some simulation tools, such as COBRApy and RBApy, can optionally execute simulations using
@@ -296,7 +316,10 @@
                   <span matSuffix>min</span>
                 </mat-form-field>
               </div>
-              <mat-card-content class="card-hints 4">
+              <div class="hint-button">
+                <biosimulations-icon matTooltip="Click for more info" (click)="toggleHint('resources')" icon="info"></biosimulations-icon>
+              </div>
+              <mat-card-content class="card-hints 4" *ngIf="hintsShowing['resources']">
                 <mat-hint>
                   Configure the amount of resources needed to execute your project. Currently, users can request up to
                   24 CPU cores, 192 GB RAM, and 20 days. if additional resources are needed, please contact the
@@ -325,7 +348,10 @@
                   <input matInput formControlName="email" placeholder="investigator@uni.edu" />
                 </mat-form-field>
               </div>
-              <mat-card-content class="card-hints 6">
+              <div class="hint-button">
+                <biosimulations-icon matTooltip="Click for more info" (click)="toggleHint('notifications')" icon="info"></biosimulations-icon>
+              </div>
+              <mat-card-content class="card-hints 6" *ngIf="hintsShowing['notifications']">
                 <mat-hint>
                   Optionally, enter your email address to receive notification of the completion of your simulation.
                   After submitting your simulation, you will also receive a URL where you will be able to check the
@@ -348,11 +374,15 @@
       <!-- END ADVANCED -->
 
       <!-- SUBMIT FORM BUTTON -->
-      <button mat-flat-button type="submit" class="biosimulations-button run">Run Simulation</button>
+      <button mat-flat-button (click)="onFormSubmit()" class="biosimulations-button run">Run Simulation</button>
     </form>
   </biosimulations-page>
 
   <ng-template #loading>
-    <biosimulations-full-page-spinner></biosimulations-full-page-spinner>
+    <biosimulations-full-page-spinner
+      [label]="'Loading...'"
+      [messages]="['simulators...', 'model formats...', 'compatible algorithms...', 'almost there...']"
+      [intervalDuration]="1000"
+    ></biosimulations-full-page-spinner>
   </ng-template>
 </div>

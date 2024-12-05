@@ -41,6 +41,7 @@ interface SimulatorIdNameDisabled {
   id: string;
   name: string;
   disabled: boolean;
+  version?: string;
 }
 
 interface Simulator {
@@ -60,12 +61,28 @@ interface Algorithm {
   disabled: boolean;
 }
 
+interface CardHintsShowing {
+  [key: string]: boolean;
+}
+
 @Component({
   selector: 'biosimulations-dispatch',
   templateUrl: './dispatch.component.html',
   styleUrls: ['./dispatch.component.scss'],
 })
 export class DispatchComponent implements OnInit, OnDestroy {
+  public hintsShowing: CardHintsShowing = {
+    archive: false,
+    metadata: false,
+    simulator: false,
+    capabilities: false,
+    solvers: false,
+    resources: false,
+    notifications: false,
+  };
+
+  public originalSim!: SimulatorIdNameDisabled;
+
   public formGroup: UntypedFormGroup;
 
   // Form control option lists
@@ -163,12 +180,36 @@ export class DispatchComponent implements OnInit, OnDestroy {
     this.activateRoute.queryParams.subscribe((params: ReRunQueryParams) => {
       if (params.projectUrl) {
         this.isReRun = true;
+        this.originalSim = {
+          id: params.simulator as string,
+          name: params.simulator as string,
+          disabled: false,
+          version: params.simulatorVersion as string,
+        };
+
+        // project settings
+        this.formGroup.controls.projectUrl.setValue(params.projectUrl);
+        this.formGroup.controls.name.setValue(params.runName as string);
+
+        // simulator settings
+        this.formGroup.controls.simulator.enable();
+        this.formGroup.controls.simulatorVersion.enable();
+        this.formGroup.controls.simulator.setValue(params.simulator as string);
+        this.formGroup.controls.simulatorVersion.setValue(params.simulatorVersion as string);
       }
     });
+
+    if (this.originalSim) {
+      this.simulators.push(this.originalSim);
+    }
   }
 
   public ngOnDestroy(): void {
     this.subscriptions.forEach((subscription) => subscription.unsubscribe());
+  }
+
+  public toggleHint(scope: string): void {
+    this.hintsShowing[scope] = !this.hintsShowing[scope];
   }
 
   private loadComplete(data: SimulationProjectUtilData): void {
@@ -369,7 +410,7 @@ export class DispatchComponent implements OnInit, OnDestroy {
         _type: 'KisaoAlgorithmSubstitution',
         algorithms: [alg, alg],
         //minPolicy: ALGORITHM_SUBSTITUTION_POLICIES[AlgorithmSubstitutionPolicyLevels.SAME_METHOD],
-        minPolicy: ALGORITHM_SUBSTITUTION_POLICIES[AlgorithmSubstitutionPolicyLevels.ANY],
+        minPolicy: ALGORITHM_SUBSTITUTION_POLICIES[AlgorithmSubstitutionPolicyLevels.SAME_FRAMEWORK],
       };
     });
   }

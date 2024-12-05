@@ -12,6 +12,7 @@ export class HeroBannerUtilButtonComponent {
   public apiUrl = 'https://api.biosimulations.org';
   public simulatorsApiUrl? = 'https://api.biosimulators.org';
   public docsUrl = 'https://docs.biosimulations.org';
+  public verificationUrl = 'https://biochecknet.biosimulations.org/docs';
   public routerLinkMenuConfig = [
     { heading: 'Create a project', routerLink: ['/utils', 'create-project'] },
     // { heading: 'Verify simulator results', routerLink: ['/utils', 'verify-model'] },

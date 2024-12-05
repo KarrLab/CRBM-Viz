@@ -29,7 +29,7 @@
         <table aria-label="Elements" mat-table matSort>
           <ng-container matColumnDef="id">
             <th *matHeaderCellDef mat-header-cell mat-sort-header>Id</th>
-            <td *matCellDef="let row" mat-cell>
+            <td *matCellDef="let row" mat-cell class="project-cell">
               <a [routerLink]="['/projects', row.id]">{{ row.id }}</a>
             </td>
           </ng-container>

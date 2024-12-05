@@ -1,0 +1,26 @@
+.multipurpose-card-header {
+  &.table-name {
+    transition: none !important;
+    &:hover {
+      background-color: var(--primary-darker-color) !important;
+    }
+  }
+}
+
+.table-buttons {
+  .primary {
+    transition: color 0.2s ease;
+
+    &:hover {
+      &.import {
+        color: var(--quaternary-color) !important;
+      }
+      &.export {
+        color: var(--accent-color) !important;
+      }
+      &.delete {
+        color: var(--warn-color) !important;
+      }
+    }
+  }
+}
