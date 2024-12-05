@@ -117,7 +117,7 @@ export class DesignLine2DVisualizationComponent implements OnInit {
     // parse datasets to find 'Time' for x-axis
     const timeOption = allDataSets.find((key: string): boolean => {
       const dataSet = this.uriSedDataSetMap[key];
-      return dataSet.id.toLowerCase().endsWith('time');  // return dataSet.name === 'Time';
+      return dataSet.id.toLowerCase().endsWith('time'); // return dataSet.name === 'Time';
     });
 
     // parse datasets to find y-axis data by filtering out 'Time'

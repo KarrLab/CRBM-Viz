@@ -23,7 +23,10 @@
           </mat-form-field>
         </div>
         <div class="hint-button">
-          <biosimulations-icon matTooltip="Click for more info" (click)="toggleHint('archive')" icon="info"></biosimulations-icon>
+          <biosimulations-icon
+            matTooltip="Click for more info"
+            (click)="toggleHint('archive')"
+            icon="info"></biosimulations-icon>
         </div>
         <mat-card-content class="card-hints 0" *ngIf="hintsShowing['archive']">
           <mat-hint>
@@ -95,7 +98,10 @@
           </mat-form-field>
         </div>
         <div class="hint-button">
-          <biosimulations-icon matTooltip="Click for more info" (click)="toggleHint('metadata')" icon="info"></biosimulations-icon>
+          <biosimulations-icon
+            matTooltip="Click for more info"
+            (click)="toggleHint('metadata')"
+            icon="info"></biosimulations-icon>
         </div>
         <mat-card-content class="card-hints 5" *ngIf="hintsShowing['metadata']">
           <mat-hint>
@@ -137,7 +143,10 @@
           </mat-form-field>
         </div>
         <div class="hint-button">
-          <biosimulations-icon matTooltip="Click for more info" (click)="toggleHint('simulator')" icon="info"></biosimulations-icon>
+          <biosimulations-icon
+            matTooltip="Click for more info"
+            (click)="toggleHint('simulator')"
+            icon="info"></biosimulations-icon>
         </div>
         <mat-card-content class="card-hints 2" *ngIf="hintsShowing['simulator']">
           <mat-hint>
@@ -228,7 +237,10 @@
                   </mat-form-field>
                 </div>
                 <div class="hint-button">
-                  <biosimulations-icon matTooltip="Click for more info" (click)="toggleHint('capabilities')" icon="info"></biosimulations-icon>
+                  <biosimulations-icon
+                    matTooltip="Click for more info"
+                    (click)="toggleHint('capabilities')"
+                    icon="info"></biosimulations-icon>
                 </div>
                 <mat-card-content class="card-hints 1" *ngIf="hintsShowing['capabilities']">
                   <mat-hint>
@@ -241,8 +253,8 @@
                     available through runBioSimulations.
                   </mat-error>
                   <mat-error *ngIf="shouldShowUnsupportedAlgorithmError()">
-                    Your COMBINE/OMEX archive involves simulation algorithms that are not supported by any simulation tool
-                    available through runBioSimulations.
+                    Your COMBINE/OMEX archive involves simulation algorithms that are not supported by any simulation
+                    tool available through runBioSimulations.
                   </mat-error>
                 </mat-card-content>
               </ng-container>
@@ -261,7 +273,10 @@
                 The purpose of this simulation is academic research or education.
               </mat-checkbox>
               <div class="hint-button">
-                <biosimulations-icon matTooltip="Click for more info" (click)="toggleHint('solvers')" icon="info"></biosimulations-icon>
+                <biosimulations-icon
+                  matTooltip="Click for more info"
+                  (click)="toggleHint('solvers')"
+                  icon="info"></biosimulations-icon>
               </div>
               <mat-card-content class="card-hints 3" *ngIf="hintsShowing['solvers']">
                 <mat-hint>
@@ -317,7 +332,10 @@
                 </mat-form-field>
               </div>
               <div class="hint-button">
-                <biosimulations-icon matTooltip="Click for more info" (click)="toggleHint('resources')" icon="info"></biosimulations-icon>
+                <biosimulations-icon
+                  matTooltip="Click for more info"
+                  (click)="toggleHint('resources')"
+                  icon="info"></biosimulations-icon>
               </div>
               <mat-card-content class="card-hints 4" *ngIf="hintsShowing['resources']">
                 <mat-hint>
@@ -349,7 +367,10 @@
                 </mat-form-field>
               </div>
               <div class="hint-button">
-                <biosimulations-icon matTooltip="Click for more info" (click)="toggleHint('notifications')" icon="info"></biosimulations-icon>
+                <biosimulations-icon
+                  matTooltip="Click for more info"
+                  (click)="toggleHint('notifications')"
+                  icon="info"></biosimulations-icon>
               </div>
               <mat-card-content class="card-hints 6" *ngIf="hintsShowing['notifications']">
                 <mat-hint>
@@ -382,7 +403,6 @@
     <biosimulations-full-page-spinner
       [label]="'Loading...'"
       [messages]="['simulators...', 'model formats...', 'compatible algorithms...', 'almost there...']"
-      [intervalDuration]="1000"
-    ></biosimulations-full-page-spinner>
+      [intervalDuration]="1000"></biosimulations-full-page-spinner>
   </ng-template>
 </div>
