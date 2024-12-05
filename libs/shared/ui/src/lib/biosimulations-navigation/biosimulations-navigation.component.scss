@@ -89,7 +89,7 @@
 .content {
   padding: 0;
   /* TODO: substract an additional 52px when the privacy notice is visible */
-  // min-height: calc(100vh - 64px - 28px - 0.5rem);
+  min-height: calc(100vh - 64px - 28px - 0.5rem);
 }
 
 @media screen and (max-width: 959px) {
