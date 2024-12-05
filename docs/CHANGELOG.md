@@ -1,5 +1,13 @@
 # Changelog
 
+## [9.62.2](https://github.com/biosimulations/biosimulations/compare/v9.62.1...v9.62.2) (2024-12-05)
+
+
+### Bug Fixes
+
+* adjust archive creation for correct files spec ([000c874](https://github.com/biosimulations/biosimulations/commit/000c8747e663a087451bc21639dfdd9703e2f137))
+* updated rerun params to include all original files ([d69c8a0](https://github.com/biosimulations/biosimulations/commit/d69c8a09a8d653425563100d73155e4fec50f5cc))
+
 ## [9.62.1](https://github.com/biosimulations/biosimulations/compare/v9.62.0...v9.62.1) (2024-12-02)
 
 
