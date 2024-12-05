@@ -57,7 +57,7 @@ services:
         USER_GID: 20
     volumes:
     - ..:/workspace  # cached
-    user: "504"
+    # user: "vscode"
     command: sleep infinity   
     networks:
       - biosimulations-dev-net
@@ -81,7 +81,7 @@ services:
       - ..:/workspace  # :cached
     ports:
       - "3333:3333"
-    user: "vscode"
+    # user: "vscode"
     command: sleep infinity   
     networks:
       - biosimulations-dev-net
@@ -104,7 +104,7 @@ services:
     - ..:/workspace  # :cached
     ports:
       - "4200:4200"
-    user: "504"
+    # user: "vscode"
     command: sleep infinity   
     networks:
       - biosimulations-dev-net
