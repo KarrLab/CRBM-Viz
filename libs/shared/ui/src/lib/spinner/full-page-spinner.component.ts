@@ -14,4 +14,7 @@ export class FullPageSpinnerComponent {
 
   @Input()
   containerHasPadding = false;
+
+  @Input()
+  label?: string;
 }
