@@ -17,6 +17,9 @@ RUN apt-get update && apt-get install -y \
      && git config --global pull.rebase true
 
 RUN npx husky install
+
+WORKDIR /workspace
+
 # && su node -c "git config --global pull.rebase true" \
 # && su node -c "npm install -g @nrwl/cli commitizen"
 # ENTRYPOINT ["npx", "nx", "run", "platform:serve", "--host", "0.0.0.0", "--port", "4200"]

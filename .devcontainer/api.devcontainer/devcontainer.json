@@ -29,12 +29,14 @@
 
   // Use 'forwardPorts' to make a list of ports inside the container available locally (to check ports: netstat -tuln)
   "forwardPorts": [4444],
+  // "forwardPorts": [4444, 9229],
 
   // Use 'postCreateCommand' to run commands after the container is created.
   "postCreateCommand": "npm install",
 
   // Use 'postStartCommand' to run commands after the container is started.
   "postStartCommand": ["npx", "nx", "run", "api:serve", "--host", "0.0.0.0", "--port", "4444"],
+  // "postStartCommand": ["npx", "nx", "run", "--inspect=0.0.0.0:9229", "api:serve", "--host", "0.0.0.0", "--port", "4444"],
 
   // Comment out connect as root instead. More info: https://aka.ms/vscode-remote/containers/non-root.
   // "remoteUser": "vscode" 

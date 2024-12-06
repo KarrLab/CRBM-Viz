@@ -34,6 +34,7 @@ services:
     - ..:/workspace  # :cached
     ports:
       - "4444:4444"
+      # - "9229:9229"  # Node.js debug port
     user: "504"
     command: sleep infinity  # Overrides default command so things don't shut down after the process ends.
     networks:
@@ -43,9 +44,11 @@ services:
       - redis-primary
       - dispatch-service
       - combine-api
-      # - mongo
     env_file:
       - ../config/config.env
+    environment:
+      - PORT=4444
+      - NODE_OPTIONS=--inspect=9229
   dispatch-service: 
     platform: linux/amd64
     build: 
@@ -57,16 +60,20 @@ services:
         USER_GID: 20
     volumes:
     - ..:/workspace  # cached
-    # user: "vscode"
-    command: sleep infinity   
+    ports:
+      - "3334:3334"
+      # - "9230:9230"  # Node.js debug port
+    command: sleep infinity
     networks:
       - biosimulations-dev-net
     depends_on:
       - nats
       - redis-primary
-      # - mongo
     env_file:
       - ../config/config.env
+    environment:
+      - PORT=3334
+      - NODE_OPTIONS=--inspect=9230
   combine-api: 
     platform: linux/amd64
     build: 
@@ -81,14 +88,13 @@ services:
       - ..:/workspace  # :cached
     ports:
       - "3333:3333"
-    # user: "vscode"
+      # - "5678:5678" # python debug port
     command: sleep infinity   
     networks:
       - biosimulations-dev-net
     depends_on:
       - nats
       - redis-primary
-      # - mongo
 
   # -- front-end webapp --
   platform: 
@@ -104,9 +110,13 @@ services:
     - ..:/workspace  # :cached
     ports:
       - "4200:4200"
-    # user: "vscode"
-    command: sleep infinity   
+      - "9231:9231"  # Node.js debug port
+    command: sleep infinity
     networks:
       - biosimulations-dev-net
     depends_on:
       - api
+    env_file:
+      - ../config/config.env
+    environment:
+      - NODE_OPTIONS=--inspect=9231

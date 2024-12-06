@@ -42,7 +42,7 @@
                 "--worker-tmp-dir", "/dev/shm",
                 "--log-level", "debug",
                 "--log-file", "-"
-            ],
+            ]
 
   // check ports: netstat -tuln
 
