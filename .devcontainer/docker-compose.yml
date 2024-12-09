@@ -34,9 +34,9 @@ services:
     - ..:/workspace  # :cached
     ports:
       - "4444:4444"
-      # - "9229:9229"  # Node.js debug port
+      - "9229:9229"  # Node.js debug port
     user: "504"
-    command: sleep infinity  # Overrides default command so things don't shut down after the process ends.
+    command: npm cache clean --force && npm install && npx nx run api:serve
     networks:
       - biosimulations-dev-net
     depends_on:
@@ -48,7 +48,8 @@ services:
       - ../config/config.env
     environment:
       - PORT=4444
-      - NODE_OPTIONS=--inspect=9229
+      # - NODE_OPTIONS=--inspect=9229
+
   dispatch-service: 
     platform: linux/amd64
     build: 
@@ -62,8 +63,8 @@ services:
     - ..:/workspace  # cached
     ports:
       - "3334:3334"
-      # - "9230:9230"  # Node.js debug port
-    command: sleep infinity
+      - "9230:9230"  # Node.js debug port
+    command: npm cache clean --force && npm install && npx nx run dispatch-service:serve
     networks:
       - biosimulations-dev-net
     depends_on:
@@ -73,7 +74,8 @@ services:
       - ../config/config.env
     environment:
       - PORT=3334
-      - NODE_OPTIONS=--inspect=9230
+      # - NODE_OPTIONS=--inspect=9230
+
   combine-api: 
     platform: linux/amd64
     build: 
@@ -89,7 +91,13 @@ services:
     ports:
       - "3333:3333"
       # - "5678:5678" # python debug port
-    command: sleep infinity   
+    command: |
+      sh -c "
+      poetry env use -C /workspace/apps/combine-api 3.10;
+      poetry install -C /workspace/apps/combine-api --no-cache;
+      cd apps/combine-api;
+      poetry run gunicorn combine_api.app:app;
+      "
     networks:
       - biosimulations-dev-net
     depends_on:
@@ -107,10 +115,10 @@ services:
         USER_UID: 504 
         USER_GID: 20
     volumes:
-    - ..:/workspace  # :cached
-    ports:
-      - "4200:4200"
-      - "9231:9231"  # Node.js debug port
+    - ..:/workspace:cached
+    # ports:
+      # - "4200:4200"
+      # - "9231:9231"  # Node.js debug port
     command: sleep infinity
     networks:
       - biosimulations-dev-net
@@ -118,5 +126,5 @@ services:
       - api
     env_file:
       - ../config/config.env
-    environment:
-      - NODE_OPTIONS=--inspect=9231
+    # environment:
+    #   - NODE_OPTIONS=--inspect=9231
