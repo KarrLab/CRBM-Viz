@@ -14,7 +14,7 @@ export class ImageMessagePayload {
       this.simulator = simulator;
       this.version = version;
       this.force = force;
-      this.url = `docker://ghcr.io/biosimulators/${this.simulator}:${this.version}`;
+      this.url = `docker://ghcr.io/biosimulators/${this.simulator.toLowerCase()}:${this.version}`;
     }
   }
 }
