@@ -9,7 +9,7 @@ export const BullModuleOptions = {
   imports: [BiosimulationsConfigModule],
   useFactory: async (configService: ConfigService) => {
     const logger = new Logger('BullModuleInit');
-    logger.log(`Connecting to ${configService.get('queue.host')}:${configService.get('queue.port')}`);
+    logger.log(`Bull is connecting to Redis at ${configService.get('queue.host')}:${configService.get('queue.port')}`);
     return {
       connection: {
         host: configService.get('queue.host'),
