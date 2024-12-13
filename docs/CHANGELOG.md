@@ -1,5 +1,12 @@
 # Changelog
 
+## [9.62.3](https://github.com/biosimulations/biosimulations/compare/v9.62.2...v9.62.3) (2024-12-13)
+
+
+### Bug Fixes
+
+* ensure lower case name for container image urls ([e0d8dbe](https://github.com/biosimulations/biosimulations/commit/e0d8dbe3791ee6460ad76d1f55baddd99405703e))
+
 ## [9.62.2](https://github.com/biosimulations/biosimulations/compare/v9.62.1...v9.62.2) (2024-12-05)
 
 
