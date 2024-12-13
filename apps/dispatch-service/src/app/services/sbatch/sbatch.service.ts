@@ -58,7 +58,7 @@ export class SbatchService {
     const storageKey = this.configService.get('storage.accessKey');
     const storageSecret = this.configService.get('storage.secret');
 
-    const simulatorImage = `docker://ghcr.io/biosimulators/${simulator}:${simulatorVersion}`;
+    const simulatorImage = `docker://ghcr.io/biosimulators/${simulator.toLowerCase()}:${simulatorVersion}`;
 
     const memoryFormatted = Math.ceil(memory * 1000);
 
