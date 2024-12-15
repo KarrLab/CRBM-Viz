@@ -154,6 +154,8 @@
 /simulators/vcell/7.5.0.99
 /simulators/vcell/7.6.0.40
 /simulators/vcell/7.7.0.10
+/simulators/vcell/7.7.0.12
+/simulators/vcell/7.7.0.13
 /simulators/vcell/7.7.0.7
 /simulators/vcell/7.7.0.9
 /simulators/winbestkit
