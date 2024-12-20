@@ -1,12 +1,16 @@
+# Ignore all GitHub workflow files
+# Ignore the action's configuration data
+# ignore the changelog
+# ignore the contributors list
 # See https://github.com/check-spelling/check-spelling/wiki/Configuration-Examples:-excludes
 (?:^|/)(?i)COPYRIGHT
 (?:^|/)(?i)LICEN[CS]E
 (?:^|/)package(?:-lock|)\.json$
 (?:^|/)vendor/
-ignore$
 \.avi$
 \.ico$
 \.jpe?g$
+\.json$
 \.lock$
 \.map$
 \.min\.
@@ -14,15 +18,12 @@ ignore$
 \.mp[34]$
 \.png$
 \.wav$
-\.json$
 ^\.github/
-# Ignore the action's configuration data
 ^\.github/action/spelling/
-# Ignore all GitHub workflow files
 ^\.github/workflows/
-^docs/src/about/license.md$
-# ignore the changelog
+^\Qdocs/src/about/test.md\E$
 ^docs/CHANGELOG.md$
-^docs/src/news/changelog.md$
-# ignore the contributors list
+^docs/src/about/license.md$
 ^docs/src/community/contributors.md$
+^docs/src/news/changelog.md$
+ignore$
