@@ -5,7 +5,6 @@ from os import environ
 import connexion
 import flask.json
 import orjson
-import yaml  # type: ignore
 from connexion.apps.flask_app import FlaskApp
 from flask_cors import CORS
 from swagger_ui_bundle import swagger_ui_3_path
