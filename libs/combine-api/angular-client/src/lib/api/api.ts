@@ -6,8 +6,6 @@ export * from './models.service';
 import { ModelsService } from './models.service';
 export * from './simulationAlgorithms.service';
 import { SimulationAlgorithmsService } from './simulationAlgorithms.service';
-export * from './simulationExecution.service';
-import { SimulationExecutionService } from './simulationExecution.service';
 export * from './simulationExperiments.service';
 import { SimulationExperimentsService } from './simulationExperiments.service';
 export * from './simulationProjects.service';
@@ -19,7 +17,6 @@ export const APIS = [
   MetadataService,
   ModelsService,
   SimulationAlgorithmsService,
-  SimulationExecutionService,
   SimulationExperimentsService,
   SimulationProjectsService,
   ValidationService,

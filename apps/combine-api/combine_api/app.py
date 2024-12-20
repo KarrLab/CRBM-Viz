@@ -1,38 +1,22 @@
-from combine_api import exceptions
-from flask_cors import CORS
-from connexion.apps.flask_app import FlaskApp
-from swagger_ui_bundle import swagger_ui_3_path
+import functools
+import uuid
+from os import environ
+
 import connexion
 import flask.json
-import functools
-import os
-import tempfile
 import orjson
-import uuid
 import yaml  # type: ignore
-from os import environ
+from connexion.apps.flask_app import FlaskApp
+from flask_cors import CORS
+from swagger_ui_bundle import swagger_ui_3_path
+
 from combine_api import app_config
+from combine_api import exceptions
 
 env = environ.get(app_config.ENVVAR_ENV, 'dev') or 'dev'
 
 spec_dirname = 'spec'
 spec_filename = 'spec.yml'
-
-# disable ``/run`` endpoints from production
-if str(env).lower() == 'prod':
-    with open(os.path.join(os.path.dirname(__file__), spec_dirname, spec_filename), 'r') as file:
-        specs = yaml.load(file, Loader=yaml.Loader)
-
-    for key in list(specs['paths'].keys()):
-        if key.startswith('/run/'):
-            specs['paths'].pop(key)
-
-    fid, temp_spec_filename = tempfile.mkstemp(dir=os.path.join(os.path.dirname(__file__), spec_dirname), suffix='.yml')
-    os.close(fid)
-    with open(temp_spec_filename, 'w') as file:
-        file.write(yaml.dump(specs))
-
-    spec_filename = os.path.basename(temp_spec_filename)
 
 # Instantiate app from OpenAPI specifications
 options = {
@@ -47,10 +31,6 @@ app: FlaskApp = connexion.App(__name__, specification_dir=spec_dirname, options=
 app.add_api(spec_filename,
             strict_validation=True,
             validate_responses=False)
-
-# clean up temporary specifications file for production
-if str(env).lower() == 'prod':
-    os.remove(temp_spec_filename)
 
 # set maximum file upload size
 app.app.config['MAX_CONTENT_LENGTH'] = float(environ.get('MAX_CONTENT_LENGTH', 1.1 * 1e9))  # bytes
