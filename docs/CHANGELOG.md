@@ -1,5 +1,18 @@
 # Changelog
 
+## [9.63.0](https://github.com/biosimulations/biosimulations/compare/v9.62.3...v9.63.0) (2024-12-30)
+
+
+### Bug Fixes
+
+* remove unused yaml import from app.py ([bdcfb06](https://github.com/biosimulations/biosimulations/commit/bdcfb069995cadbe3d05ab10562018c54ff8c996))
+* spelling due to \n preceding keywords ([894d4f6](https://github.com/biosimulations/biosimulations/commit/894d4f648c43fe4856d6413a53de81cf769c3f6d))
+
+
+### Features
+
+* remove /run endpoints from combine-api ([ca22817](https://github.com/biosimulations/biosimulations/commit/ca22817b59c56282a186b031bd223a2f1d716df9))
+
 ## [9.62.3](https://github.com/biosimulations/biosimulations/compare/v9.62.2...v9.62.3) (2024-12-13)
 
 
