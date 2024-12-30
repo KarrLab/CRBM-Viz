@@ -34,13 +34,9 @@ import { CombineArchiveManifest } from '../model/combineArchiveManifest';
 
 import { CombineArchiveSedDocSpecs } from '../model/combineArchiveSedDocSpecs';
 
-import { Environment } from '../model/environment';
-
 import { FilenameOrUrl } from '../model/filenameOrUrl';
 
 import { RdfTriple } from '../model/rdfTriple';
-
-import { SimulationRunResults } from '../model/simulationRunResults';
 
 import { ValidationReport } from '../model/validationReport';
 
@@ -1221,155 +1217,6 @@ export class SimulationProjectsService {
 
     let localVarPath = `/combine/validate`;
     return this.httpClient.request<ValidationReport>('post', `${this.configuration.basePath}${localVarPath}`, {
-      context: localVarHttpContext,
-      body: localVarConvertFormParamsToString ? localVarFormParams.toString() : localVarFormParams,
-      responseType: <any>responseType_,
-      withCredentials: this.configuration.withCredentials,
-      headers: localVarHeaders,
-      observe: observe,
-      reportProgress: reportProgress,
-    });
-  }
-
-  /**
-   * Execute a COMBINE/OMEX archive
-   * Execute the simulations defined in SED-ML format in a COMBINE/OMEX archive and return the result of each report and plot.
-   * @param simulator Id of a simulation tool registered with BioSimulators.
-   * @param type Type
-   * @param archiveUrl URL
-   * @param archiveFile The two files uploaded in creating a combine archive
-   * @param environment
-   * @param observe set whether or not to return the data Observable as the body, response or events. defaults to returning the body.
-   * @param reportProgress flag to report request and response progress.
-   */
-  public combineApiHandlersRunRunHandler(
-    simulator: string,
-    type: string,
-    archiveUrl?: string,
-    archiveFile?: Blob,
-    environment?: Environment,
-    observe?: 'body',
-    reportProgress?: boolean,
-    options?: {
-      httpHeaderAccept?: 'application/json' | 'application/x-hdf' | 'application/zip';
-      context?: HttpContext;
-    },
-  ): Observable<SimulationRunResults>;
-  public combineApiHandlersRunRunHandler(
-    simulator: string,
-    type: string,
-    archiveUrl?: string,
-    archiveFile?: Blob,
-    environment?: Environment,
-    observe?: 'response',
-    reportProgress?: boolean,
-    options?: {
-      httpHeaderAccept?: 'application/json' | 'application/x-hdf' | 'application/zip';
-      context?: HttpContext;
-    },
-  ): Observable<HttpResponse<SimulationRunResults>>;
-  public combineApiHandlersRunRunHandler(
-    simulator: string,
-    type: string,
-    archiveUrl?: string,
-    archiveFile?: Blob,
-    environment?: Environment,
-    observe?: 'events',
-    reportProgress?: boolean,
-    options?: {
-      httpHeaderAccept?: 'application/json' | 'application/x-hdf' | 'application/zip';
-      context?: HttpContext;
-    },
-  ): Observable<HttpEvent<SimulationRunResults>>;
-  public combineApiHandlersRunRunHandler(
-    simulator: string,
-    type: string,
-    archiveUrl?: string,
-    archiveFile?: Blob,
-    environment?: Environment,
-    observe: any = 'body',
-    reportProgress: boolean = false,
-    options?: {
-      httpHeaderAccept?: 'application/json' | 'application/x-hdf' | 'application/zip';
-      context?: HttpContext;
-    },
-  ): Observable<any> {
-    if (simulator === null || simulator === undefined) {
-      throw new Error(
-        'Required parameter simulator was null or undefined when calling combineApiHandlersRunRunHandler.',
-      );
-    }
-    if (type === null || type === undefined) {
-      throw new Error('Required parameter type was null or undefined when calling combineApiHandlersRunRunHandler.');
-    }
-
-    let localVarHeaders = this.defaultHeaders;
-
-    let localVarHttpHeaderAcceptSelected: string | undefined = options && options.httpHeaderAccept;
-    if (localVarHttpHeaderAcceptSelected === undefined) {
-      // to determine the Accept header
-      const httpHeaderAccepts: string[] = ['application/json', 'application/x-hdf', 'application/zip'];
-      localVarHttpHeaderAcceptSelected = this.configuration.selectHeaderAccept(httpHeaderAccepts);
-    }
-    if (localVarHttpHeaderAcceptSelected !== undefined) {
-      localVarHeaders = localVarHeaders.set('Accept', localVarHttpHeaderAcceptSelected);
-    }
-
-    let localVarHttpContext: HttpContext | undefined = options && options.context;
-    if (localVarHttpContext === undefined) {
-      localVarHttpContext = new HttpContext();
-    }
-
-    // to determine the Content-Type header
-    const consumes: string[] = ['multipart/form-data'];
-
-    const canConsumeForm = this.canConsumeForm(consumes);
-
-    let localVarFormParams: { append(param: string, value: any): any };
-    let localVarUseForm = false;
-    let localVarConvertFormParamsToString = false;
-    // use FormData to transmit files using content-type "multipart/form-data"
-    // see https://stackoverflow.com/questions/4007969/application-x-www-form-urlencoded-or-multipart-form-data
-    localVarUseForm = canConsumeForm;
-    if (localVarUseForm) {
-      localVarFormParams = new FormData();
-    } else {
-      localVarFormParams = new HttpParams({ encoder: this.encoder });
-    }
-
-    if (simulator !== undefined) {
-      localVarFormParams = (localVarFormParams.append('simulator', <any>simulator) as any) || localVarFormParams;
-    }
-    if (archiveUrl !== undefined) {
-      localVarFormParams = (localVarFormParams.append('archiveUrl', <any>archiveUrl) as any) || localVarFormParams;
-    }
-    if (archiveFile !== undefined) {
-      localVarFormParams = (localVarFormParams.append('archiveFile', <any>archiveFile) as any) || localVarFormParams;
-    }
-    if (type !== undefined) {
-      localVarFormParams = (localVarFormParams.append('_type', <any>type) as any) || localVarFormParams;
-    }
-    if (environment !== undefined) {
-      localVarFormParams =
-        (localVarFormParams.append(
-          'environment',
-          localVarUseForm ? new Blob([JSON.stringify(environment)], { type: 'application/json' }) : <any>environment,
-        ) as any) || localVarFormParams;
-    }
-
-    let responseType_: 'text' | 'json' | 'blob' = 'json';
-    if (localVarHttpHeaderAcceptSelected) {
-      if (localVarHttpHeaderAcceptSelected.startsWith('text')) {
-        responseType_ = 'text';
-      } else if (this.configuration.isJsonMime(localVarHttpHeaderAcceptSelected)) {
-        responseType_ = 'json';
-      } else {
-        responseType_ = 'blob';
-      }
-    }
-
-    let localVarPath = `/run/run`;
-    return this.httpClient.request<SimulationRunResults>('post', `${this.configuration.basePath}${localVarPath}`, {
       context: localVarHttpContext,
       body: localVarConvertFormParamsToString ? localVarFormParams.toString() : localVarFormParams,
       responseType: <any>responseType_,

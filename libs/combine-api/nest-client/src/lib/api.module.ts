@@ -6,7 +6,6 @@ import { HealthService } from './api/health.service';
 import { MetadataService } from './api/metadata.service';
 import { ModelsService } from './api/models.service';
 import { SimulationAlgorithmsService } from './api/simulationAlgorithms.service';
-import { SimulationExecutionService } from './api/simulationExecution.service';
 import { SimulationExperimentsService } from './api/simulationExperiments.service';
 import { SimulationProjectsService } from './api/simulationProjects.service';
 import { ValidationService } from './api/validation.service';
@@ -19,7 +18,6 @@ import { ValidationService } from './api/validation.service';
     MetadataService,
     ModelsService,
     SimulationAlgorithmsService,
-    SimulationExecutionService,
     SimulationExperimentsService,
     SimulationProjectsService,
     ValidationService,
@@ -29,7 +27,6 @@ import { ValidationService } from './api/validation.service';
     MetadataService,
     ModelsService,
     SimulationAlgorithmsService,
-    SimulationExecutionService,
     SimulationExperimentsService,
     SimulationProjectsService,
     ValidationService,
