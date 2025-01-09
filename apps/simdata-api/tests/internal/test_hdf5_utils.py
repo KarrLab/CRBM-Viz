@@ -54,7 +54,6 @@ def test_extract_hdf5_metadata_with_nan():
 
     assert dataset_data_float.shape == [1]
     assert np.isnan(dataset_data_float.values[0])
-    assert dataset_data_float.values[0] != dataset_data_float.values[0]
 
     assert dataset_data_mixed.shape == [1]
     assert dataset_data_mixed.values == ['nan']
