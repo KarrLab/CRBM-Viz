@@ -1,5 +1,13 @@
 # Changelog
 
+## [9.64.0](https://github.com/biosimulations/biosimulations/compare/v9.63.0...v9.64.0) (2025-01-09)
+
+
+### Features
+
+* support NaN, Infinity, -Infinity in simdata-api ([d8902bb](https://github.com/biosimulations/biosimulations/commit/d8902bb828d356015604d7a88d3df2f22237d980))
+* update simdata-api NestJS client to handle NaN and Infinity ([b6b87c9](https://github.com/biosimulations/biosimulations/commit/b6b87c9a681e93d0b159e7814e5c36c759f47484))
+
 ## [9.63.0](https://github.com/biosimulations/biosimulations/compare/v9.62.3...v9.63.0) (2024-12-30)
 
 
