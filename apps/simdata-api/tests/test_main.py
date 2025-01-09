@@ -8,7 +8,7 @@ import pytest
 from fastapi.testclient import TestClient
 
 from simdata_api.config import get_settings
-from simdata_api.datamodels import HDF5File, StatusResponse, Status
+from simdata_api.datamodels import HDF5File, StatusResponse, Status, DatasetData
 from simdata_api.main import app
 
 client = TestClient(app)
@@ -121,9 +121,51 @@ async def test_get_metadata():
     assert hdf5_file.filename == "reports.h5"
     assert hdf5_file.uri is not None
     assert hdf5_file.id == RUN_ID
-    settings = get_settings()
     LOCAL_PATH = Path(settings.storage_local_cache_dir) / f"{RUN_ID}.h5"
     assert LOCAL_PATH.exists() is False
+
+
+@pytest.mark.skipif(os.path.exists(get_settings().storage_gcs_credentials_file) is False,
+                    reason="STORAGE_GCS_CREDENTIALS_FILE not found")
+@pytest.mark.asyncio
+async def test_get_metadata_and_datasets_not_finite():
+    RUN_ID = "677ca7063e750b90a425ecde"
+    url = f"/datasets/{RUN_ID}/metadata"
+    settings = get_settings()
+    response = client.get(url)
+    data = response.json()
+    assert response.status_code == 200
+    assert type(data) is dict
+    _ = HDF5File.model_validate_json(json_dumps(data))
+    hdf5_file = HDF5File.model_validate_json(response.content.decode("utf-8"))
+    assert hdf5_file.filename == "reports.h5"
+    assert hdf5_file.uri is not None
+    assert hdf5_file.id == RUN_ID
+
+    LOCAL_PATH = Path(settings.storage_local_cache_dir) / f"{RUN_ID}.h5"
+    assert LOCAL_PATH.exists() is False
+
+    dataset_names = [dataset.name for group in hdf5_file.groups for dataset in group.datasets]
+    assert "simulation.sedml/objective" in dataset_names
+    assert "simulation.sedml/reaction_fluxes" in dataset_names
+
+    url = f"/datasets/{RUN_ID}/data?dataset_name=simulation.sedml/objective"
+    response = client.get(url)
+    data = response.json()
+    import numpy.typing as npt
+    assert response.status_code == 200
+    dataset_data = DatasetData.model_validate(data)
+    assert dataset_data.shape == [1]
+    assert dataset_data.values == ['nan']
+
+    url = f"/datasets/{RUN_ID}/data?dataset_name=simulation.sedml/reaction_fluxes"
+    response = client.get(url)
+    data = response.json()
+    assert response.status_code == 200
+    dataset_data = DatasetData.model_validate(data)
+    assert dataset_data.shape == [1075]
+    assert dataset_data.values == ['nan' for _ in range(1075)]
+
 
 
 @pytest.mark.skipif(os.path.exists(get_settings().storage_gcs_credentials_file) is False,

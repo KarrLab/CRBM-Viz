@@ -2,6 +2,7 @@ import logging
 from datetime import datetime
 from urllib.parse import unquote
 
+import numpy as np
 from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 
@@ -69,7 +70,9 @@ async def read_dataset(run_id: str, dataset_name: str) -> DatasetData:
     try:
         dataset_name = unquote(dataset_name)
         array, attrs = await get_dataset_data(run_id=run_id, dataset_name=dataset_name)
-        return DatasetData(shape=list(array.shape), values=array.flatten().tolist())
+        data_list: list[float] = array.flatten().tolist()
+        data_list_for_json: list[float | str] = [str(x) if np.isnan(x) or np.isinf(x) else x for x in data_list]
+        return DatasetData(shape=list(array.shape), values=data_list_for_json)
     except FileNotFoundError as e:
         logger.warning(f"failed to retrieve dataset: {str(e)}")
         raise HTTPException(status_code=404, detail="Dataset not found")
