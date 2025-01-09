@@ -121,9 +121,12 @@ components:
           title: Shape
         values:
           items:
-            type: number
+            anyOf:
+            - type: number
+            - type: string
           type: array
-          title: Values
+          title: list of values
+          description: List of float values or 'nan', 'inf', '-inf'
       type: object
       required:
       - shape

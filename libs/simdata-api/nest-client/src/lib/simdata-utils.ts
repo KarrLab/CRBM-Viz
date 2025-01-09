@@ -6,13 +6,40 @@ import { HDF5Dataset } from './model/hdf5-dataset';
 import { HDF5Attribute } from './model/hdf5-attribute';
 
 export function datasetDataToNjArray(datasetData: DatasetData): nj.NdArray {
-  return nj.array(datasetData.values).reshape(...datasetData.shape);
+  // transform datasetData.values into an array of floats (replacing 'nan' with NaN, 'inf' with Infinity, and '-inf' with -Infinity)
+  const number_values: Array<number> = datasetData.values.map((value: number | string): number => {
+    if (value === 'nan') {
+      return NaN;
+    } else if (value === 'inf') {
+      return Infinity;
+    } else if (value === '-inf') {
+      return -Infinity;
+    } else if (typeof value === 'number') {
+      return value as number;
+    } else {
+      throw new Error(`Invalid value in datasetData.values: ${value}`);
+    }
+  });
+  return nj.array(number_values).reshape(...datasetData.shape);
 }
 
 export function njArrayToDatasetData(njArray: nj.NdArray): DatasetData {
+  const number_values = njArray.flatten().tolist() as Array<number>;
+  // transform number_values into array of numbers or strings ('nan', 'inf', '-inf') where 'nan' is NaN, 'inf' is Infinity, and '-inf' is -Infinity
+  const mixed_values: Array<number | string> = number_values.map((value: number): number | string => {
+    if (isNaN(value)) {
+      return 'nan';
+    } else if (value === Infinity) {
+      return 'inf';
+    } else if (value === -Infinity) {
+      return '-inf';
+    } else {
+      return value;
+    }
+  });
   return {
     shape: njArray.shape,
-    values: njArray.flatten().tolist() as Array<number>,
+    values: mixed_values as Array<number | string>,
   };
 }
 

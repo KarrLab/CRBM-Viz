@@ -8,7 +8,7 @@ import pytest
 from fastapi.testclient import TestClient
 
 from simdata_api.config import get_settings
-from simdata_api.datamodels import HDF5File, StatusResponse, Status
+from simdata_api.datamodels import HDF5File, StatusResponse, Status, DatasetData
 from simdata_api.main import app
 
 client = TestClient(app)
@@ -110,6 +110,40 @@ async def test_get_modified_not_found():
 @pytest.mark.asyncio
 async def test_get_metadata():
     RUN_ID = "61fd573874bc0ce059643515"
+    hdf5_file = await retrieve_metadata(RUN_ID)
+    assert hdf5_file is not None
+
+
+@pytest.mark.skipif(os.path.exists(get_settings().storage_gcs_credentials_file) is False,
+                    reason="STORAGE_GCS_CREDENTIALS_FILE not found")
+@pytest.mark.asyncio
+async def test_get_metadata_and_datasets_not_finite():
+    RUN_ID = "677ca7063e750b90a425ecde"
+    hdf5_file = await retrieve_metadata(RUN_ID)
+
+    dataset_names = [dataset.name for group in hdf5_file.groups for dataset in group.datasets]
+    assert "simulation.sedml/objective" in dataset_names
+    assert "simulation.sedml/reaction_fluxes" in dataset_names
+
+    url = f"/datasets/{RUN_ID}/data?dataset_name=simulation.sedml/objective"
+    response = client.get(url)
+    data = response.json()
+
+    assert response.status_code == 200
+    dataset_data = DatasetData.model_validate(data)
+    assert dataset_data.shape == [1]
+    assert dataset_data.values == ['nan']
+
+    url = f"/datasets/{RUN_ID}/data?dataset_name=simulation.sedml/reaction_fluxes"
+    response = client.get(url)
+    data = response.json()
+    assert response.status_code == 200
+    dataset_data = DatasetData.model_validate(data)
+    assert dataset_data.shape == [1075]
+    assert dataset_data.values == ['nan' for _ in range(1075)]
+
+
+async def retrieve_metadata(RUN_ID):
     url = f"/datasets/{RUN_ID}/metadata"
     settings = get_settings()
     response = client.get(url)
@@ -121,9 +155,9 @@ async def test_get_metadata():
     assert hdf5_file.filename == "reports.h5"
     assert hdf5_file.uri is not None
     assert hdf5_file.id == RUN_ID
-    settings = get_settings()
     LOCAL_PATH = Path(settings.storage_local_cache_dir) / f"{RUN_ID}.h5"
     assert LOCAL_PATH.exists() is False
+    return hdf5_file
 
 
 @pytest.mark.skipif(os.path.exists(get_settings().storage_gcs_credentials_file) is False,

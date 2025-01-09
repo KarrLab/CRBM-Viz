@@ -1,15 +1,16 @@
 from datetime import datetime
 from enum import Enum
-from typing import List
+from typing import List, Annotated
 
-from pydantic import BaseModel
+from pydantic import BaseModel, Field
 
 ATTRIBUTE_VALUE_TYPE = int | float | str | bool | list[str] | list[int] | list[float] | list[bool]
 
 
 class DatasetData(BaseModel):
     shape: List[int]
-    values: List[float]
+    values: Annotated[List[float | str], Field(title="list of values",
+                                               description="List of float values or 'nan', 'inf', '-inf'")]
 
 
 class Status(str, Enum):

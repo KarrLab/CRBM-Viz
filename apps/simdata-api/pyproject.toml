@@ -4,7 +4,10 @@ version = "0.1.0"
 description = ""
 authors = ["Jim Schaff <schaff.jim@gmail.com>"]
 readme = "README.md"
-packages = [{ include = "simdata_api" }]
+packages = [
+  { include = "simdata_api" },
+  { include = "tests" },
+]
 
 [tool.poetry.dependencies]
 python = "^3.11"
@@ -26,6 +29,14 @@ flake8 = "^7.0.0"
 black = "^23.12.1"
 coverage = "^7.4.0"
 mypy = "^1.8.0"
+types-aiobotocore = "^2.17.0"
+types-aiofiles = "^24.1.0.20241221"
+types-pyyaml = "^6.0.12.20241230"
+
+[tool.mypy]
+python_version = "3.11"
+strict = true
+exclude = ["./.venv/"]
 
 [build-system]
 requires = ["poetry-core"]
