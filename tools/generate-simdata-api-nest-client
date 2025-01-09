@@ -77,6 +77,30 @@ sed -i '' '42i\
         }\
 ' "${lib_dir}/src/lib/api.module.ts"
 
+
+# replace in dataset-data.ts:
+#     values: Array<ListOfValuesInner>;
+# with
+#     values: Array<number | string>;
+echo "replacing DatasetData.values type in dataset-data.ts"
+sed -i '' 's/values: Array<ListOfValuesInner>;/values: Array<number | string>;/' "${lib_dir}/src/lib/model/dataset-data.ts"
+
+# remove line beginning with `import { ListOfValuesInner }` in dataset-data.ts
+echo "removing import ListOfValuesInner from dataset-data.ts"
+sed -i '' '/import { ListOfValuesInner }/d' "${lib_dir}/src/lib/model/dataset-data.ts"
+
+# remove line with `model/list-of-values-inner.ts` from ${lib_dir}/src/lib/.openapi-generator/FILES
+echo "removing list-of-values-inner.ts from FILES"
+sed -i '' '/model\/list-of-values-inner.ts/d' "${lib_dir}/src/lib/.openapi-generator/FILES"
+
+# remove line with `export * from './list-of-values-inner';` from ${lib_dir}/src/lib/model/models.ts
+echo "removing export * from './list-of-values-inner'; from models.ts"
+sed -i '' '/list-of-values-inner/d' "${lib_dir}/src/lib/model/models.ts"
+
+# remove file list-of-values-inner.ts
+echo "removing list-of-values-inner.ts"
+rm "${lib_dir}/src/lib/model/list-of-values-inner.ts"
+
 # add 'export * from "./simdata-utils';" to index.ts
 echo "adding export for simdata-utils to index.ts"
 echo " " >> "${lib_dir}/src/lib/index.ts"

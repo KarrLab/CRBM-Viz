@@ -12,5 +12,8 @@
 
 export interface DatasetData {
   shape: Array<number>;
-  values: Array<number>;
+  /**
+   * List of float values or \'nan\', \'inf\', \'-inf\'
+   */
+  values: Array<number | string>;
 }
