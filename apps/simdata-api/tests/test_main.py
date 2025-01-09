@@ -152,7 +152,7 @@ async def test_get_metadata_and_datasets_not_finite():
     url = f"/datasets/{RUN_ID}/data?dataset_name=simulation.sedml/objective"
     response = client.get(url)
     data = response.json()
-    import numpy.typing as npt
+
     assert response.status_code == 200
     dataset_data = DatasetData.model_validate(data)
     assert dataset_data.shape == [1]
@@ -165,7 +165,6 @@ async def test_get_metadata_and_datasets_not_finite():
     dataset_data = DatasetData.model_validate(data)
     assert dataset_data.shape == [1075]
     assert dataset_data.values == ['nan' for _ in range(1075)]
-
 
 
 @pytest.mark.skipif(os.path.exists(get_settings().storage_gcs_credentials_file) is False,
