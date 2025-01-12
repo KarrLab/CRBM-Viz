@@ -5258,6 +5258,12 @@
   </url>
    
   <url>
+    <loc>https://biosimulations.org/projects/BIOMD0000001065</loc>
+    <lastmod>2025-01-10</lastmod>
+    <changefreq>monthly</changefreq>
+  </url>
+   
+  <url>
     <loc>https://biosimulations.org/projects/BPS2020-model</loc>
     <lastmod>2022-04-22</lastmod>
     <changefreq>monthly</changefreq>
