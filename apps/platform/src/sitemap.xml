@@ -152,6 +152,12 @@
   </url>
    
   <url>
+    <loc>https://biosimulations.org/projects/BIOMD0000000001_A_kinetic_mechanism_for_nicoti</loc>
+    <lastmod>2025-02-06</lastmod>
+    <changefreq>monthly</changefreq>
+  </url>
+   
+  <url>
     <loc>https://biosimulations.org/projects/BIOMD0000000001_amici_A_kinetic_mechanism_for_nicoti</loc>
     <lastmod>2023-05-31</lastmod>
     <changefreq>monthly</changefreq>
@@ -5259,7 +5265,7 @@
    
   <url>
     <loc>https://biosimulations.org/projects/BIOMD0000001065</loc>
-    <lastmod>2025-01-10</lastmod>
+    <lastmod>2025-02-06</lastmod>
     <changefreq>monthly</changefreq>
   </url>
    

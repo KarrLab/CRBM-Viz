@@ -23,6 +23,7 @@
 /projects/BG-Mica-models
 /projects/BG_B1AR
 /projects/BG_cAMP
+/projects/BIOMD0000000001_A_kinetic_mechanism_for_nicoti
 /projects/BIOMD0000000001_amici_A_kinetic_mechanism_for_nicoti
 /projects/BIOMD0000000002_copasi_A_kinetic_mechanism_for_nicoti
 /projects/BIOMD0000000003_amici_A_minimal_cascade_model_for_th
