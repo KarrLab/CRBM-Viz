@@ -1674,18 +1674,17 @@ dotenv = ["python-dotenv"]
 
 [[package]]
 name = "flask-cors"
-version = "3.0.10"
+version = "4.0.2"
 description = "A Flask extension adding a decorator for CORS support"
 optional = false
 python-versions = "*"
 files = [
-    {file = "Flask-Cors-3.0.10.tar.gz", hash = "sha256:b60839393f3b84a0f3746f6cdca56c1ad7426aa738b70d6c61375857823181de"},
-    {file = "Flask_Cors-3.0.10-py2.py3-none-any.whl", hash = "sha256:74efc975af1194fc7891ff5cd85b0f7478be4f7f59fe158102e91abb72bb4438"},
+    {file = "Flask_Cors-4.0.2-py2.py3-none-any.whl", hash = "sha256:38364faf1a7a5d0a55bd1d2e2f83ee9e359039182f5e6a029557e1f56d92c09a"},
+    {file = "flask_cors-4.0.2.tar.gz", hash = "sha256:493b98e2d1e2f1a4720a7af25693ef2fe32fbafec09a2f72c59f3e475eda61d2"},
 ]
 
 [package.dependencies]
 Flask = ">=0.9"
-Six = "*"
 
 [[package]]
 name = "flexcache"
@@ -6293,4 +6292,4 @@ pyYaml = "*"
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.10"
-content-hash = "a32dce30ba555baa1eb0db65aef02860c7533f4cb71bc3c1ed4b4806af4a7d85"
+content-hash = "dd3cfc3193e54e273c1bf531261d499cf6e2ddddbeab36ecc9923360840c7f5f"
